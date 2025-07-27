@@ -1,0 +1,101 @@
+emp_id,emp_load,emp_preferred_category
+EMP001,8,Bug Fix
+EMP002,5,Bug Fix
+EMP003,2,Feature Update
+EMP004,5,Meeting
+EMP005,8,UI/UX
+EMP006,10,UI/UX
+EMP007,9,Deployment
+EMP008,9,Report
+EMP009,1,Feature Update
+EMP010,9,Call
+EMP011,7,Report
+EMP012,9,Meeting
+EMP013,8,Deployment
+EMP014,1,Documentation
+EMP015,1,Documentation
+EMP016,8,UI/UX
+EMP017,3,Feature Update
+EMP018,1,Code Review
+EMP019,8,Code Review
+EMP020,3,Call
+EMP021,3,Call
+EMP022,1,Bug Fix
+EMP023,5,Bug Fix
+EMP024,10,Meeting
+EMP025,7,Email
+EMP026,10,Code Review
+EMP027,9,Code Review
+EMP028,7,Report
+EMP029,9,Feature Update
+EMP030,8,UI/UX
+EMP031,2,Email
+EMP032,1,Bug Fix
+EMP033,7,Meeting
+EMP034,7,Email
+EMP035,8,Documentation
+EMP036,5,Feature Update
+EMP037,3,Call
+EMP038,8,Documentation
+EMP039,6,Meeting
+EMP040,3,UI/UX
+EMP041,1,Email
+EMP042,3,Bug Fix
+EMP043,5,UI/UX
+EMP044,3,Meeting
+EMP045,1,Call
+EMP046,5,Report
+EMP047,10,Email
+EMP048,7,Report
+EMP049,7,Email
+EMP050,9,Call
+EMP051,10,Report
+EMP052,10,Code Review
+EMP053,3,Deployment
+EMP054,7,Deployment
+EMP055,1,Feature Update
+EMP056,4,Bug Fix
+EMP057,4,Call
+EMP058,5,Code Review
+EMP059,7,Bug Fix
+EMP060,7,UI/UX
+EMP061,4,Report
+EMP062,7,Code Review
+EMP063,3,Email
+EMP064,6,Call
+EMP065,2,Meeting
+EMP066,10,Call
+EMP067,9,Bug Fix
+EMP068,5,Email
+EMP069,6,Meeting
+EMP070,4,Call
+EMP071,10,Deployment
+EMP072,7,Documentation
+EMP073,9,Email
+EMP074,7,Documentation
+EMP075,1,Feature Update
+EMP076,1,Documentation
+EMP077,9,Report
+EMP078,9,Code Review
+EMP079,4,Bug Fix
+EMP080,9,Meeting
+EMP081,3,Call
+EMP082,7,Documentation
+EMP083,6,Documentation
+EMP084,8,Feature Update
+EMP085,9,Bug Fix
+EMP086,5,Code Review
+EMP087,1,Report
+EMP088,3,UI/UX
+EMP089,10,Meeting
+EMP090,8,Meeting
+EMP091,6,Code Review
+EMP092,8,UI/UX
+EMP093,9,Feature Update
+EMP094,4,Documentation
+EMP095,1,Meeting
+EMP096,1,Documentation
+EMP097,10,Code Review
+EMP098,4,Code Review
+EMP099,7,UI/UX
+EMP100,2,Deployment
