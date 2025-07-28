@@ -8,7 +8,7 @@ from nltk.stem import PorterStemmer
 
 
 class TaskCategoryPredictor:
-    def __init__(self, model_path='task_classifier.pkl'):
+    def __init__(self, model_path='models/task_classifier.pkl'):
         self.model_path = model_path
         self.tfidf_vectorizer = None
         self.svm_model = None

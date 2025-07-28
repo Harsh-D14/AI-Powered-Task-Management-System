@@ -88,7 +88,7 @@ class TaskNLPPreprocessor:
         return ' '.join(tokens)
 
 
-def process_tasks_dataset(input_file='tasks_dataset.csv', output_file='task_preprocessed_data.csv'):
+def process_tasks_dataset(input_file='datasets/tasks_dataset.csv', output_file='datasets/task_preprocessed_data.csv'):
     """
     Main function to process the tasks dataset
     """

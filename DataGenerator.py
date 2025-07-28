@@ -15,6 +15,13 @@ CATEGORIES = [
 
 PRIORITIES = ["Low", "Medium", "High"]
 
+# Priority-specific keywords for ML training
+PRIORITY_KEYWORDS = {
+    "High": ["urgent", "immediate", "critical", "emergency", "asap", "immediately"],
+    "Medium": ["important", "due near", "expected", "priority", "soon", "needed"],
+    "Low": []  # No special keywords for low priority
+}
+
 # Task description templates for each category
 TASK_TEMPLATES = {
     "Deployment": [
@@ -22,70 +29,100 @@ TASK_TEMPLATES = {
         "Configure server infrastructure for new release",
         "Setup continuous integration pipeline",
         "Migrate database to new version",
-        "Configure load balancers for high availability"
+        "Configure load balancers for high availability",
+        "Update production servers with latest patches",
+        "Rollback deployment due to issues",
+        "Scale infrastructure for increased load"
     ],
     "Code Review": [
         "Review pull request for authentication module",
         "Conduct code review for API endpoints",
         "Review security implementation in payment gateway",
         "Validate coding standards in user interface",
-        "Review database optimization queries"
+        "Review database optimization queries",
+        "Audit code for security vulnerabilities",
+        "Review performance optimization changes",
+        "Validate new feature implementation"
     ],
     "Email": [
         "Send project status update to stakeholders",
         "Prepare weekly newsletter for team",
         "Draft announcement for new feature release",
         "Compose client communication regarding updates",
-        "Send meeting invitation for planning session"
+        "Send meeting invitation for planning session",
+        "Notify team about system maintenance",
+        "Send progress report to management",
+        "Communicate deadline changes to team"
     ],
     "Meeting": [
         "Schedule sprint planning meeting",
         "Organize stakeholder review session",
         "Conduct team retrospective meeting",
         "Arrange client demonstration session",
-        "Plan architecture discussion meeting"
+        "Plan architecture discussion meeting",
+        "Coordinate incident response meeting",
+        "Schedule performance review session",
+        "Organize team building session"
     ],
     "UI/UX": [
         "Design user interface for mobile application",
         "Create wireframes for dashboard layout",
         "Develop user experience flow for checkout",
         "Design icons and visual elements",
-        "Conduct usability testing session"
+        "Conduct usability testing session",
+        "Redesign problematic user interface",
+        "Create responsive design for mobile",
+        "Fix accessibility issues in interface"
     ],
     "Feature Update": [
         "Implement new search functionality",
         "Add notification system to application",
         "Develop user profile management feature",
         "Create advanced reporting dashboard",
-        "Build real-time chat functionality"
+        "Build real-time chat functionality",
+        "Update payment processing system",
+        "Add multi-language support",
+        "Implement data export feature"
     ],
     "Call": [
         "Schedule client consultation call",
         "Conduct technical support call",
         "Arrange vendor negotiation call",
         "Plan team sync call for project updates",
-        "Organize emergency incident response call"
+        "Organize incident response call",
+        "Schedule customer feedback call",
+        "Arrange contract renewal discussion",
+        "Plan emergency escalation call"
     ],
     "Bug Fix": [
         "Fix login authentication error",
         "Resolve payment processing bug",
         "Debug memory leak in application",
         "Fix responsive design issues",
-        "Resolve data synchronization problem"
+        "Resolve data synchronization problem",
+        "Address security vulnerability",
+        "Fix performance bottleneck",
+        "Resolve system crash issues"
     ],
     "Report": [
         "Generate monthly performance analytics",
         "Create project progress summary report",
         "Prepare security audit documentation",
         "Compile user feedback analysis report",
-        "Generate system health monitoring report"
+        "Generate system health monitoring report",
+        "Create incident post-mortem report",
+        "Prepare quarterly business review",
+        "Document compliance audit results"
     ],
     "Documentation": [
         "Update API documentation for new endpoints",
         "Create user manual for new features",
         "Write technical specification document",
         "Update installation and setup guide",
-        "Prepare troubleshooting documentation"
+        "Prepare troubleshooting documentation",
+        "Document incident resolution procedures",
+        "Create onboarding documentation",
+        "Update system architecture documentation"
     ]
 }
 
@@ -122,8 +159,50 @@ def generate_employees(num_employees=100):
     return pd.DataFrame(employees)
 
 
+def add_priority_keywords(description, priority):
+    """Add priority-specific keywords to task descriptions for ML training"""
+    if priority == "High":
+        keyword = np.random.choice(PRIORITY_KEYWORDS["High"])
+        # Different ways to incorporate urgent keywords
+        patterns = [
+            f"{keyword.capitalize()} - {description}",
+            f"{description} - {keyword} action required",
+            f"{description} ({keyword})",
+            f"Need to {description.lower()} {keyword}",
+            f"{keyword.capitalize()}: {description}"
+        ]
+        return np.random.choice(patterns)
+
+    elif priority == "Medium":
+        keyword = np.random.choice(PRIORITY_KEYWORDS["Medium"])
+        # Different ways to incorporate medium priority keywords
+        patterns = [
+            f"{description} - {keyword}",
+            f"{keyword.capitalize()} to {description.lower()}",
+            f"{description} ({keyword})",
+            f"{description} - {keyword} for next phase",
+            f"{keyword.capitalize()}: {description}"
+        ]
+        return np.random.choice(patterns)
+
+    else:  # Low priority
+        # Add neutral descriptive words that don't indicate urgency
+        neutral_additions = [
+            "",  # No addition
+            "when convenient",
+            "for future release",
+            "as time permits",
+            "in spare time",
+            "for next quarter"
+        ]
+        addition = np.random.choice(neutral_additions)
+        if addition:
+            return f"{description} - {addition}"
+        return description
+
+
 def generate_tasks(employees_df, num_tasks=400):
-    """Generate task dataset with proper assignment logic"""
+    """Generate task dataset with proper assignment logic and priority-specific keywords"""
     tasks = []
 
     for i in range(num_tasks):
@@ -132,21 +211,27 @@ def generate_tasks(employees_df, num_tasks=400):
         # Select random category
         category = np.random.choice(CATEGORIES)
 
-        # Generate task description
-        task_description = np.random.choice(TASK_TEMPLATES[category])
+        # Generate base task description
+        base_description = np.random.choice(TASK_TEMPLATES[category])
 
-        # Add some variation to task descriptions
-        variations = [
-            f"{task_description}",
-            f"{task_description} for Q{np.random.randint(1, 5)} milestone",
-            f"{task_description} - priority project",
-            f"{task_description} (updated requirements)",
+        # Select priority first (before adding keywords)
+        priority = np.random.choice(PRIORITIES, p=[0.3, 0.5, 0.2])  # Medium most common
+
+        # Add priority-specific keywords to description
+        task_description = add_priority_keywords(base_description, priority)
+
+        # Add some additional context variations (without conflicting keywords)
+        neutral_variations = [
+            task_description,
+            f"{task_description} for current sprint",
+            f"{task_description} - milestone deliverable",
+            f"{task_description} (updated scope)",
             f"{task_description} - phase {np.random.randint(1, 4)}"
         ]
-        task_description = np.random.choice(variations)
 
-        # Select priority
-        priority = np.random.choice(PRIORITIES, p=[0.3, 0.5, 0.2])  # Medium most common
+        # Only apply neutral variations to avoid keyword conflicts
+        if priority == "Low" and np.random.random() < 0.3:  # 30% chance for low priority
+            task_description = np.random.choice(neutral_variations[:1] + neutral_variations[1:])
 
         # Find employees who prefer this category
         suitable_employees = employees_df[employees_df['emp_preferred_category'] == category]
@@ -176,7 +261,7 @@ def generate_tasks(employees_df, num_tasks=400):
 
 
 def fix_existing_dataset(csv_file_path):
-    """Fix the existing dataset by separating and correcting assignments"""
+    """Fix the existing dataset by separating and correcting assignments with priority keywords"""
     try:
         # Read the existing dataset
         df = pd.read_csv(csv_file_path)
@@ -188,7 +273,7 @@ def fix_existing_dataset(csv_file_path):
         employee_data = df[['User_ID', 'User_Load', 'User_Pref_Category']].drop_duplicates()
         employee_data.columns = ['emp_id', 'emp_load', 'emp_preferred_category']
 
-        # Create tasks dataset with corrected assignments
+        # Create tasks dataset with corrected assignments and priority keywords
         tasks_fixed = []
 
         for _, row in df.iterrows():
@@ -206,9 +291,12 @@ def fix_existing_dataset(csv_file_path):
                 # Fallback to original assignment
                 best_employee = row['Assigned_To']
 
+            # Add priority keywords to task description
+            enhanced_description = add_priority_keywords(row['Task_Description'], row['Urgency'])
+
             tasks_fixed.append({
                 'taskid': row['Task_ID'],
-                'task_description': row['Task_Description'],
+                'task_description': enhanced_description,
                 'priority': row['Urgency'],
                 'category': row['Category'],
                 'assigned_to_employeeid': best_employee
@@ -232,6 +320,72 @@ def fix_existing_dataset(csv_file_path):
     except Exception as e:
         print(f"Error reading existing file: {e}")
         return None, None
+
+
+def analyze_priority_keywords(tasks_df):
+    """Analyze the distribution of priority keywords in task descriptions"""
+    high_keywords = PRIORITY_KEYWORDS["High"]
+    medium_keywords = PRIORITY_KEYWORDS["Medium"]
+
+    keyword_stats = {
+        "High": {"total": 0, "with_keywords": 0, "keyword_counts": {}},
+        "Medium": {"total": 0, "with_keywords": 0, "keyword_counts": {}},
+        "Low": {"total": 0, "with_keywords": 0, "keyword_counts": {}}
+    }
+
+    for _, task in tasks_df.iterrows():
+        priority = task['priority']
+        description = task['task_description'].lower()
+
+        keyword_stats[priority]["total"] += 1
+
+        # Check for high priority keywords
+        found_high_keywords = [kw for kw in high_keywords if kw in description]
+        # Check for medium priority keywords
+        found_medium_keywords = [kw for kw in medium_keywords if kw in description]
+
+        if priority == "High":
+            if found_high_keywords:
+                keyword_stats[priority]["with_keywords"] += 1
+                for kw in found_high_keywords:
+                    keyword_stats[priority]["keyword_counts"][kw] = keyword_stats[priority]["keyword_counts"].get(kw,
+                                                                                                                  0) + 1
+
+        elif priority == "Medium":
+            if found_medium_keywords:
+                keyword_stats[priority]["with_keywords"] += 1
+                for kw in found_medium_keywords:
+                    keyword_stats[priority]["keyword_counts"][kw] = keyword_stats[priority]["keyword_counts"].get(kw,
+                                                                                                                  0) + 1
+
+        elif priority == "Low":
+            # Low priority should NOT have high/medium keywords
+            if found_high_keywords or found_medium_keywords:
+                keyword_stats[priority]["with_keywords"] += 1
+                # This is actually bad for low priority tasks
+
+    # Print analysis results
+    for priority in ["High", "Medium", "Low"]:
+        stats = keyword_stats[priority]
+        total = stats["total"]
+        with_kw = stats["with_keywords"]
+
+        if priority == "Low":
+            print(
+                f"{priority} Priority: {total} tasks, {with_kw} incorrectly contain urgency keywords ({(with_kw / total * 100):.1f}%)")
+        else:
+            print(
+                f"{priority} Priority: {total} tasks, {with_kw} contain appropriate keywords ({(with_kw / total * 100):.1f}%)")
+            if stats["keyword_counts"]:
+                print(f"  Keyword distribution: {dict(stats['keyword_counts'])}")
+
+    # Show some examples
+    print("\n=== Sample Task Descriptions by Priority ===")
+    for priority in ["High", "Medium", "Low"]:
+        priority_tasks = tasks_df[tasks_df['priority'] == priority].head(3)
+        print(f"\n{priority} Priority Examples:")
+        for _, task in priority_tasks.iterrows():
+            print(f"  • {task['task_description']}")
 
 
 # Main execution
@@ -290,3 +444,73 @@ if __name__ == "__main__":
     print("\n=== Employee Load Distribution ===")
     print(f"Average employee load: {employees_df['emp_load'].mean():.2f}")
     print(f"Load range: {employees_df['emp_load'].min()} - {employees_df['emp_load'].max()}")
+
+    # Analyze priority keyword distribution for ML training verification
+    print("\n=== Priority Keyword Analysis (for ML Training) ===")
+    analyze_priority_keywords(tasks_df)
+
+
+def analyze_priority_keywords(tasks_df):
+    """Analyze the distribution of priority keywords in task descriptions"""
+    high_keywords = PRIORITY_KEYWORDS["High"]
+    medium_keywords = PRIORITY_KEYWORDS["Medium"]
+
+    keyword_stats = {
+        "High": {"total": 0, "with_keywords": 0, "keyword_counts": {}},
+        "Medium": {"total": 0, "with_keywords": 0, "keyword_counts": {}},
+        "Low": {"total": 0, "with_keywords": 0, "keyword_counts": {}}
+    }
+
+    for _, task in tasks_df.iterrows():
+        priority = task['priority']
+        description = task['task_description'].lower()
+
+        keyword_stats[priority]["total"] += 1
+
+        # Check for high priority keywords
+        found_high_keywords = [kw for kw in high_keywords if kw in description]
+        # Check for medium priority keywords
+        found_medium_keywords = [kw for kw in medium_keywords if kw in description]
+
+        if priority == "High":
+            if found_high_keywords:
+                keyword_stats[priority]["with_keywords"] += 1
+                for kw in found_high_keywords:
+                    keyword_stats[priority]["keyword_counts"][kw] = keyword_stats[priority]["keyword_counts"].get(kw,
+                                                                                                                  0) + 1
+
+        elif priority == "Medium":
+            if found_medium_keywords:
+                keyword_stats[priority]["with_keywords"] += 1
+                for kw in found_medium_keywords:
+                    keyword_stats[priority]["keyword_counts"][kw] = keyword_stats[priority]["keyword_counts"].get(kw,
+                                                                                                                  0) + 1
+
+        elif priority == "Low":
+            # Low priority should NOT have high/medium keywords
+            if found_high_keywords or found_medium_keywords:
+                keyword_stats[priority]["with_keywords"] += 1
+                # This is actually bad for low priority tasks
+
+    # Print analysis results
+    for priority in ["High", "Medium", "Low"]:
+        stats = keyword_stats[priority]
+        total = stats["total"]
+        with_kw = stats["with_keywords"]
+
+        if priority == "Low":
+            print(
+                f"{priority} Priority: {total} tasks, {with_kw} incorrectly contain urgency keywords ({(with_kw / total * 100):.1f}%)")
+        else:
+            print(
+                f"{priority} Priority: {total} tasks, {with_kw} contain appropriate keywords ({(with_kw / total * 100):.1f}%)")
+            if stats["keyword_counts"]:
+                print(f"  Keyword distribution: {dict(stats['keyword_counts'])}")
+
+    # Show some examples
+    print("\n=== Sample Task Descriptions by Priority ===")
+    for priority in ["High", "Medium", "Low"]:
+        priority_tasks = tasks_df[tasks_df['priority'] == priority].head(3)
+        print(f"\n{priority} Priority Examples:")
+        for _, task in priority_tasks.iterrows():
+            print(f"  • {task['task_description']}")

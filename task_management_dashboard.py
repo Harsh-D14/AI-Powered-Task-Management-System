@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, \
     classification_report
 from sklearn.model_selection import train_test_split
+from collections import defaultdict
 import io
 
 warnings.filterwarnings('ignore')
@@ -29,47 +30,170 @@ except LookupError:
     nltk.download('stopwords')
 
 
-class SimpleWorkloadBalancer:
-    """Simple workload balancer that can be pickled"""
+class AdvancedWorkloadBalancer:
+    """Advanced workload balancer with intelligent employee assignment"""
 
-    def __init__(self, employees_data):
+    def __init__(self, employees_data, tasks_df=None):
         self.employees_data = employees_data
-        self.current_loads = {emp_id: info['emp_load']
-                              for emp_id, info in employees_data.items()}
+        self.initial_loads = {emp_id: info['emp_load'] for emp_id, info in employees_data.items()}
+        self.current_loads = self.initial_loads.copy()
         self.category_preferences = {emp_id: info['emp_preferred_category']
                                      for emp_id, info in employees_data.items()}
+        self.assignment_history = {}
+        self.category_experts = self._build_expert_mapping()
+        self.performance_scores = self._calculate_performance_scores(
+            tasks_df) if tasks_df is not None else self._default_performance_scores()
 
-    def get_optimal_employee(self, task_category, task_priority_prob):
-        """Simple scoring system for employee selection"""
-        best_emp = None
-        best_score = float('inf')
+    def _build_expert_mapping(self):
+        """Build mapping of categories to expert employees"""
+        expert_mapping = defaultdict(list)
+        for emp_id, pref in self.category_preferences.items():
+            expert_mapping[pref].append(emp_id)
+        return dict(expert_mapping)
 
-        for emp_id, current_load in self.current_loads.items():
-            # Simple scoring: lower load is better
-            score = current_load
+    def _default_performance_scores(self):
+        """Default performance scores when no historical data available"""
+        performance_scores = {}
+        for emp_id in self.employees_data.keys():
+            base_score = (10 - self.initial_loads[emp_id]) / 10
+            performance_scores[emp_id] = base_score
+        return performance_scores
 
-            # Bonus for category match
-            if self.category_preferences[emp_id] == task_category:
-                score -= 2
+    def _calculate_performance_scores(self, tasks_df):
+        """Calculate employee performance scores based on historical assignments"""
+        performance_scores = {}
 
-            # High priority tasks to less loaded employees
-            if task_priority_prob.get('High', 0) > 0.5:
-                score += (current_load - 5) * 0.5
+        for emp_id in self.employees_data.keys():
+            base_score = (10 - self.initial_loads[emp_id]) / 10
 
-            if score < best_score:
-                best_score = score
-                best_emp = emp_id
+            if tasks_df is not None and 'assigned_to_employeeid' in tasks_df.columns:
+                emp_tasks = tasks_df[tasks_df['assigned_to_employeeid'] == emp_id]
+                if len(emp_tasks) > 0:
+                    category_matches = sum(1 for _, task in emp_tasks.iterrows()
+                                           if self.category_preferences[emp_id] == task['category'])
+                    match_ratio = category_matches / len(emp_tasks)
+                    performance_scores[emp_id] = base_score * 0.7 + match_ratio * 0.3
+                else:
+                    performance_scores[emp_id] = base_score
+            else:
+                performance_scores[emp_id] = base_score
 
-        return best_emp
+        return performance_scores
 
-    def update_workload(self, emp_id, task_complexity=1):
-        """Update workload"""
-        if emp_id in self.current_loads:
-            self.current_loads[emp_id] += task_complexity
+    def get_optimal_employee(self, task_category, predicted_priority, urgency_score=0):
+        """Advanced employee selection algorithm"""
+        available_employees = [emp_id for emp_id, load in self.current_loads.items() if load < 10]
+
+        if not available_employees:
+            least_loaded = min(self.current_loads, key=self.current_loads.get)
+            self.current_loads[least_loaded] = 8
+            return least_loaded
+
+        candidates = []
+
+        for emp_id in available_employees:
+            score = self._calculate_assignment_score(emp_id, task_category, predicted_priority, urgency_score)
+            candidates.append({
+                'emp_id': emp_id,
+                'score': score,
+                'current_load': self.current_loads[emp_id],
+                'is_expert': self.category_preferences[emp_id] == task_category,
+                'performance': self.performance_scores[emp_id]
+            })
+
+        candidates.sort(key=lambda x: x['score'], reverse=True)
+        best_candidate = candidates[0]
+
+        self.assignment_history[best_candidate['emp_id']] = \
+            self.assignment_history.get(best_candidate['emp_id'], 0) + 1
+
+        return best_candidate['emp_id']
+
+    def _calculate_assignment_score(self, emp_id, task_category, predicted_priority, urgency_score):
+        """Calculate comprehensive assignment score for an employee"""
+        score = 0
+        current_load = self.current_loads[emp_id]
+        is_expert = self.category_preferences[emp_id] == task_category
+
+        # Expertise bonus
+        if is_expert:
+            score += 50
+        else:
+            score -= 10
+
+        # Workload factor
+        workload_score = (10 - current_load) * 3
+        score += workload_score
+
+        # Performance history
+        performance_bonus = self.performance_scores.get(emp_id, 0.5) * 20
+        score += performance_bonus
+
+        # Priority-based adjustments
+        if predicted_priority == 'High':
+            if current_load <= 5:
+                score += 15
+            elif current_load >= 8:
+                score -= 20
+
+            if is_expert and current_load <= 4:
+                score += 25
+
+        elif predicted_priority == 'Medium':
+            if 3 <= current_load <= 7:
+                score += 10
+
+        # Urgency adjustments
+        if urgency_score > 2:
+            if current_load <= 4:
+                score += 10
+            elif current_load >= 8:
+                score -= 15
+
+        # Load balancing
+        recent_assignments = self.assignment_history.get(emp_id, 0)
+        if recent_assignments >= 3:
+            score -= recent_assignments * 5
+
+        # Avoid overloading
+        if current_load >= 9:
+            score -= 30
+        elif current_load >= 7:
+            score -= 10
+
+        return score
+
+    def update_workload(self, emp_id, task_complexity=1, predicted_priority='Medium'):
+        """Update employee workload with priority-based complexity"""
+        if emp_id not in self.current_loads:
+            return
+
+        complexity_multiplier = {'High': 2.0, 'Medium': 1.0, 'Low': 0.7}
+        final_complexity = task_complexity * complexity_multiplier.get(predicted_priority, 1.0)
+        self.current_loads[emp_id] = min(10, self.current_loads[emp_id] + final_complexity)
+
+        total_assignments = sum(self.assignment_history.values())
+        if total_assignments > 0 and total_assignments % 20 == 0:
+            self.assignment_history = {}
+
+    def get_employee_details(self, emp_id):
+        """Get comprehensive employee details"""
+        if emp_id not in self.employees_data:
+            return None
+
+        return {
+            'emp_id': emp_id,
+            'current_load': self.current_loads.get(emp_id, 0),
+            'initial_load': self.initial_loads.get(emp_id, 0),
+            'preferred_category': self.category_preferences.get(emp_id, 'Unknown'),
+            'performance_score': self.performance_scores.get(emp_id, 0.5),
+            'recent_assignments': self.assignment_history.get(emp_id, 0),
+            'load_increase': self.current_loads.get(emp_id, 0) - self.initial_loads.get(emp_id, 0)
+        }
 
 
 class TaskCategoryPredictor:
-    def __init__(self, model_path='task_classifier.pkl'):
+    def __init__(self, model_path='models/task_classifier.pkl'):
         self.model_path = model_path
         self.tfidf_vectorizer = None
         self.svm_model = None
@@ -153,8 +277,8 @@ class TaskCategoryPredictor:
         return predicted_category, confidence_scores
 
 
-class TaskPriorityPredictor:
-    def __init__(self, model_path='task_priority_model.pkl'):
+class AdvancedTaskPriorityPredictor:
+    def __init__(self, model_path='models/task_priority_model.pkl'):
         self.model_path = model_path
         self.load_model()
 
@@ -166,16 +290,22 @@ class TaskPriorityPredictor:
             # Extract required components
             self.model = self.model_data['model']
             self.label_encoder = self.model_data['label_encoder']
+            self.scaler = self.model_data.get('scaler', None)
             self.tfidf_vectorizer = self.model_data['tfidf_vectorizer']
+            self.feature_names = self.model_data.get('feature_names', [])
             self.employees_data = self.model_data.get('employees_data', {})
-            self.categories = self.model_data['categories']
+            self.actual_categories = self.model_data.get('actual_categories', [])
+            self.actual_priorities = self.model_data.get('actual_priorities', ['High', 'Medium', 'Low'])
+            self.priority_keywords = self.model_data.get('priority_keywords', {})
+            self.quick_mode = self.model_data.get('quick_mode', True)
+            self.version = self.model_data.get('version', 'unknown')
 
-            # Handle workload balancer if it exists in the model
+            # Handle workload balancer
             if 'workload_balancer' in self.model_data:
                 self.workload_balancer = self.model_data['workload_balancer']
             else:
-                # Create a simple workload balancer if not in model
-                self.workload_balancer = SimpleWorkloadBalancer(self.employees_data)
+                # Create advanced workload balancer if not in model
+                self.workload_balancer = AdvancedWorkloadBalancer(self.employees_data)
 
         except FileNotFoundError:
             st.error(
@@ -187,51 +317,146 @@ class TaskPriorityPredictor:
             return False
         return True
 
-    def preprocess_text_simple(self, text):
-        text = re.sub(r'[^a-zA-Z\s]', '', text.lower())
-        return ' '.join(text.split())
+    def validate_category(self, category):
+        """Smart category validation with suggestions"""
+        if category in self.actual_categories:
+            return category, True
 
-    def calculate_text_features_fast(self, description):
+        # Try exact partial matching
+        category_lower = category.lower()
+        for actual_cat in self.actual_categories:
+            if category_lower in actual_cat.lower() or actual_cat.lower() in category_lower:
+                return actual_cat, False
+
+        # Use fallback
+        fallback = self.actual_categories[0] if self.actual_categories else category
+        return fallback, False
+
+    def analyze_keywords(self, description):
+        """Advanced keyword analysis"""
+        desc_lower = description.lower()
+        keyword_analysis = {}
+
+        for priority, patterns in self.priority_keywords.items():
+            primary_matches = [kw for kw in patterns.get('primary', []) if kw in desc_lower]
+            secondary_matches = [kw for kw in patterns.get('secondary', []) if kw in desc_lower]
+            urgency_matches = [kw for kw in patterns.get('urgency_indicators', []) if kw in desc_lower]
+
+            total_score = len(primary_matches) * 3 + len(secondary_matches) * 2 + len(urgency_matches) * 4
+
+            keyword_analysis[priority] = {
+                'score': total_score,
+                'primary': primary_matches,
+                'secondary': secondary_matches,
+                'urgency': urgency_matches,
+                'total_matches': len(primary_matches) + len(secondary_matches) + len(urgency_matches)
+            }
+
+        return keyword_analysis
+
+    def calculate_urgency_score(self, description):
+        """Calculate overall urgency score"""
+        desc_lower = description.lower()
+        urgency_score = 0
+
+        # High urgency indicators
+        high_urgency = ['urgent', 'immediately', 'emergency', 'critical', 'asap']
+        urgency_score += sum(4 for kw in high_urgency if kw in desc_lower)
+
+        # Medium urgency indicators
+        medium_urgency = ['important', 'needed', 'priority', 'soon']
+        urgency_score += sum(2 for kw in medium_urgency if kw in desc_lower)
+
+        # Punctuation urgency
+        urgency_score += description.count('!') * 2
+        urgency_score += description.count('?') * 1
+
+        return urgency_score
+
+    def extract_enhanced_features(self, description, category, employee_id=None):
+        """Extract all enhanced features for prediction"""
+        # Validate category
+        validated_category, category_valid = self.validate_category(category)
+
+        # Basic text features
         words = description.split()
         token_count = len(words)
-        return token_count, token_count
+        word_count = len(words)
 
-    def create_prediction_features(self, description, category, employee_id=None):
-        token_count, word_count = self.calculate_text_features_fast(description)
+        # Keyword analysis
+        keyword_analysis = self.analyze_keywords(description)
+        high_keywords = keyword_analysis.get('high', {}).get('score', 0)
+        medium_keywords = keyword_analysis.get('medium', {}).get('score', 0)
+        low_keywords = keyword_analysis.get('low', {}).get('score', 0)
+        urgency_score = self.calculate_urgency_score(description)
 
-        tfidf_features = self.tfidf_vectorizer.transform([description]).toarray()[0]
+        # Keyword confidence
+        total_keyword_score = high_keywords + medium_keywords + low_keywords
+        if total_keyword_score > 0:
+            keyword_confidence = max(high_keywords, medium_keywords, low_keywords) / total_keyword_score
+        else:
+            keyword_confidence = 0
 
+        # Advanced text features
+        caps_ratio = sum(1 for word in words if word.isupper()) / len(words) if words else 0
+        punct_score = description.count('!') * 2 + description.count('?') + description.count('-') * 0.5
+        avg_word_len = np.mean([len(word) for word in words]) if words else 0
+        complex_words = sum(1 for word in words if len(word) > 7)
+        complexity_score = complex_words / len(words) if words else 0
+
+        # Employee features
         if employee_id and employee_id in self.employees_data:
             emp_info = self.employees_data[employee_id]
             emp_load = emp_info['emp_load']
-            category_match = 1 if emp_info['emp_preferred_category'] == category else 0
+            category_match = 1 if emp_info['emp_preferred_category'] == validated_category else 0
+            emp_performance = (10 - emp_load) / 10
         else:
             emp_load = 5
             category_match = 0
+            emp_performance = 0.5
 
+        # Category encoding
         category_features = []
-        for cat in sorted(self.categories):
-            category_features.append(1 if cat == category else 0)
+        for cat in self.actual_categories:
+            category_features.append(1 if cat == validated_category else 0)
 
-        features = [token_count, word_count, emp_load, category_match]
+        # TF-IDF features
+        tfidf_features = self.tfidf_vectorizer.transform([description]).toarray()[0]
+
+        # Combine features in training order
+        features = [
+            token_count, word_count,
+            high_keywords, medium_keywords, low_keywords, urgency_score, keyword_confidence,
+            caps_ratio, punct_score, avg_word_len, complexity_score,
+            emp_load, category_match, emp_performance
+        ]
         features.extend(category_features)
         features.extend(tfidf_features)
 
-        return np.array(features).reshape(1, -1)
+        return (np.array(features).reshape(1, -1), validated_category, category_valid,
+                keyword_analysis, urgency_score)
 
-    def predict_priority(self, description, category, employee_id=None):
+    def predict_priority_advanced(self, description, category, employee_id=None):
         try:
-            if category not in self.categories:
-                category = self.categories[0]
+            # Extract enhanced features
+            X, validated_category, category_valid, keyword_analysis, urgency_score = \
+                self.extract_enhanced_features(description, category, employee_id)
 
-            X = self.create_prediction_features(description, category, employee_id)
+            # Scale features if scaler is available
+            if self.scaler is not None:
+                X_scaled = self.scaler.transform(X)
+            else:
+                X_scaled = X
 
-            prediction_encoded = self.model.predict(X)[0]
-            prediction_proba = self.model.predict_proba(X)[0]
+            # Make prediction
+            prediction_encoded = self.model.predict(X_scaled)[0]
+            prediction_proba = self.model.predict_proba(X_scaled)[0]
 
+            # Decode prediction
             predicted_priority = self.label_encoder.inverse_transform([prediction_encoded])[0]
             confidence = prediction_proba[prediction_encoded]
 
+            # Create probability dictionary
             priority_probabilities = {}
             for i, priority in enumerate(self.label_encoder.classes_):
                 priority_probabilities[priority] = prediction_proba[i]
@@ -239,18 +464,50 @@ class TaskPriorityPredictor:
             return {
                 'predicted_priority': predicted_priority,
                 'confidence': confidence,
-                'all_probabilities': priority_probabilities
+                'all_probabilities': priority_probabilities,
+                'validated_category': validated_category,
+                'category_was_valid': category_valid,
+                'keyword_analysis': keyword_analysis,
+                'urgency_score': urgency_score
             }
 
         except Exception as e:
             st.error(f"Error predicting priority: {e}")
             return None
 
+    def recommend_employee_advanced(self, category, priority_probabilities, urgency_score):
+        """Advanced employee recommendation"""
+        try:
+            predicted_priority = max(priority_probabilities, key=priority_probabilities.get)
+
+            optimal_emp = self.workload_balancer.get_optimal_employee(
+                category, predicted_priority, urgency_score
+            )
+
+            if optimal_emp and optimal_emp in self.employees_data:
+                emp_details = self.workload_balancer.get_employee_details(optimal_emp)
+
+                if emp_details:
+                    return {
+                        'employee_id': emp_details['emp_id'],
+                        'current_load': emp_details['current_load'],
+                        'initial_load': emp_details['initial_load'],
+                        'preferred_category': emp_details['preferred_category'],
+                        'category_match': emp_details['preferred_category'] == category,
+                        'performance_score': emp_details['performance_score'],
+                        'recent_assignments': emp_details['recent_assignments'],
+                        'load_increase': emp_details['load_increase']
+                    }
+            return None
+        except Exception as e:
+            st.warning(f"Model-based recommendation failed: {e}")
+            return None
+
 
 def load_employees_data():
     """Load employee data from CSV"""
     try:
-        employees_df = pd.read_csv('employees_dataset.csv')
+        employees_df = pd.read_csv('datasets/employees_dataset.csv')
         return employees_df
     except Exception as e:
         st.error(f"Error loading employees data: {e}")
@@ -305,17 +562,18 @@ def get_model_based_employee_recommendation(priority_predictor, category, priori
     """Get employee recommendation using the model's workload balancer"""
     try:
         if hasattr(priority_predictor, 'workload_balancer') and priority_predictor.workload_balancer:
-            optimal_emp = priority_predictor.workload_balancer.get_optimal_employee(
-                category, priority_result.get('all_probabilities', {})
+            emp_rec = priority_predictor.recommend_employee_advanced(
+                category,
+                priority_result.get('all_probabilities', {}),
+                priority_result.get('urgency_score', 0)
             )
 
-            if optimal_emp and optimal_emp in priority_predictor.employees_data:
-                emp_info = priority_predictor.employees_data[optimal_emp]
+            if emp_rec:
                 return {
-                    'emp_id': optimal_emp,
-                    'emp_load': priority_predictor.workload_balancer.current_loads.get(optimal_emp, 5),
-                    'preferred_category': emp_info.get('emp_preferred_category', 'Unknown'),
-                    'category_match': emp_info.get('emp_preferred_category') == category,
+                    'emp_id': emp_rec['employee_id'],
+                    'emp_load': emp_rec['current_load'],
+                    'preferred_category': emp_rec['preferred_category'],
+                    'category_match': emp_rec['category_match'],
                     'availability': 'Available'
                 }
     except Exception as e:
@@ -328,10 +586,9 @@ def load_and_prepare_test_data():
     """Load and prepare test data for model evaluation"""
     try:
         # Load tasks dataset
-        tasks_df = pd.read_csv('tasks_dataset.csv')
+        tasks_df = pd.read_csv('datasets/tasks_dataset.csv')
 
         # Create a test set from the available data
-        # For demo purposes, we'll use a subset of the data
         test_size = min(100, len(tasks_df))
         test_data = tasks_df.sample(n=test_size, random_state=42)
 
@@ -397,8 +654,8 @@ def evaluate_priority_model(priority_predictor, category_predictor, test_data):
             # First predict category
             pred_category, _ = category_predictor.predict_category(row['task_description'])
             if pred_category != "Unable to process":
-                # Then predict priority
-                priority_result = priority_predictor.predict_priority(
+                # Then predict priority using the advanced method
+                priority_result = priority_predictor.predict_priority_advanced(
                     row['task_description'], pred_category
                 )
                 if priority_result:
@@ -502,8 +759,8 @@ def create_feature_importance_plot(priority_predictor):
     try:
         if hasattr(priority_predictor.model, 'feature_importances_'):
             importances = priority_predictor.model.feature_importances_
-            feature_names = priority_predictor.model_data.get('feature_names',
-                                                              [f'Feature_{i}' for i in range(len(importances))])
+            feature_names = priority_predictor.feature_names if priority_predictor.feature_names else \
+                [f'Feature_{i}' for i in range(len(importances))]
 
             # Get top 15 features
             top_indices = np.argsort(importances)[-15:]
@@ -617,7 +874,7 @@ def show_model_metrics_page():
                         st.info(f"""
                         **Priority Model Performance:**
                         - Accuracy: {pri_metrics['accuracy']:.1%}
-                        - Best performing: Random Forest classifier
+                        - Advanced keyword-enhanced model
                         - Considers employee workload and preferences
                         """)
 
@@ -713,16 +970,18 @@ def show_model_metrics_page():
                     - Precision: {cat_metrics['precision']:.1%} - {'High precision means low false positives' if cat_metrics['precision'] > 0.8 else 'Consider tuning to reduce false positives'}
                     - Recall: {cat_metrics['recall']:.1%} - {'High recall means low false negatives' if cat_metrics['recall'] > 0.8 else 'Consider improving to catch more true positives'}
 
-                    **Priority Prediction Model (Random Forest):**
+                    **Priority Prediction Model (Advanced):**
                     - Overall Accuracy: {pri_metrics['accuracy']:.1%}
                     - This model shows {'excellent' if pri_metrics['accuracy'] > 0.9 else 'good' if pri_metrics['accuracy'] > 0.8 else 'moderate'} performance
+                    - Enhanced with keyword analysis and advanced features
                     - Precision: {pri_metrics['precision']:.1%}
                     - Recall: {pri_metrics['recall']:.1%}
 
                     ### Key Observations:
-                    1. **Data Quality**: Model performance is heavily dependent on the quality and diversity of training data
-                    2. **Feature Engineering**: The combination of text features (TF-IDF) and categorical features works well
-                    3. **Employee Integration**: The priority model successfully incorporates employee workload and preferences
+                    1. **Advanced Features**: The priority model now includes keyword analysis for better accuracy
+                    2. **Feature Engineering**: Enhanced text features and urgency detection
+                    3. **Employee Integration**: Advanced workload balancing with performance scoring
+                    4. **Intelligent Assignment**: Considers expertise, workload, and task urgency
                     """
 
                     st.markdown(analysis_text)
@@ -737,64 +996,19 @@ def show_model_metrics_page():
                             "🎯 **Category Model**: Consider collecting more diverse training data or feature engineering")
 
                     if pri_metrics['accuracy'] < 0.85:
-                        recommendations.append("⚡ **Priority Model**: Fine-tune hyperparameters or add more features")
-
-                    if cat_metrics['precision'] < 0.8:
                         recommendations.append(
-                            "🔍 **False Positives**: Review misclassified samples to improve precision")
-
-                    if pri_metrics['recall'] < 0.8:
-                        recommendations.append(
-                            "📊 **Coverage**: Improve recall by balancing training data across priority classes")
+                            "⚡ **Priority Model**: Fine-tune hyperparameters or add more keyword patterns")
 
                     recommendations.extend([
+                        "🔄 **Keyword Enhancement**: Continuously update priority keywords based on user feedback",
                         "📈 **Continuous Learning**: Implement feedback loops to retrain models with new data",
-                        "🔄 **A/B Testing**: Test model variations in production to find optimal configurations",
-                        "📊 **Monitoring**: Set up automated monitoring for model drift and performance degradation",
-                        "🎯 **Feature Importance**: Regularly review feature importance to understand model decisions"
+                        "🎯 **Feature Importance**: Regularly review feature importance to understand model decisions",
+                        "📊 **Performance Monitoring**: Set up automated monitoring for model drift",
+                        "🧠 **Advanced Features**: Consider adding more contextual features like time-based urgency"
                     ])
 
                     for rec in recommendations:
                         st.write(f"- {rec}")
-
-                    # Data statistics
-                    st.subheader("📊 Dataset Statistics")
-
-                    if test_data is not None:
-                        col1, col2, col3 = st.columns(3)
-
-                        with col1:
-                            st.metric("Test Samples", len(test_data))
-
-                        with col2:
-                            category_dist = test_data['category'].value_counts()
-                            st.metric("Categories", len(category_dist))
-
-                        with col3:
-                            priority_dist = test_data['priority'].value_counts()
-                            st.metric("Priority Levels", len(priority_dist))
-
-                        # Distribution charts
-                        fig_dist = make_subplots(
-                            rows=1, cols=2,
-                            subplot_titles=('Category Distribution', 'Priority Distribution'),
-                            specs=[[{"type": "pie"}, {"type": "pie"}]]
-                        )
-
-                        # Category distribution
-                        fig_dist.add_trace(
-                            go.Pie(labels=category_dist.index, values=category_dist.values, name="Categories"),
-                            row=1, col=1
-                        )
-
-                        # Priority distribution
-                        fig_dist.add_trace(
-                            go.Pie(labels=priority_dist.index, values=priority_dist.values, name="Priorities"),
-                            row=1, col=2
-                        )
-
-                        fig_dist.update_layout(height=400, showlegend=True)
-                        st.plotly_chart(fig_dist, use_container_width=True)
 
             else:
                 st.error("❌ Could not evaluate models. Please check the data and model files.")
@@ -818,7 +1032,7 @@ def main():
         show_model_metrics_page()
         return
 
-    # Custom CSS (existing styles)
+    # Custom CSS
     st.markdown("""
     <style>
     .main-header {
@@ -836,7 +1050,7 @@ def main():
         margin: 1rem 0;
     }
     .employee-card {
-        background-color: #000000;
+        background-color: #c0c9d9;
         padding: 1rem;
         border-radius: 8px;
         border: 1px solid #ddd;
@@ -858,7 +1072,7 @@ def main():
     with st.sidebar:
         st.header("📊 System Info")
         st.info(
-            "This AI system predicts task categories and priorities, then recommends employees based on workload and preferences.")
+            "This AI system uses enhanced ML priority prediction with intelligent workload balancing.")
 
         st.header("🔧 Models Used")
         st.markdown("- **Category Predictor**: SVM with TF-IDF")
@@ -871,16 +1085,20 @@ def main():
             if hasattr(st.session_state, 'category_predictor') and hasattr(st.session_state.category_predictor,
                                                                            'categories'):
                 st.info(f"📂 Categories: {len(st.session_state.category_predictor.categories)}")
+            if hasattr(st.session_state, 'priority_predictor'):
+                version = getattr(st.session_state.priority_predictor, 'version', 'unknown')
+                st.info(f"🎯 Model Version: {version}")
             if st.session_state.employees_df is not None:
                 st.info(f"👥 Employees: {len(st.session_state.employees_df)}")
         else:
             st.error("❌ Models Status: Not Loaded")
 
-        # Debug section (optional)
+        # Debug section
         if st.checkbox("🔍 Debug Mode"):
             st.subheader("Debug Information")
             import os
-            model_files = ['task_classifier.pkl', 'task_priority_model.pkl', 'employees_dataset.csv']
+            model_files = ['models/task_classifier.pkl', 'models/task_priority_model.pkl',
+                           'datasets/employees_dataset.csv']
             for file in model_files:
                 if os.path.exists(file):
                     st.success(f"✅ {file}")
@@ -889,9 +1107,9 @@ def main():
 
     # Initialize models
     if 'models_loaded' not in st.session_state:
-        with st.spinner("Loading AI models..."):
+        with st.spinner("Loading ML models..."):
             st.session_state.category_predictor = TaskCategoryPredictor()
-            st.session_state.priority_predictor = TaskPriorityPredictor()
+            st.session_state.priority_predictor = AdvancedTaskPriorityPredictor()
             st.session_state.employees_df = load_employees_data()
 
             # Validate models loaded successfully
@@ -902,7 +1120,10 @@ def main():
 
             if category_loaded and priority_loaded:
                 st.session_state.models_loaded = True
-                st.success("✅ AI models loaded successfully!")
+                st.success("✅ ML models loaded successfully!")
+                # Show model version info
+                if hasattr(st.session_state.priority_predictor, 'version'):
+                    st.info(f"🎯 Priority Model Version: {st.session_state.priority_predictor.version}")
             else:
                 st.session_state.models_loaded = False
                 st.error("❌ Failed to load one or more AI models. Please check the model files.")
@@ -920,7 +1141,7 @@ def main():
         st.header("📝 Task Description Input")
         task_description = st.text_area(
             "Enter your task description:",
-            placeholder="e.g., Fix the login bug in the authentication system that prevents users from accessing their accounts",
+            placeholder="e.g., Fix the critical login bug in the authentication system that prevents users from accessing their accounts",
             height=150
         )
 
@@ -929,15 +1150,15 @@ def main():
     with col2:
         st.header("💡 Examples")
         example_tasks = [
-            "Fix database connection error",
-            "Create marketing presentation for Q4",
+            "Fix critical database connection error",
+            "Create marketing presentation for Q4 release",
             "Schedule team meeting for sprint planning",
-            "Design new user interface for mobile app",
+            "Design new user interface for dashboard",
             "Review and approve budget proposal"
         ]
 
         for i, example in enumerate(example_tasks):
-            if st.button(f"📋 {example}", key=f"example_{i}"):
+            if st.button(f"📋 {example[:40]}...", key=f"example_{i}"):
                 st.session_state.example_task = example
                 task_description = example
                 predict_button = True
@@ -950,15 +1171,15 @@ def main():
 
     # Prediction logic
     if predict_button and task_description.strip():
-        with st.spinner("Analyzing task with AI models..."):
+        with st.spinner("Analyzing task with ML models..."):
             # Step 1: Predict Category
             predicted_category, category_confidence = st.session_state.category_predictor.predict_category(
                 task_description)
 
             if predicted_category != "Unable to process":
-                # Step 2: Predict Priority
-                priority_result = st.session_state.priority_predictor.predict_priority(task_description,
-                                                                                       predicted_category)
+                # Step 2: Predict Priority using advanced method
+                priority_result = st.session_state.priority_predictor.predict_priority_advanced(
+                    task_description, predicted_category)
 
                 if priority_result:
                     # Step 3: Get Employee Recommendations
@@ -996,10 +1217,11 @@ def main():
                     col1, col2, col3 = st.columns(3)
 
                     with col1:
+                        category_display = priority_result.get('validated_category', predicted_category)
                         st.markdown(f"""
                         <div class="prediction-card">
                         <h3>📂 Predicted Category</h3>
-                        <h2 style="color: #1f77b4;">{predicted_category}</h2>
+                        <h2 style="color: #1f77b4;">{category_display}</h2>
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -1017,10 +1239,12 @@ def main():
 
                     with col3:
                         confidence = priority_result['confidence']
+                        urgency_score = priority_result.get('urgency_score', 0)
                         st.markdown(f"""
                         <div class="prediction-card">
                         <h3>🎯 Confidence</h3>
                         <h2 style="color: #1f77b4;">{confidence:.1%}</h2>
+                        <p>Urgency Score: {urgency_score:.1f}</p>
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -1036,29 +1260,50 @@ def main():
 
                     if employee_recommendations:
                         for i, emp in enumerate(employee_recommendations):
-                            match_icon = "✅" if emp['category_match'] else "⚠️"
-                            match_text = "Perfect Match" if emp['category_match'] else "Available"
-                            match_class = "category-match" if emp['category_match'] else "category-no-match"
+                            # Create columns for each employee
+                            emp_col1, emp_col2 = st.columns([3, 1])
 
-                            load_color = "#22aa22" if emp['emp_load'] < 6 else "#ff8800" if emp[
-                                                                                                'emp_load'] < 8 else "#ff4444"
+                            with emp_col1:
+                                match_icon = "✅" if emp['category_match'] else "⚠️"
+                                match_text = "Perfect Match" if emp['category_match'] else "Available"
 
-                            st.markdown(f"""
-                            <div class="employee-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <h4>{match_icon} {emp['emp_id']}</h4>
-                                    <p><span class="{match_class}">Category: {emp['preferred_category']}</span></p>
-                                    <p>Status: <strong>{match_text}</strong></p>
-                                </div>
-                                <div style="text-align: right;">
-                                    <p>Workload</p>
-                                    <h3 style="color: {load_color};">{emp['emp_load']}/10</h3>
-                                    <p><em>{emp['availability']}</em></p>
-                                </div>
-                            </div>
-                            </div>
-                            """, unsafe_allow_html=True)
+                                # Add performance indicator for model-based recommendations
+                                if i == 0 and model_recommendation:
+                                    st.markdown(f"**{match_icon} {emp['emp_id']} 🤖**")
+                                    st.caption("AI-Optimized Selection")
+                                else:
+                                    st.markdown(f"**{match_icon} {emp['emp_id']}**")
+
+                                if emp['category_match']:
+                                    st.markdown(f"🎯 **Category:** {emp['preferred_category']} ✅")
+                                else:
+                                    st.markdown(f"📂 **Category:** {emp['preferred_category']} ⚠️")
+
+                                st.markdown(f"**Status:** {match_text}")
+
+                            with emp_col2:
+                                # Workload indicator
+                                load = emp['emp_load']
+                                if load < 6:
+                                    load_color = "🟢"  # Green
+                                    load_status = "Light"
+                                elif load < 8:
+                                    load_color = "🟡"  # Yellow
+                                    load_status = "Medium"
+                                else:
+                                    load_color = "🔴"  # Red
+                                    load_status = "Heavy"
+
+                                st.metric(
+                                    label="Workload",
+                                    value=f"{load}/10",
+                                    delta=f"{load_status} {load_color}"
+                                )
+                                st.markdown(f"**{emp['availability']}**")
+
+                            # Add separator except for last item
+                            if i < len(employee_recommendations) - 1:
+                                st.markdown("---")
                     else:
                         st.warning("No employees found for this category.")
 
@@ -1068,15 +1313,48 @@ def main():
 
                     with action_cols[0]:
                         if st.button("📧 Notify Selected Employee", use_container_width=True):
-                            st.success("Notification sent!")
+                            if employee_recommendations:
+                                selected_emp = employee_recommendations[0]['emp_id']
+                                st.success(f"Notification sent to {selected_emp}!")
+                            else:
+                                st.warning("No employee selected")
 
                     with action_cols[1]:
                         if st.button("📅 Schedule Task", use_container_width=True):
-                            st.success("Task scheduled!")
+                            priority_scheduling = {
+                                'High': 'Scheduled for immediate attention',
+                                'Medium': 'Scheduled for next business day',
+                                'Low': 'Added to weekly backlog'
+                            }
+                            schedule_msg = priority_scheduling.get(priority, 'Task scheduled')
+                            st.success(schedule_msg)
 
                     with action_cols[2]:
                         if st.button("💾 Save to Database", use_container_width=True):
-                            st.success("Task saved to database!")
+                            st.success("Task saved with advanced metadata!")
+
+                    # Advanced insights
+                    with st.expander("🧠 Advanced Insights"):
+                        st.markdown("### Model Decision Factors:")
+
+                        insights = []
+                        if urgency_score > 3:
+                            insights.append(f"🚨 High urgency detected (score: {urgency_score:.1f})")
+
+                        if not priority_result.get('category_was_valid', True):
+                            insights.append(f"📝 Category auto-corrected to: {priority_result['validated_category']}")
+
+                        if model_recommendation:
+                            insights.append("🤖 Employee recommendation optimized by AI workload balancer")
+
+                        if confidence > 0.8:
+                            insights.append(f"✅ High confidence prediction ({confidence:.1%})")
+                        elif confidence < 0.6:
+                            insights.append(
+                                f"⚠️ Lower confidence prediction ({confidence:.1%}) - consider reviewing task description")
+
+                        for insight in insights:
+                            st.write(f"- {insight}")
 
                 else:
                     st.error("❌ Error predicting task priority")
@@ -1090,7 +1368,7 @@ def main():
     st.markdown("---")
     st.markdown(
         "<div style='text-align: center; color: #666;'>"
-        "🤖 Powered by AI | Task Management System v1.0"
+        "🤖 Powered by Advanced AI | Task Management System v2.0"
         "</div>",
         unsafe_allow_html=True
     )

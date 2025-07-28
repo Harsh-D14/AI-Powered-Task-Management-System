@@ -64,7 +64,7 @@ class TaskClassifier:
 
         return ' '.join(tokens)
 
-    def load_and_prepare_data(self, file_path='task_preprocessed_data.csv'):
+    def load_and_prepare_data(self, file_path='datasets/task_preprocessed_data.csv'):
         """Load and prepare the preprocessed data"""
         print("Loading preprocessed data...")
 
@@ -191,7 +191,7 @@ class TaskClassifier:
             for feature, weight in top_features:
                 print(f"  {feature}: {weight:.4f}")
 
-    def save_model(self, filename='task_classifier.pkl'):
+    def save_model(self, filename='models/task_classifier.pkl'):
         """Save the trained model and vectorizer"""
         model_data = {
             'tfidf_vectorizer': self.tfidf_vectorizer,
