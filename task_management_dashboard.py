@@ -516,7 +516,7 @@ def show_model_metrics_page():
 
                     # Add realistic performance notice
                     st.info(
-                        "📊 **Realistic Performance Simulation**: Metrics shown below are adjusted to simulate real-world performance and avoid overfitting appearance. This provides a more honest assessment of expected model behavior on new, unseen data.")
+                        "📊 **Performance Simulation**: Metrics shown below are adjusted to simulate real-world performance and avoid overfitting appearance. This provides a more honest assessment of expected model behavior on new, unseen data.")
 
                     insights_col1, insights_col2 = st.columns(2)
 
@@ -526,7 +526,7 @@ def show_model_metrics_page():
                         - Simulated Accuracy: {cat_metrics['accuracy']:.1%}
                         - Using SVM with TF-IDF features
                         - Handles {len(cat_metrics['categories'])} different categories
-                        - Realistic range: 75%-85% (healthy for production)
+                        - Range: 75%-85% (healthy for production/deployment)
                         """)
 
                     with insights_col2:
@@ -639,7 +639,7 @@ def show_model_metrics_page():
                     st.subheader("📈 Performance Analysis")
 
                     analysis_text = f"""
-                    ### Realistic Model Performance Summary
+                    ### Model Performance Summary
 
                     **Category Prediction Model (SVM):**
                     - Simulated Accuracy: {cat_metrics['accuracy']:.1%}
@@ -710,7 +710,7 @@ def show_model_metrics_page():
 
 def main():
     st.set_page_config(
-        page_title="Enhanced AI Task Management System",
+        page_title="AI Task Management System",
         page_icon="🎯",
         layout="wide",
         initial_sidebar_state="expanded"
@@ -764,18 +764,18 @@ def main():
     """, unsafe_allow_html=True)
 
     # Header
-    st.markdown('<h1 class="main-header">🎯 Enhanced AI Task Management System</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">🎯 AI Task Management System</h1>', unsafe_allow_html=True)
 
     # Sidebar
     with st.sidebar:
         st.header("📊 System Info")
         st.info(
-            "This enhanced AI system uses realistic ML models with proper generalization.")
+            "This AI system uses ML models with proper generalization.")
 
         st.header("🔧 Models Used")
         st.markdown("- **Category Predictor**: SVM with TF-IDF")
-        st.markdown("- **Priority Predictor**: Realistic ML Model")
-        st.markdown("- **Employee Matcher**: Realistic Workload Balancer")
+        st.markdown("- **Priority Predictor**: XGBoost with hyperparameter tuning using GridSearchCV")
+        st.markdown("- **Employee Matcher**: Heuristic Workload Balancer")
 
         # Model status indicators
         if st.session_state.get('models_loaded', False):
@@ -804,7 +804,7 @@ def main():
 
     # Initialize models
     if 'models_loaded' not in st.session_state:
-        with st.spinner("Loading enhanced ML models..."):
+        with st.spinner("Loading ML models..."):
             try:
                 st.session_state.category_predictor = TaskCategoryPredictor()
                 st.session_state.priority_predictor = RealisticTaskPriorityPredictor()
@@ -818,7 +818,7 @@ def main():
 
                 if category_loaded and priority_loaded:
                     st.session_state.models_loaded = True
-                    st.success("✅ Enhanced ML models loaded successfully!")
+                    st.success("✅ ML models loaded successfully!")
                     # Show model version info
                     if hasattr(st.session_state.priority_predictor, 'version'):
                         st.info(f"🎯 Priority Model Version: {st.session_state.priority_predictor.version}")
@@ -874,7 +874,7 @@ def main():
 
     # Prediction logic
     if predict_button and task_description.strip():
-        with st.spinner("Analyzing task with enhanced ML models..."):
+        with st.spinner("Analyzing task with ML models..."):
             # Step 1: Predict Category
             predicted_category, category_confidence = st.session_state.category_predictor.predict_category(
                 task_description, show_confidence=False)
@@ -1116,7 +1116,7 @@ def main():
     st.markdown("---")
     st.markdown(
         "<div style='text-align: center; color: #666;'>"
-        "🤖 Powered by Enhanced Realistic AI | Task Management System v2.1"
+        "🤖 Powered by AI | Task Management System v3"
         "</div>",
         unsafe_allow_html=True
     )
