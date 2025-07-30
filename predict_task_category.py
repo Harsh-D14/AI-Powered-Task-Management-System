@@ -84,13 +84,26 @@ class TaskCategoryPredictor:
 
     def predict_category(self, task_description, show_confidence=True):
         """Predict the category of a task description"""
+        # Clean and validate input
+        if not task_description or not isinstance(task_description, str):
+            return "Unable to process: Invalid input", None
+
+        # Remove common artifacts that might be in the input
+        task_description = task_description.strip()
+
+        # Check for common code artifacts and remove them
+        if task_description.startswith('if __name__'):
+            return "Unable to process: Code detected, not a task description", None
+
         # Preprocess the input
         processed_text = self.preprocess_text(task_description)
 
         if not processed_text:
-            return "Unable to process: No meaningful text found", None
+            return "Unable to process: No meaningful text found after preprocessing", None
 
-        print(f"Processed text: '{processed_text}'")
+        if show_confidence:
+            print(f"Original input: '{task_description}'")
+            print(f"Processed text: '{processed_text}'")
 
         # Transform to TF-IDF features
         tfidf_features = self.tfidf_vectorizer.transform([processed_text])
@@ -98,6 +111,10 @@ class TaskCategoryPredictor:
         # Make prediction
         prediction = self.svm_model.predict(tfidf_features)[0]
         predicted_category = self.label_encoder.inverse_transform([prediction])[0]
+
+        # Validate the prediction is in known categories
+        if predicted_category not in self.categories:
+            return f"Error: Predicted category '{predicted_category}' not in known categories", None
 
         # Get prediction probabilities (if available)
         confidence_scores = None
@@ -127,10 +144,15 @@ class TaskCategoryPredictor:
         print("\n" + "=" * 60)
         print("TASK CATEGORY PREDICTION")
         print("=" * 60)
-        print(f"Input: {task_description}")
+        print(f"Input: '{task_description}'")
         print("-" * 60)
 
         predicted_category, confidence_scores = self.predict_category(task_description)
+
+        # Check if prediction is valid
+        if "Unable to process" in predicted_category:
+            print(f"Error: {predicted_category}")
+            return None
 
         print(f"Predicted Category: {predicted_category}")
 
@@ -138,7 +160,7 @@ class TaskCategoryPredictor:
             print("\nConfidence Scores:")
             # Sort by confidence (descending)
             sorted_scores = sorted(confidence_scores.items(),
-                                   key=lambda x: x[1], reverse=True)
+                                   key=lambda x: abs(x[1]), reverse=True)  # Use abs for proper sorting
 
             for category, score in sorted_scores:
                 indicator = "👉" if category == predicted_category else "  "
@@ -228,8 +250,9 @@ def main():
 
     # Check command line arguments
     if len(sys.argv) > 1:
-        # Single prediction mode
+        # Single prediction mode - join all arguments as the task description
         task_description = ' '.join(sys.argv[1:])
+        print(f"Command line input: '{task_description}'")  # Debug output
         predictor.predict_with_details(task_description)
     else:
         # Interactive mode
