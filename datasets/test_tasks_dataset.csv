@@ -1,0 +1,91 @@
+taskid,task_description,priority,category,assigned_to_employeeid
+TASK0236,Needed: Schedule sprint planning meeting,Medium,Meeting,EMP069
+TASK0115,Design icons and visual elements - when convenient for current sprint,Low,UI/UX,EMP099
+TASK0390,Important: Draft announcement for new feature release,Medium,Email,EMP025
+TASK0012,Coordinate incident response meeting (needed),Medium,Meeting,EMP095
+TASK0047,Schedule client consultation call - for next quarter,Low,Call,EMP045
+TASK0092,Needed to review performance optimization changes,Medium,Code Review,EMP086
+TASK0178,Needed: Configure server infrastructure for new release,Medium,Deployment,EMP100
+TASK0020,Migrate database to new version - in spare time - milestone deliverable,Low,Deployment,EMP013
+TASK0267,Prepare quarterly business review - needed,Medium,Report,EMP087
+TASK0336,Schedule customer feedback call (immediate),High,Call,EMP070
+TASK0317,Conduct team retrospective meeting (needed),Medium,Meeting,EMP024
+TASK0323,Critical: Create responsive design for mobile,High,UI/UX,EMP040
+TASK0233,Urgent: Plan emergency escalation call,High,Call,EMP070
+TASK0338,Due near: Review database optimization queries,Medium,Code Review,EMP052
+TASK0016,Debug memory leak in application - soon,Medium,Bug Fix,EMP032
+TASK0195,Develop user experience flow for checkout - due near for next phase,Medium,UI/UX,EMP030
+TASK0251,Create incident post-mortem report - as time permits,Low,Report,EMP028
+TASK0079,Asap: Conduct technical support call,High,Call,EMP081
+TASK0097,Update payment processing system - for next quarter,Low,Feature Update,EMP055
+TASK0136,Send progress report to management - as time permits,Low,Email,EMP063
+TASK0135,Review pull request for authentication module (emergency),High,Code Review,EMP091
+TASK0294,Validate coding standards in user interface,Low,Code Review,EMP018
+TASK0367,Emergency: Rollback deployment due to issues,High,Deployment,EMP053
+TASK0298,Communicate deadline changes to team,Low,Email,EMP041
+TASK0282,Send progress report to management - for future release,Low,Email,EMP025
+TASK0311,Conduct usability testing session (expected),Medium,UI/UX,EMP088
+TASK0393,Schedule customer feedback call,Low,Call,EMP021
+TASK0241,Create onboarding documentation - expected for next phase,Medium,Documentation,EMP076
+TASK0340,Design icons and visual elements - important,Medium,UI/UX,EMP099
+TASK0084,Priority to implement new search functionality,Medium,Feature Update,EMP017
+TASK0146,Conduct team retrospective meeting - in spare time (updated scope),Low,Meeting,EMP090
+TASK0023,Soon to deploy application to production environment,Medium,Deployment,EMP053
+TASK0394,Coordinate incident response meeting - emergency action required,High,Meeting,EMP012
+TASK0354,Design icons and visual elements (needed),Medium,UI/UX,EMP088
+TASK0145,Document incident resolution procedures - as time permits,Low,Documentation,EMP014
+TASK0450,Migrate database to new version - needed,Medium,Deployment,EMP054
+TASK0114,Review security implementation in payment gateway - expected for next phase,Medium,Code Review,EMP018
+TASK0437,Address security vulnerability - for next quarter,Low,Bug Fix,EMP067
+TASK0426,Deploy application to production environment (critical),High,Deployment,EMP007
+TASK0322,Expected: Send project status update to stakeholders,Medium,Email,EMP073
+TASK0169,Immediately: Fix responsive design issues,High,Bug Fix,EMP032
+TASK0073,Need to coordinate incident response meeting immediate,High,Meeting,EMP012
+TASK0339,Important: Generate system health monitoring report,Medium,Report,EMP008
+TASK0089,Conduct code review for API endpoints - expected,Medium,Code Review,EMP027
+TASK0237,Conduct code review for API endpoints - important,Medium,Code Review,EMP098
+TASK0363,Implement new search functionality (critical),High,Feature Update,EMP003
+TASK0265,Write technical specification document - when convenient,Low,Documentation,EMP072
+TASK0297,Rollback deployment due to issues - soon,Medium,Deployment,EMP100
+TASK0013,Generate system health monitoring report - for next quarter,Low,Report,EMP051
+TASK0204,Update payment processing system,Low,Feature Update,EMP084
+TASK0315,Review pull request for authentication module - important for next phase,Medium,Code Review,EMP097
+TASK0069,Urgent: Create incident post-mortem report,High,Report,EMP051
+TASK0321,Needed to create onboarding documentation,Medium,Documentation,EMP096
+TASK0106,Soon to document incident resolution procedures,Medium,Documentation,EMP083
+TASK0278,Emergency - Generate system health monitoring report,High,Report,EMP087
+TASK0163,Design icons and visual elements - priority,Medium,UI/UX,EMP006
+TASK0119,Update production servers with latest patches - when convenient,Low,Deployment,EMP053
+TASK0129,Due near to arrange contract renewal discussion,Medium,Call,EMP057
+TASK0011,Need to compose client communication regarding updates urgent,High,Email,EMP068
+TASK0214,Priority to fix login authentication error,Medium,Bug Fix,EMP042
+TASK0198,Validate coding standards in user interface - in spare time,Low,Code Review,EMP098
+TASK0442,Needed to validate coding standards in user interface,Medium,Code Review,EMP091
+TASK0053,Immediately: Configure load balancers for high availability,High,Deployment,EMP053
+TASK0381,Update installation and setup guide (soon),Medium,Documentation,EMP076
+TASK0443,Compile user feedback analysis report - important,Medium,Report,EMP087
+TASK0422,Organize team building session - due near for next phase,Medium,Meeting,EMP065
+TASK0246,Schedule customer feedback call (priority),Medium,Call,EMP010
+TASK0271,Review database optimization queries for current sprint,Low,Code Review,EMP027
+TASK0325,Compile user feedback analysis report,Low,Report,EMP061
+TASK0409,Organize stakeholder review session - for next quarter,Low,Meeting,EMP024
+TASK0111,Configure load balancers for high availability for current sprint,Low,Deployment,EMP100
+TASK0349,Add multi-language support (important),Medium,Feature Update,EMP003
+TASK0320,Generate system health monitoring report - as time permits,Low,Report,EMP008
+TASK0431,Rollback deployment due to issues - in spare time,Low,Deployment,EMP100
+TASK0389,Urgent - Generate monthly performance analytics,High,Report,EMP011
+TASK0263,Priority: Setup continuous integration pipeline,Medium,Deployment,EMP100
+TASK0290,Need to conduct usability testing session asap,High,UI/UX,EMP006
+TASK0004,Implement data export feature (due near),Medium,Feature Update,EMP003
+TASK0223,Review security implementation in payment gateway - important for next phase,Medium,Code Review,EMP018
+TASK0001,Send project status update to stakeholders,Low,Email,EMP041
+TASK0261,Schedule client consultation call (priority),Medium,Call,EMP037
+TASK0126,Arrange vendor negotiation call - for future release - phase 2,Low,Call,EMP057
+TASK0397,Document incident resolution procedures - needed,Medium,Documentation,EMP014
+TASK0010,Urgent - Conduct usability testing session,High,UI/UX,EMP088
+TASK0432,Review performance optimization changes (updated scope),Low,Code Review,EMP027
+TASK0228,Urgent: Organize stakeholder review session,High,Meeting,EMP004
+TASK0414,Due near: Arrange vendor negotiation call,Medium,Call,EMP021
+TASK0407,Fix accessibility issues in interface - priority for next phase,Medium,UI/UX,EMP040
+TASK0346,Resolve data synchronization problem - priority for next phase,Medium,Bug Fix,EMP022
+TASK0343,Create project progress summary report - for future release,Low,Report,EMP046

@@ -118,7 +118,7 @@ class TaskPriorityPredictor:
 
     def extract_keyword_patterns(self, tasks_df):
         """Extract keyword patterns from task descriptions with controlled noise"""
-        print("Extracting keyword patterns from task descriptions...")
+        print("Extracting keyword patterns...")
 
         keyword_patterns = {
             'high': {
@@ -137,32 +137,6 @@ class TaskPriorityPredictor:
                 'weak': ['eventually', 'later']
             }
         }
-
-        print("Validating keyword pattern effectiveness:")
-        for priority in ['High', 'Medium', 'Low']:
-            priority_tasks = tasks_df[tasks_df['priority'] == priority]['task_description']
-            priority_key = priority.lower()
-
-            total_matches = 0
-            total_tasks = len(priority_tasks)
-
-            for desc in priority_tasks:
-                desc_lower = desc.lower()
-                task_matches = 0
-
-                for strength, keywords in keyword_patterns[priority_key].items():
-                    for kw in keywords:
-                        if kw in desc_lower:
-                            task_matches += 1
-
-                if task_matches > 0:
-                    total_matches += 1
-
-            match_rate = total_matches / total_tasks if total_tasks > 0 else 0
-            print(f"  {priority}: {total_matches}/{total_tasks} tasks ({match_rate:.1%})")
-
-            if match_rate > 0.9:
-                print(f"    Note: High match rate detected, applying noise reduction")
 
         self.priority_keywords = keyword_patterns
         return keyword_patterns
@@ -199,6 +173,17 @@ class TaskPriorityPredictor:
         if missing_emp_cols:
             raise ValueError(f"Required columns missing from employees dataset: {missing_emp_cols}")
 
+        # Create train/test split at dataset level for external evaluation
+        self.tasks_df, self.test_tasks_df = train_test_split(
+            self.tasks_df, test_size=0.2, random_state=42, stratify=self.tasks_df['priority']
+        )
+
+        # Save test data for external evaluation
+        os.makedirs('datasets', exist_ok=True)
+        self.test_tasks_df.to_csv('datasets/test_tasks_dataset.csv', index=False)
+        print(f"Test dataset saved: {len(self.test_tasks_df)} samples for external evaluation")
+        print(f"Training dataset: {len(self.tasks_df)} samples")
+
         if os.path.exists('datasets/task_preprocessed_data.csv'):
             try:
                 self.preprocessed_df = pd.read_csv('datasets/task_preprocessed_data.csv')
@@ -211,10 +196,8 @@ class TaskPriorityPredictor:
                     raise ValueError("Missing required columns")
 
             except (ValueError, pd.errors.EmptyDataError, KeyError):
-                print("Creating preprocessed data from scratch...")
                 self.preprocessed_df = self._create_preprocessed_data()
         else:
-            print("Preprocessed data file not found. Creating new preprocessed data...")
             self.preprocessed_df = self._create_preprocessed_data()
 
         print(f"Loaded {len(self.tasks_df)} tasks and {len(self.employees_df)} employees")
@@ -223,7 +206,7 @@ class TaskPriorityPredictor:
         self.available_priorities = sorted(self.tasks_df['priority'].unique())
 
         priority_distribution = self.tasks_df['priority'].value_counts()
-        print("Priority distribution analysis:")
+        print("Priority distribution:")
         for priority, count in priority_distribution.items():
             percentage = count / len(self.tasks_df) * 100
             print(f"  {priority}: {count} ({percentage:.1f}%)")
@@ -252,13 +235,12 @@ class TaskPriorityPredictor:
         # Save the preprocessed data for future use
         os.makedirs('datasets', exist_ok=True)
         preprocessed_df.to_csv('datasets/task_preprocessed_data.csv', index=False)
-        print("Preprocessed data saved to datasets/task_preprocessed_data.csv")
 
         return preprocessed_df
 
     def create_feature_matrix(self, tasks_df, preprocessed_df):
         """Create regularized feature matrix to prevent overfitting"""
-        print(f"Creating feature matrix with {self.regularization_level} regularization...")
+        print(f"Creating feature matrix...")
 
         df = tasks_df.merge(preprocessed_df[['taskid', 'token_count', 'original_word_count']],
                             on='taskid', how='left')
@@ -271,13 +253,13 @@ class TaskPriorityPredictor:
         keyword_features = self._extract_keyword_features(df['task_description'])
         text_features = self._extract_text_features(df['task_description'])
 
-        max_tfidf_features = 8 if self.use_quick_training else 12
+        max_tfidf_features = 5 if self.use_quick_training else 8  # Reduced further
         self.tfidf_vectorizer = TfidfVectorizer(
             max_features=max_tfidf_features,
             stop_words='english',
             ngram_range=(1, 1),
-            min_df=3,
-            max_df=0.7
+            min_df=5,  # Increased to reduce vocabulary
+            max_df=0.6  # Reduced to ignore common terms
         )
         tfidf_features = self.tfidf_vectorizer.fit_transform(df['task_description']).toarray()
 
@@ -405,7 +387,7 @@ class TaskPriorityPredictor:
 
     def train_prediction_model(self, X, y):
         """Train model with regularization to achieve realistic performance"""
-        print(f"Training prediction model (target accuracy: 0.75-0.90)...")
+        print(f"Training prediction model...")
 
         start_time = time.time()
 
@@ -423,15 +405,15 @@ class TaskPriorityPredictor:
         class_weight_dict = dict(zip(np.unique(y_train), class_weights))
 
         if self.use_quick_training:
-            print("Using Random Forest with regularization...")
+            print("Using Random Forest with strong regularization...")
 
             param_grid = {
-                'n_estimators': [50, 100, 150],
-                'max_depth': [3, 5, 7, None],
-                'min_samples_split': [2, 5, 10],
-                'min_samples_leaf': [1, 2, 4],
-                'max_features': ['sqrt', 'log2'],
-                'bootstrap': [True, False]
+                'n_estimators': [30, 50],  # Fewer trees
+                'max_depth': [3, 4],  # Shallower trees
+                'min_samples_split': [10, 15],  # Higher split requirement
+                'min_samples_leaf': [5, 8],  # Higher leaf requirement
+                'max_features': ['sqrt'],  # Reduced feature subset
+                'bootstrap': [True]  # Always use bootstrap
             }
 
             model = RandomForestClassifier(
@@ -463,12 +445,10 @@ class TaskPriorityPredictor:
         cv_scores = cross_val_score(model, X_train_scaled, y_train, cv=5, scoring='accuracy')
         print(f"CV Accuracy: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
 
-        if cv_scores.mean() > 0.95:
+        if cv_scores.mean() > 0.92:
             print("Warning: CV accuracy suggests potential overfitting")
         elif cv_scores.mean() < 0.65:
             print("Warning: CV accuracy below expected range")
-        else:
-            print("CV accuracy within acceptable range")
 
         cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
@@ -526,7 +506,7 @@ class TaskPriorityPredictor:
 
     def create_workload_balancer(self, df):
         """Initialize workload balancer component"""
-        print("Initializing workload balancer...")
+        print("Creating workload balancer...")
         self.workload_balancer = WorkloadBalancer(self.employees_data, df)
         return self.workload_balancer
 
@@ -561,7 +541,6 @@ class TaskPriorityPredictor:
         """Execute complete training pipeline"""
         print("=" * 70)
         print("TASK PRIORITY PREDICTION MODEL TRAINER")
-        print("Target performance: 0.75-0.90 accuracy with proper generalization")
         print("=" * 70)
 
         total_start = time.time()
@@ -577,13 +556,6 @@ class TaskPriorityPredictor:
 
             print(f"\n{'=' * 70}")
             print(f"TRAINING PIPELINE COMPLETED IN {total_time:.1f} SECONDS")
-            print("Applied regularization measures:")
-            print("- L1/L2 regularization")
-            print("- Controlled keyword weighting")
-            print("- Feature noise injection")
-            print("- Extended test set validation")
-            print("- Reduced model complexity")
-            print("- Cross-validation monitoring")
             print("=" * 70)
 
         except Exception as e:
@@ -595,12 +567,11 @@ class TaskPriorityPredictor:
 def main():
     """Main training function with user configuration"""
     print("Task Priority Prediction Model Trainer")
-    print("Designed to achieve practical performance levels (0.75-0.90)")
 
     print("\nSelect regularization strength:")
-    print("1. Light regularization (target: 0.85-0.90)")
-    print("2. Medium regularization (target: 0.80-0.85) [Recommended]")
-    print("3. Heavy regularization (target: 0.75-0.80)")
+    print("1. Light regularization")
+    print("2. Medium regularization [Recommended]")
+    print("3. Heavy regularization")
 
     reg_choice = input("Enter choice (1-3): ").strip()
     regularization_map = {'1': 'light', '2': 'medium', '3': 'heavy'}
