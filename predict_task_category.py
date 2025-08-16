@@ -1,182 +1,502 @@
 import pickle
-import numpy as np
+import sys
 import re
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple, Any, Union
+import logging
+
+# NLTK imports
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-class TaskCategoryPredictor:
-    def __init__(self, model_path='models/task_classifier.pkl'):
-        self.model_path = model_path
-        self.tfidf_vectorizer = None
-        self.svm_model = None
-        self.label_encoder = None
-        self.categories = None
 
-        # Initialize text preprocessing components
+def initialize_nltk_dependencies() -> None:
+    """Initialize required NLTK dependencies."""
+    required_data = ['stopwords', 'punkt']
+
+    for data_name in required_data:
+        try:
+            nltk.data.find(f'corpora/{data_name}')
+        except LookupError:
+            logger.info(f"Downloading NLTK {data_name}...")
+            nltk.download(data_name, quiet=True)
+
+
+class TextPreprocessor:
+    """Text preprocessing utility matching training pipeline."""
+
+    def __init__(self, custom_stopwords: Optional[set] = None):
+        """
+        Initialize text preprocessor.
+
+        Args:
+            custom_stopwords: Additional domain-specific stopwords
+        """
+        # Initialize NLTK dependencies
+        initialize_nltk_dependencies()
+
+        # Setup preprocessing components
+        self.stopwords_set = set(stopwords.words('english'))
         self.stemmer = PorterStemmer()
 
-        # Download NLTK data if needed
-        try:
-            self.stop_words = set(stopwords.words('english'))
-        except LookupError:
-            print("Downloading NLTK data...")
-            nltk.download('stopwords')
-            nltk.download('punkt')
-            self.stop_words = set(stopwords.words('english'))
+        # Add domain-specific stopwords
+        default_stopwords = {'task', 'need', 'needs', 'required', 'please', 'must', 'should'}
+        if custom_stopwords:
+            default_stopwords.update(custom_stopwords)
+        self.stopwords_set.update(default_stopwords)
 
-        # Add task-specific stopwords
-        additional_stopwords = {'task', 'need', 'needs', 'required', 'please', 'must', 'should'}
-        self.stop_words.update(additional_stopwords)
+    def preprocess_text(self, text: str) -> str:
+        """
+        Apply complete text preprocessing pipeline.
 
-        # Load the trained model
-        self.load_model()
+        Args:
+            text: Raw text to preprocess
 
-    def load_model(self):
-        """Load the trained model and components"""
-        try:
-            print(f"Loading model from {self.model_path}...")
-            with open(self.model_path, 'rb') as f:
-                model_data = pickle.load(f)
-
-            self.tfidf_vectorizer = model_data['tfidf_vectorizer']
-            self.svm_model = model_data['svm_model']
-            self.label_encoder = model_data['label_encoder']
-            self.categories = model_data['categories']
-
-            print("Model loaded successfully!")
-            print(f"Available categories: {list(self.categories)}")
-
-        except FileNotFoundError:
-            print(f"Error: Model file '{self.model_path}' not found.")
-            print("Please run the training script first to create the model.")
-            exit(1)
-        except Exception as e:
-            print(f"Error loading model: {e}")
-            exit(1)
-
-    def preprocess_text(self, text):
-        """Preprocess text using the same method as training data"""
-        if not text or text.strip() == "":
+        Returns:
+            Processed text string
+        """
+        if not text or not text.strip():
             return ""
 
-        # Convert to lowercase and clean
-        text = str(text).lower()
-        text = re.sub(r'[^a-zA-Z\s]', '', text)
-        text = ' '.join(text.split())
+        # Normalize text
+        processed_text = str(text).lower()
+        processed_text = re.sub(r'[^a-zA-Z\s]', '', processed_text)
+        processed_text = ' '.join(processed_text.split())
 
         # Tokenize
+        tokens = word_tokenize(processed_text)
+
+        # Filter and stem
+        filtered_tokens = [
+            self.stemmer.stem(token)
+            for token in tokens
+            if token not in self.stopwords_set and len(token) > 2
+        ]
+
+        return ' '.join(filtered_tokens)
+
+    def validate_input(self, text: str) -> Tuple[bool, str]:
+        """
+        Validate input text for processing.
+
+        Args:
+            text: Input text to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+        """
+        if not text or not isinstance(text, str):
+            return False, "Invalid input: Text must be a non-empty string"
+
+        text = text.strip()
+        if not text:
+            return False, "Invalid input: Text cannot be empty or whitespace only"
+
+        # Check for code artifacts
+        if text.startswith('if __name__'):
+            return False, "Invalid input: Code detected, not a task description"
+
+        # Check if meaningful text remains after preprocessing
+        processed = self.preprocess_text(text)
+        if not processed:
+            return False, "Invalid input: No meaningful text found after preprocessing"
+
+        return True, ""
+
+
+class ModelLoader:
+    """Handles loading and validation of trained models."""
+
+    @staticmethod
+    def load_model_components(model_path: str) -> Dict[str, Any]:
+        """
+        Load trained model components from file.
+
+        Args:
+            model_path: Path to the saved model file
+
+        Returns:
+            Dictionary containing model components
+
+        Raises:
+            FileNotFoundError: If model file doesn't exist
+            Exception: For other loading errors
+        """
+        model_file = Path(model_path)
+
+        if not model_file.exists():
+            raise FileNotFoundError(f"Model file not found: {model_path}")
+
         try:
-            tokens = word_tokenize(text)
-        except LookupError:
-            nltk.download('punkt')
-            tokens = word_tokenize(text)
+            with open(model_file, 'rb') as file:
+                model_data = pickle.load(file)
 
-        # Remove stopwords and short words
-        tokens = [token for token in tokens if token not in self.stop_words and len(token) > 2]
+            return model_data
 
-        # Stem tokens
-        tokens = [self.stemmer.stem(token) for token in tokens]
+        except Exception as error:
+            logger.error(f"Error loading model: {error}")
+            raise
 
-        return ' '.join(tokens)
+    @staticmethod
+    def validate_model_components(model_data: Dict[str, Any]) -> None:
+        """
+        Validate that all required model components are present.
 
-    def predict_category(self, task_description, show_confidence=True):
-        """Predict the category of a task description"""
-        # Clean and validate input
-        if not task_description or not isinstance(task_description, str):
-            return "Unable to process: Invalid input", None
+        Args:
+            model_data: Dictionary containing model components
 
-        # Remove common artifacts that might be in the input
-        task_description = task_description.strip()
+        Raises:
+            ValueError: If required components are missing
+        """
+        required_components = ['tfidf_vectorizer', 'label_encoder', 'categories']
 
-        # Check for common code artifacts and remove them
-        if task_description.startswith('if __name__'):
-            return "Unable to process: Code detected, not a task description", None
+        # Check for different possible model keys (handle both old and new formats)
+        model_keys = ['svm_model', 'model']
+        has_model = any(key in model_data for key in model_keys)
 
-        # Preprocess the input
-        processed_text = self.preprocess_text(task_description)
+        if not has_model:
+            raise ValueError("Model component not found in saved data")
 
-        if not processed_text:
-            return "Unable to process: No meaningful text found after preprocessing", None
+        for component in required_components:
+            if component not in model_data:
+                raise ValueError(f"Required component '{component}' not found in model data")
 
-        if show_confidence:
-            print(f"Original input: '{task_description}'")
-            print(f"Processed text: '{processed_text}'")
+
+class PredictionEngine:
+    """Core prediction engine for task categorization."""
+
+    def __init__(self, model_components: Dict[str, Any]):
+        """
+        Initialize prediction engine with loaded model components.
+
+        Args:
+            model_components: Dictionary containing trained model components
+        """
+        self.tfidf_vectorizer = model_components['tfidf_vectorizer']
+        self.label_encoder = model_components['label_encoder']
+        self.categories = model_components['categories']
+
+        # Handle both old and new model key formats
+        if 'model' in model_components:
+            self.model = model_components['model']
+        else:
+            self.model = model_components['svm_model']
+
+        # Initialize preprocessor (try to use saved one, fallback to new instance)
+        if 'preprocessor' in model_components:
+            self.preprocessor = model_components['preprocessor']
+        else:
+            self.preprocessor = TextPreprocessor()
+
+    def predict_category(self, text: str) -> Tuple[str, Dict[str, float]]:
+        """
+        Predict category for input text.
+
+        Args:
+            text: Input text to classify
+
+        Returns:
+            Tuple of (predicted_category, confidence_scores)
+        """
+        # Preprocess text
+        processed_text = self.preprocessor.preprocess_text(text)
 
         # Transform to TF-IDF features
         tfidf_features = self.tfidf_vectorizer.transform([processed_text])
 
         # Make prediction
-        prediction = self.svm_model.predict(tfidf_features)[0]
+        prediction = self.model.predict(tfidf_features)[0]
         predicted_category = self.label_encoder.inverse_transform([prediction])[0]
 
-        # Validate the prediction is in known categories
-        if predicted_category not in self.categories:
-            return f"Error: Predicted category '{predicted_category}' not in known categories", None
-
-        # Get prediction probabilities (if available)
-        confidence_scores = None
-        if hasattr(self.svm_model, 'predict_proba'):
-            try:
-                # For SVM, we need to use decision_function for confidence
-                decision_scores = self.svm_model.decision_function(tfidf_features)[0]
-
-                if len(self.categories) == 2:
-                    # Binary classification
-                    confidence = abs(decision_scores)
-                    confidence_scores = {predicted_category: confidence}
-                else:
-                    # Multi-class classification
-                    confidence_scores = {}
-                    for i, category in enumerate(self.categories):
-                        score = decision_scores[i] if len(decision_scores) > 1 else decision_scores
-                        confidence_scores[category] = float(score)
-
-            except Exception as e:
-                print(f"Could not calculate confidence scores: {e}")
+        # Calculate confidence scores
+        confidence_scores = self._calculate_confidence_scores(tfidf_features)
 
         return predicted_category, confidence_scores
 
-    def predict_with_details(self, task_description):
-        """Predict category with detailed output"""
-        print("\n" + "=" * 60)
-        print("TASK CATEGORY PREDICTION")
-        print("=" * 60)
-        print(f"Input: '{task_description}'")
-        print("-" * 60)
+    def _calculate_confidence_scores(self, features: Any) -> Dict[str, float]:
+        """
+        Calculate confidence scores for all categories.
 
-        predicted_category, confidence_scores = self.predict_category(task_description)
+        Args:
+            features: TF-IDF features for the input text
 
-        # Check if prediction is valid
-        if "Unable to process" in predicted_category:
-            print(f"Error: {predicted_category}")
-            return None
+        Returns:
+            Dictionary mapping categories to confidence scores
+        """
+        try:
+            decision_scores = self.model.decision_function(features)[0]
+            confidence_scores = {}
 
-        print(f"Predicted Category: {predicted_category}")
+            if len(self.categories) == 2:
+                # Binary classification
+                confidence = abs(decision_scores)
+                predicted_idx = self.model.predict(features)[0]
+                predicted_category = self.label_encoder.inverse_transform([predicted_idx])[0]
+                confidence_scores[predicted_category] = float(confidence)
+            else:
+                # Multi-class classification
+                for i, category in enumerate(self.categories):
+                    score = decision_scores[i] if hasattr(decision_scores, '__len__') else decision_scores
+                    confidence_scores[category] = float(score)
+
+            return confidence_scores
+
+        except Exception as error:
+            logger.warning(f"Could not calculate confidence scores: {error}")
+            return {}
+
+
+class ResultFormatter:
+    """Handles formatting and display of prediction results."""
+
+    @staticmethod
+    def format_prediction_result(text: str, predicted_category: str,
+                                 confidence_scores: Dict[str, float],
+                                 show_preprocessing: bool = True) -> str:
+        """
+        Format prediction results for display.
+
+        Args:
+            text: Original input text
+            predicted_category: Predicted category
+            confidence_scores: Category confidence scores
+            show_preprocessing: Whether to show preprocessing details
+
+        Returns:
+            Formatted result string
+        """
+        result_lines = [
+            "=" * 60,
+            "TASK CATEGORY PREDICTION RESULT",
+            "=" * 60,
+            f"Input: '{text}'",
+            "-" * 60,
+            f"Predicted Category: {predicted_category}"
+        ]
 
         if confidence_scores:
-            print("\nConfidence Scores:")
-            # Sort by confidence (descending)
+            result_lines.append("\nConfidence Scores:")
             sorted_scores = sorted(confidence_scores.items(),
-                                   key=lambda x: abs(x[1]), reverse=True)  # Use abs for proper sorting
+                                   key=lambda x: abs(x[1]), reverse=True)
 
             for category, score in sorted_scores:
-                indicator = "👉" if category == predicted_category else "  "
-                print(f"{indicator} {category}: {score:.4f}")
+                indicator = ">> " if category == predicted_category else "   "
+                result_lines.append(f"{indicator}{category}: {score:.4f}")
 
-        print("=" * 60)
-        return predicted_category
+        result_lines.append("=" * 60)
+        return "\n".join(result_lines)
 
-    def interactive_mode(self):
-        """Run in interactive mode for continuous predictions"""
-        print("\n🔍 Task Category Predictor - Interactive Mode")
+    @staticmethod
+    def format_batch_results(results: List[Dict[str, Any]]) -> str:
+        """
+        Format batch prediction results.
+
+        Args:
+            results: List of prediction result dictionaries
+
+        Returns:
+            Formatted batch results string
+        """
+        output_lines = [
+            f"\nBATCH PREDICTION RESULTS ({len(results)} tasks)",
+            "=" * 80
+        ]
+
+        for i, result in enumerate(results, 1):
+            status = "SUCCESS" if result['success'] else "ERROR"
+            output_lines.extend([
+                f"{i}. Task: {result['task']}",
+                f"   Status: {status}",
+                f"   Result: {result['predicted_category']}",
+                "-" * 80
+            ])
+
+        return "\n".join(output_lines)
+
+
+class TaskCategoryPredictor:
+    """Main interface for task category prediction."""
+
+    def __init__(self, model_path: str = 'models/task_classifier.pkl'):
+        """
+        Initialize the task category predictor.
+
+        Args:
+            model_path: Path to the saved model file
+        """
+        self.model_path = model_path
+        self.prediction_engine: Optional[PredictionEngine] = None
+        self.preprocessor: Optional[TextPreprocessor] = None
+
+        self._load_model()
+
+    def _load_model(self) -> None:
+        """Load the trained model and initialize components."""
+        try:
+            # Load model components (suppress detailed logging during init)
+            model_data = ModelLoader.load_model_components(self.model_path)
+            ModelLoader.validate_model_components(model_data)
+
+            # Initialize prediction engine
+            self.prediction_engine = PredictionEngine(model_data)
+
+            # Get categories for display
+            self.categories = model_data['categories']
+
+        except Exception as error:
+            logger.error(f"Failed to load model: {error}")
+            raise
+
+    def predict(self, text: str, detailed: bool = False) -> Union[str, Dict[str, Any]]:
+        """
+        Predict category for a single text input.
+
+        Args:
+            text: Input text to classify
+            detailed: Whether to return detailed results
+
+        Returns:
+            Predicted category string or detailed result dictionary
+        """
+        # Validate input
+        preprocessor = TextPreprocessor()
+        is_valid, error_message = preprocessor.validate_input(text)
+
+        if not is_valid:
+            if detailed:
+                return {'success': False, 'error': error_message, 'predicted_category': None}
+            else:
+                logger.error(error_message)
+                return "PREDICTION_ERROR"
+
+        try:
+            # Make prediction
+            predicted_category, confidence_scores = self.prediction_engine.predict_category(text)
+
+            if detailed:
+                return {
+                    'success': True,
+                    'predicted_category': predicted_category,
+                    'confidence_scores': confidence_scores,
+                    'original_text': text
+                }
+            else:
+                return predicted_category
+
+        except Exception as error:
+            logger.error(f"Prediction failed: {error}")
+            if detailed:
+                return {'success': False, 'error': str(error), 'predicted_category': None}
+            else:
+                return "PREDICTION_ERROR"
+
+    def predict_with_details(self, text: str) -> Optional[str]:
+        """
+        Predict category with detailed formatted output.
+
+        Args:
+            text: Input text to classify
+
+        Returns:
+            Predicted category or None if prediction failed
+        """
+        result = self.predict(text, detailed=True)
+
+        if not result['success']:
+            print(f"Error: {result['error']}")
+            return None
+
+        # Format and display results
+        formatted_result = ResultFormatter.format_prediction_result(
+            text, result['predicted_category'], result['confidence_scores']
+        )
+        print(formatted_result)
+
+        return result['predicted_category']
+
+    def batch_predict(self, task_list: List[str]) -> List[Dict[str, Any]]:
+        """
+        Predict categories for multiple tasks.
+
+        Args:
+            task_list: List of task descriptions
+
+        Returns:
+            List of prediction result dictionaries
+        """
+        logger.info(f"Processing batch of {len(task_list)} tasks...")
+        results = []
+
+        for i, task in enumerate(task_list, 1):
+            logger.info(f"Processing task {i}: {task}")
+
+            result = self.predict(task, detailed=True)
+            result['task'] = task
+            results.append(result)
+
+            if result['success']:
+                logger.info(f"Predicted: {result['predicted_category']}")
+            else:
+                logger.warning(f"Failed: {result['error']}")
+
+        return results
+
+    def get_available_categories(self) -> List[str]:
+        """
+        Get list of available prediction categories.
+
+        Returns:
+            List of category names
+        """
+        return list(self.categories)
+
+    def show_startup_info(self) -> None:
+        """Display startup information about the loaded model."""
+        print("Task Category Predictor - Initialization Complete")
         print("=" * 60)
+        print(f"Model loaded from: {self.model_path}")
+        print(f"Available categories: {', '.join(self.categories)}")
+        print(f"Number of categories: {len(self.categories)}")
+        print("=" * 60)
+
+    def show_model_info(self) -> None:
+        """Display information about the loaded model."""
+        print("\nMODEL INFORMATION")
+        print("-" * 50)
+        print(f"Model path: {self.model_path}")
+        print(f"Available categories: {', '.join(self.categories)}")
+        print(f"Number of categories: {len(self.categories)}")
+        print("-" * 50)
+
+
+class InteractiveInterface:
+    """Interactive command-line interface for predictions."""
+
+    def __init__(self, predictor: TaskCategoryPredictor):
+        """
+        Initialize interactive interface.
+
+        Args:
+            predictor: TaskCategoryPredictor instance
+        """
+        self.predictor = predictor
+
+    def run_interactive_mode(self) -> None:
+        """Run interactive prediction mode."""
+        print("\nInteractive Mode")
+        print("-" * 60)
         print("Enter task descriptions to predict their categories.")
-        print("Type 'quit', 'exit', or 'q' to stop.")
-        print("Type 'help' for more information.")
-        print("=" * 60)
+        print("Available commands:")
+        print("  'quit', 'exit', 'q' - Exit the program")
+        print("  'help' - Show help information")
+        print("  'info' - Show model information")
+        print("-" * 60)
 
         while True:
             try:
@@ -187,7 +507,11 @@ class TaskCategoryPredictor:
                     break
 
                 if user_input.lower() == 'help':
-                    self.show_help()
+                    self._show_help()
+                    continue
+
+                if user_input.lower() == 'info':
+                    self.predictor.show_model_info()
                     continue
 
                 if not user_input:
@@ -195,17 +519,17 @@ class TaskCategoryPredictor:
                     continue
 
                 # Make prediction
-                self.predict_with_details(user_input)
+                self.predictor.predict_with_details(user_input)
 
             except KeyboardInterrupt:
                 print("\n\nGoodbye!")
                 break
-            except Exception as e:
-                print(f"Error during prediction: {e}")
+            except Exception as error:
+                logger.error(f"Error during prediction: {error}")
 
-    def show_help(self):
-        """Show help information"""
-        print("\n📋 HELP - How to use the Task Category Predictor")
+    def _show_help(self) -> None:
+        """Display help information."""
+        print("\nHELP - How to use the Task Category Predictor")
         print("-" * 50)
         print("• Enter any task description in natural language")
         print("• The system will predict the most likely category")
@@ -216,53 +540,18 @@ class TaskCategoryPredictor:
         print("  - 'Set up meeting room for client presentation'")
         print("• Available commands:")
         print("  - 'help': Show this help")
+        print("  - 'info': Show model information")
         print("  - 'quit' or 'exit': Exit the program")
-        print(f"• Available categories: {', '.join(self.categories)}")
-
-    def batch_predict(self, task_list):
-        """Predict categories for a list of tasks"""
-        results = []
-        print(f"\nProcessing {len(task_list)} tasks...")
-
-        for i, task in enumerate(task_list, 1):
-            print(f"\nTask {i}: {task}")
-            category, confidence = self.predict_category(task, show_confidence=False)
-            results.append({
-                'task': task,
-                'predicted_category': category,
-                'confidence': confidence
-            })
-            print(f"Predicted: {category}")
-
-        return results
+        print(f"• Available categories: {', '.join(self.predictor.get_available_categories())}")
 
 
-def main():
-    """Main function"""
-    import sys
-
-    # Initialize predictor
+def run_example_predictions() -> None:
+    """Run example predictions for demonstration."""
     try:
         predictor = TaskCategoryPredictor()
-    except Exception as e:
-        print(f"Failed to initialize predictor: {e}")
+    except Exception as error:
+        logger.error(f"Failed to initialize predictor: {error}")
         return
-
-    # Check command line arguments
-    if len(sys.argv) > 1:
-        # Single prediction mode - join all arguments as the task description
-        task_description = ' '.join(sys.argv[1:])
-        print(f"Command line input: '{task_description}'")  # Debug output
-        predictor.predict_with_details(task_description)
-    else:
-        # Interactive mode
-        predictor.interactive_mode()
-
-
-# Example usage function
-def example_predictions():
-    """Run some example predictions"""
-    predictor = TaskCategoryPredictor()
 
     example_tasks = [
         "Fix the database connection error in the user authentication module",
@@ -274,16 +563,38 @@ def example_predictions():
         "Conduct user research for mobile app improvements"
     ]
 
-    print("🧪 Running example predictions...")
+    logger.info("Running example predictions...")
     results = predictor.batch_predict(example_tasks)
 
-    print("\n📊 BATCH PREDICTION RESULTS")
-    print("=" * 80)
-    for i, result in enumerate(results, 1):
-        print(f"{i}. Task: {result['task']}")
-        print(f"   Predicted Category: {result['predicted_category']}")
-        print("-" * 80)
+    # Display formatted results
+    formatted_results = ResultFormatter.format_batch_results(results)
+    print(formatted_results)
+
+
+def main() -> None:
+    """Main execution function."""
+    try:
+        # Initialize predictor
+        predictor = TaskCategoryPredictor()
+
+        # Check command line arguments
+        if len(sys.argv) > 1:
+            # Single prediction mode
+            task_description = ' '.join(sys.argv[1:])
+            logger.info(f"Command line input: '{task_description}'")
+            predictor.predict_with_details(task_description)
+        else:
+            # Interactive mode
+            interface = InteractiveInterface(predictor)
+            interface.run_interactive_mode()
+
+    except Exception as error:
+        logger.error(f"Application failed to start: {error}")
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    exit_code = main()
+    sys.exit(exit_code)
