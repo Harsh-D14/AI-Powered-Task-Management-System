@@ -1,4 +1,4 @@
-taskid,task_description,task_description_processed,task_description_tokens,priority,category,assigned_to_employeeid,token_count,original_word_count
+taskid,task_description,task_description_processed,task_description_tokens,priority,category,assigned_to_employeeid,processed_token_count,original_word_count
 TASK0001,Send project status update to stakeholders,send project statu updat stakehold,send|project|statu|updat|stakehold,Low,Email,EMP041,5,6
 TASK0002,Add multi-language support for current sprint,add multilanguag support current sprint,add|multilanguag|support|current|sprint,Low,Feature Update,EMP055,5,6
 TASK0003,Update system architecture documentation (priority),updat system architectur document prioriti,updat|system|architectur|document|prioriti,Medium,Documentation,EMP035,5,5

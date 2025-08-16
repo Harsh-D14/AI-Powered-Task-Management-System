@@ -3,235 +3,448 @@ import nltk
 import re
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer
-import string
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from collections import Counter
+from typing import List, Optional, Union
+import logging
 
-# Download required NLTK data (run once)
-try:
-    nltk.data.find('tokenizers/punkt')
-    nltk.data.find('corpora/stopwords')
-    nltk.data.find('corpora/wordnet')
-except LookupError:
-    print("Downloading required NLTK data...")
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nltk.download('wordnet')
-    nltk.download('punkt_tab')
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-class TaskNLPPreprocessor:
-    def __init__(self):
+def initialize_nltk_resources() -> None:
+    """Initialize required NLTK resources."""
+    required_resources = [
+        ('tokenizers/punkt', 'punkt'),
+        ('corpora/stopwords', 'stopwords'),
+        ('corpora/wordnet', 'wordnet'),
+        ('tokenizers/punkt_tab', 'punkt_tab')
+    ]
+
+    for resource_path, download_name in required_resources:
+        try:
+            nltk.data.find(resource_path)
+        except LookupError:
+            logger.info(f"Downloading {download_name}...")
+            nltk.download(download_name, quiet=True)
+
+
+class TextPreprocessor:
+    """Text preprocessing utility for task description analysis."""
+
+    def __init__(self, custom_stopwords: Optional[set] = None):
+        """
+        Initialize the text preprocessor.
+
+        Args:
+            custom_stopwords: Additional stopwords to include in filtering
+        """
         self.stemmer = PorterStemmer()
         self.lemmatizer = WordNetLemmatizer()
-        self.stop_words = set(stopwords.words('english'))
 
-        # Add common task-related stopwords
-        additional_stopwords = {'task', 'need', 'needs', 'required', 'please', 'must', 'should'}
-        self.stop_words.update(additional_stopwords)
+        # Initialize base stopwords
+        self.stopwords_set = set(stopwords.words('english'))
 
-    def clean_text(self, text):
-        """Basic text cleaning"""
-        if pd.isna(text):
+        # Add domain-specific stopwords
+        default_custom_stopwords = {
+            'task', 'need', 'needs', 'required', 'please', 'must', 'should'
+        }
+
+        if custom_stopwords:
+            default_custom_stopwords.update(custom_stopwords)
+
+        self.stopwords_set.update(default_custom_stopwords)
+
+    def clean_text(self, text: Union[str, None]) -> str:
+        """
+        Perform basic text cleaning operations.
+
+        Args:
+            text: Input text to clean
+
+        Returns:
+            Cleaned text string
+        """
+        if pd.isna(text) or text is None:
             return ""
 
-        # Convert to lowercase
-        text = str(text).lower()
+        # Convert to lowercase and ensure string type
+        cleaned_text = str(text).lower()
 
-        # Remove special characters and digits, keep only letters and spaces
-        text = re.sub(r'[^a-zA-Z\s]', '', text)
+        # Remove non-alphabetic characters, preserve spaces
+        cleaned_text = re.sub(r'[^a-zA-Z\s]', '', cleaned_text)
 
-        # Remove extra whitespace
-        text = ' '.join(text.split())
+        # Normalize whitespace
+        cleaned_text = ' '.join(cleaned_text.split())
 
-        return text
+        return cleaned_text
 
-    def tokenize_text(self, text):
-        """Tokenize text into words"""
+    def tokenize(self, text: str) -> List[str]:
+        """
+        Tokenize text into individual words.
+
+        Args:
+            text: Input text to tokenize
+
+        Returns:
+            List of tokens
+        """
         if not text:
             return []
         return word_tokenize(text)
 
-    def remove_stopwords(self, tokens):
-        """Remove stopwords from token list"""
-        return [token for token in tokens if token not in self.stop_words and len(token) > 2]
+    def filter_stopwords(self, tokens: List[str], min_length: int = 2) -> List[str]:
+        """
+        Remove stopwords and short tokens.
 
-    def stem_tokens(self, tokens):
-        """Apply stemming to tokens"""
+        Args:
+            tokens: List of tokens to filter
+            min_length: Minimum token length to retain
+
+        Returns:
+            Filtered list of tokens
+        """
+        return [
+            token for token in tokens
+            if token not in self.stopwords_set and len(token) > min_length
+        ]
+
+    def apply_stemming(self, tokens: List[str]) -> List[str]:
+        """
+        Apply Porter stemming to tokens.
+
+        Args:
+            tokens: List of tokens to stem
+
+        Returns:
+            List of stemmed tokens
+        """
         return [self.stemmer.stem(token) for token in tokens]
 
-    def lemmatize_tokens(self, tokens):
-        """Apply lemmatization to tokens (alternative to stemming)"""
+    def apply_lemmatization(self, tokens: List[str]) -> List[str]:
+        """
+        Apply lemmatization to tokens.
+
+        Args:
+            tokens: List of tokens to lemmatize
+
+        Returns:
+            List of lemmatized tokens
+        """
         return [self.lemmatizer.lemmatize(token) for token in tokens]
 
-    def preprocess_text(self, text, use_stemming=True):
-        """Complete preprocessing pipeline"""
-        # Clean text
+    def process_text(self, text: Union[str, None], use_stemming: bool = True) -> List[str]:
+        """
+        Execute complete text preprocessing pipeline.
+
+        Args:
+            text: Input text to process
+            use_stemming: Whether to use stemming (True) or lemmatization (False)
+
+        Returns:
+            List of processed tokens
+        """
+        # Step 1: Clean text
         cleaned_text = self.clean_text(text)
 
-        # Tokenize
-        tokens = self.tokenize_text(cleaned_text)
+        # Step 2: Tokenize
+        tokens = self.tokenize(cleaned_text)
 
-        # Remove stopwords
-        tokens = self.remove_stopwords(tokens)
+        # Step 3: Filter stopwords
+        filtered_tokens = self.filter_stopwords(tokens)
 
-        # Apply stemming or lemmatization
+        # Step 4: Apply normalization
         if use_stemming:
-            tokens = self.stem_tokens(tokens)
+            processed_tokens = self.apply_stemming(filtered_tokens)
         else:
-            tokens = self.lemmatize_tokens(tokens)
+            processed_tokens = self.apply_lemmatization(filtered_tokens)
 
-        return tokens
+        return processed_tokens
 
-    def tokens_to_string(self, tokens):
-        """Convert token list back to string"""
+    @staticmethod
+    def tokens_to_text(tokens: List[str]) -> str:
+        """
+        Convert token list back to space-separated text.
+
+        Args:
+            tokens: List of tokens
+
+        Returns:
+            Space-separated text string
+        """
         return ' '.join(tokens)
 
 
-def process_tasks_dataset(input_file='datasets/tasks_dataset.csv', output_file='datasets/task_preprocessed_data.csv'):
+class TaskDatasetProcessor:
+    """Main processor for task dataset NLP operations."""
+
+    def __init__(self, preprocessor: Optional[TextPreprocessor] = None):
+        """
+        Initialize the dataset processor.
+
+        Args:
+            preprocessor: Text preprocessor instance to use
+        """
+        self.preprocessor = preprocessor or TextPreprocessor()
+
+    def load_dataset(self, file_path: str) -> pd.DataFrame:
+        """
+        Load task dataset from CSV file.
+
+        Args:
+            file_path: Path to input CSV file
+
+        Returns:
+            Loaded DataFrame
+
+        Raises:
+            FileNotFoundError: If file doesn't exist
+            Exception: For other loading errors
+        """
+        try:
+            dataframe = pd.read_csv(file_path)
+            logger.info(f"Successfully loaded {len(dataframe)} records from {file_path}")
+            logger.info(f"Dataset columns: {list(dataframe.columns)}")
+            return dataframe
+        except FileNotFoundError:
+            logger.error(f"File not found: {file_path}")
+            raise
+        except Exception as error:
+            logger.error(f"Error loading dataset: {error}")
+            raise
+
+    def process_descriptions(self, dataframe: pd.DataFrame,
+                             text_column: str = 'task_description',
+                             use_stemming: bool = True) -> pd.DataFrame:
+        """
+        Process task descriptions in the dataset.
+
+        Args:
+            dataframe: Input DataFrame
+            text_column: Name of column containing text to process
+            use_stemming: Whether to use stemming vs lemmatization
+
+        Returns:
+            DataFrame with additional processed text columns
+        """
+        processed_df = dataframe.copy()
+
+        # Generate processed text columns
+        processed_df[f'{text_column}_cleaned'] = processed_df[text_column].apply(
+            self.preprocessor.clean_text
+        )
+
+        processed_df[f'{text_column}_tokens'] = processed_df[text_column].apply(
+            lambda x: self.preprocessor.process_text(x, use_stemming)
+        )
+
+        processed_df[f'{text_column}_processed'] = processed_df[f'{text_column}_tokens'].apply(
+            self.preprocessor.tokens_to_text
+        )
+
+        # Calculate metrics
+        processed_df['processed_token_count'] = processed_df[f'{text_column}_tokens'].apply(len)
+        processed_df['original_word_count'] = processed_df[text_column].apply(
+            lambda x: len(str(x).split()) if pd.notna(x) else 0
+        )
+
+        return processed_df
+
+    def calculate_statistics(self, dataframe: pd.DataFrame) -> dict:
+        """
+        Calculate processing statistics.
+
+        Args:
+            dataframe: Processed DataFrame
+
+        Returns:
+            Dictionary containing statistics
+        """
+        stats = {
+            'avg_original_words': dataframe['original_word_count'].mean(),
+            'avg_processed_tokens': dataframe['processed_token_count'].mean(),
+            'total_records': len(dataframe)
+        }
+
+        if stats['avg_original_words'] > 0:
+            stats['reduction_percentage'] = (
+                                                    1 - stats['avg_processed_tokens'] / stats['avg_original_words']
+                                            ) * 100
+        else:
+            stats['reduction_percentage'] = 0
+
+        return stats
+
+    def save_processed_data(self, dataframe: pd.DataFrame, output_path: str,
+                            columns_to_save: Optional[List[str]] = None) -> None:
+        """
+        Save processed dataset to CSV file.
+
+        Args:
+            dataframe: Processed DataFrame to save
+            output_path: Output file path
+            columns_to_save: Specific columns to include in output
+        """
+        if columns_to_save is None:
+            columns_to_save = [
+                'taskid', 'task_description', 'task_description_processed',
+                'task_description_tokens', 'priority', 'category',
+                'assigned_to_employeeid', 'processed_token_count', 'original_word_count'
+            ]
+
+        # Filter to available columns
+        available_columns = [col for col in columns_to_save if col in dataframe.columns]
+        output_df = dataframe[available_columns].copy()
+
+        # Convert token lists to pipe-separated strings for CSV storage
+        token_columns = [col for col in output_df.columns if 'tokens' in col]
+        for col in token_columns:
+            output_df[col] = output_df[col].apply(
+                lambda x: '|'.join(x) if isinstance(x, list) and x else ''
+            )
+
+        try:
+            output_df.to_csv(output_path, index=False)
+            logger.info(f"Processed data saved to {output_path}")
+        except Exception as error:
+            logger.error(f"Error saving file: {error}")
+            raise
+
+
+class AnalysisReporter:
+    """Generate analysis reports for processed text data."""
+
+    @staticmethod
+    def generate_category_analysis(dataframe: pd.DataFrame,
+                                   group_column: str = 'category',
+                                   metric_column: str = 'processed_token_count') -> pd.DataFrame:
+        """
+        Generate statistics grouped by category.
+
+        Args:
+            dataframe: Input DataFrame
+            group_column: Column to group by
+            metric_column: Metric column to analyze
+
+        Returns:
+            DataFrame with grouped statistics
+        """
+        if group_column not in dataframe.columns:
+            logger.warning(f"Column '{group_column}' not found in dataset")
+            return pd.DataFrame()
+
+        return dataframe.groupby(group_column)[metric_column].agg([
+            'mean', 'std', 'min', 'max', 'count'
+        ]).round(2)
+
+    @staticmethod
+    def get_token_frequency(dataframe: pd.DataFrame,
+                            token_column: str = 'task_description_tokens',
+                            top_n: int = 20) -> List[tuple]:
+        """
+        Calculate token frequency across all processed texts.
+
+        Args:
+            dataframe: Input DataFrame
+            token_column: Column containing token lists
+            top_n: Number of top tokens to return
+
+        Returns:
+            List of (token, frequency) tuples
+        """
+        all_tokens = []
+
+        for tokens in dataframe[token_column]:
+            if isinstance(tokens, list):
+                all_tokens.extend(tokens)
+            elif isinstance(tokens, str) and tokens:
+                # Handle pipe-separated token strings
+                all_tokens.extend(tokens.split('|'))
+
+        token_counter = Counter(all_tokens)
+        return token_counter.most_common(top_n)
+
+    def print_analysis_report(self, dataframe: pd.DataFrame,
+                              statistics: dict) -> None:
+        """
+        Print comprehensive analysis report.
+
+        Args:
+            dataframe: Processed DataFrame
+            statistics: Processing statistics dictionary
+        """
+        print("\n" + "=" * 60)
+        print("TEXT PROCESSING ANALYSIS REPORT")
+        print("=" * 60)
+
+        # Overall statistics
+        print(f"\nProcessing Summary:")
+        print(f"Total records processed: {statistics['total_records']:,}")
+        print(f"Average original word count: {statistics['avg_original_words']:.2f}")
+        print(f"Average processed token count: {statistics['avg_processed_tokens']:.2f}")
+        print(f"Text reduction: {statistics['reduction_percentage']:.1f}%")
+
+        # Category analysis
+        if 'category' in dataframe.columns:
+            print(f"\nToken Count Analysis by Category:")
+            category_stats = self.generate_category_analysis(dataframe, 'category')
+            if not category_stats.empty:
+                print(category_stats)
+
+        # Priority analysis
+        if 'priority' in dataframe.columns:
+            print(f"\nToken Count Analysis by Priority:")
+            priority_stats = self.generate_category_analysis(dataframe, 'priority')
+            if not priority_stats.empty:
+                print(priority_stats)
+
+        # Token frequency
+        print(f"\nMost Frequent Tokens:")
+        frequent_tokens = self.get_token_frequency(dataframe)
+        for token, frequency in frequent_tokens:
+            print(f"  {token}: {frequency}")
+
+
+def main(input_file_path: str = 'datasets/tasks_dataset.csv',
+         output_file_path: str = 'datasets/task_preprocessed_data.csv') -> None:
     """
-    Main function to process the tasks dataset
+    Main execution function for task dataset processing.
+
+    Args:
+        input_file_path: Path to input CSV file
+        output_file_path: Path for output CSV file
     """
-    print("Loading tasks dataset...")
+    # Initialize NLTK resources
+    initialize_nltk_resources()
+
+    # Initialize processors
+    text_processor = TextPreprocessor()
+    dataset_processor = TaskDatasetProcessor(text_processor)
+    reporter = AnalysisReporter()
 
     try:
-        # Read the CSV file
-        df = pd.read_csv(input_file)
-        print(f"Loaded {len(df)} tasks from {input_file}")
+        # Load and process dataset
+        logger.info("Starting dataset processing...")
+        raw_dataframe = dataset_processor.load_dataset(input_file_path)
 
-        # Display basic info about the dataset
-        print("\nDataset columns:", df.columns.tolist())
-        print("\nFirst few task descriptions:")
-        print(df['task_description'].head())
+        processed_dataframe = dataset_processor.process_descriptions(raw_dataframe)
 
-    except FileNotFoundError:
-        print(f"Error: Could not find {input_file}")
-        return
-    except Exception as e:
-        print(f"Error reading file: {e}")
-        return
+        # Calculate statistics
+        processing_stats = dataset_processor.calculate_statistics(processed_dataframe)
 
-    # Initialize preprocessor
-    preprocessor = TaskNLPPreprocessor()
+        # Save processed data
+        dataset_processor.save_processed_data(processed_dataframe, output_file_path)
 
-    print("\nProcessing task descriptions...")
+        # Generate analysis report
+        reporter.print_analysis_report(processed_dataframe, processing_stats)
 
-    # Apply preprocessing to task descriptions
-    df['task_description_cleaned'] = df['task_description'].apply(
-        lambda x: preprocessor.clean_text(x)
-    )
+        logger.info("Processing completed successfully")
 
-    df['task_description_tokens'] = df['task_description'].apply(
-        lambda x: preprocessor.preprocess_text(x, use_stemming=True)
-    )
-
-    df['task_description_processed'] = df['task_description_tokens'].apply(
-        lambda x: preprocessor.tokens_to_string(x)
-    )
-
-    # Create additional columns for analysis
-    df['token_count'] = df['task_description_tokens'].apply(len)
-    df['original_word_count'] = df['task_description'].apply(
-        lambda x: len(str(x).split()) if pd.notna(x) else 0
-    )
-
-    print("Preprocessing completed!")
-
-    # Display some statistics
-    print(f"\nPreprocessing Statistics:")
-    print(f"Average original word count: {df['original_word_count'].mean():.2f}")
-    print(f"Average processed token count: {df['token_count'].mean():.2f}")
-    print(f"Reduction ratio: {(1 - df['token_count'].mean() / df['original_word_count'].mean()) * 100:.1f}%")
-
-    # Show examples of preprocessing
-    print("\nExample of preprocessing:")
-    for i in range(min(3, len(df))):
-        print(f"\nTask {i + 1}:")
-        print(f"Original: {df.iloc[i]['task_description']}")
-        print(f"Processed: {df.iloc[i]['task_description_processed']}")
-        print(f"Tokens: {df.iloc[i]['task_description_tokens']}")
-
-    # Select columns for output
-    output_columns = [
-        'taskid',
-        'task_description',
-        'task_description_processed',
-        'task_description_tokens',
-        'priority',
-        'category',
-        'assigned_to_employeeid',
-        'token_count',
-        'original_word_count'
-    ]
-
-    # Create output dataframe
-    output_df = df[output_columns].copy()
-
-    # Convert tokens list to string representation for CSV storage
-    output_df['task_description_tokens'] = output_df['task_description_tokens'].apply(
-        lambda x: '|'.join(x) if x else ''
-    )
-
-    # Save to CSV
-    try:
-        output_df.to_csv(output_file, index=False)
-        print(f"\nProcessed data saved to {output_file}")
-    except Exception as e:
-        print(f"Error saving file: {e}")
-        return
-
-    return output_df
-
-
-def analyze_preprocessing_results(df):
-    """
-    Analyze the results of preprocessing
-    """
-    print("\n" + "=" * 50)
-    print("PREPROCESSING ANALYSIS")
-    print("=" * 50)
-
-    # Category-wise analysis
-    print("\nToken count by category:")
-    category_stats = df.groupby('category')['token_count'].agg(['mean', 'std', 'min', 'max'])
-    print(category_stats.round(2))
-
-    # Priority-wise analysis
-    print("\nToken count by priority:")
-    priority_stats = df.groupby('priority')['token_count'].agg(['mean', 'std', 'min', 'max'])
-    print(priority_stats.round(2))
-
-    # Most common processed words
-    print("\nMost common words after preprocessing:")
-    all_tokens = []
-    for tokens_str in df['task_description_tokens']:
-        if tokens_str:
-            all_tokens.extend(tokens_str.split('|'))
-
-    from collections import Counter
-    word_freq = Counter(all_tokens)
-    print("Top 20 most common words:")
-    for word, freq in word_freq.most_common(20):
-        print(f"  {word}: {freq}")
+    except Exception as error:
+        logger.error(f"Processing failed: {error}")
+        raise
 
 
 if __name__ == "__main__":
-    print("Starting NLP preprocessing for Tasks Dataset")
-    print("=" * 50)
-
-    # Process the dataset
-    processed_df = process_tasks_dataset()
-
-    if processed_df is not None:
-        # Analyze results
-        analyze_preprocessing_results(processed_df)
-
-        print(f"\n{'=' * 50}")
-        print("Processing completed successfully!")
-        print("Files created:")
-        print("- task_preprocessed_data.csv (main output)")
-        print("\nThe processed dataset includes:")
-        print("- Original task descriptions")
-        print("- Cleaned and processed text")
-        print("- Individual tokens (pipe-separated)")
-        print("- Token counts and statistics")
+    main()

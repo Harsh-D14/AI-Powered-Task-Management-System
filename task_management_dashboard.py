@@ -784,8 +784,9 @@ def main():
                                                                            'categories'):
                 st.info(f"📂 Categories: {len(st.session_state.category_predictor.categories)}")
             if hasattr(st.session_state, 'priority_predictor'):
-                version = getattr(st.session_state.priority_predictor, 'version', 'realistic_v1.0')
-                st.info(f"🎯 Model Version: {version}")
+                version = getattr(st.session_state.priority_predictor, 'version', 'TaskMgmt_v3.0')
+                # st.info(f"🎯 Model Version: {version}")
+                st.info(f"🎯 Model Version: TaskMgmt_v3.0")
             if st.session_state.employees_df is not None:
                 st.info(f"👥 Employees: {len(st.session_state.employees_df)}")
         else:
