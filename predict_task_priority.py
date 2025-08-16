@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Realistic Task Priority Predictor
+Task Priority Predictor
 Works with properly regularized models that achieve 0.75-0.90 performance
 """
 
@@ -15,8 +15,8 @@ from collections import Counter, defaultdict
 warnings.filterwarnings('ignore')
 
 
-class RealisticWorkloadBalancer:
-    """Realistic workload balancer without perfect optimization"""
+class WorkloadBalancer:
+    """Workload balancer without perfect optimization"""
 
     def __init__(self, employees_data, tasks_df=None):
         self.employees_data = employees_data
@@ -28,7 +28,7 @@ class RealisticWorkloadBalancer:
         self.randomness_factor = 0.15
 
     def get_optimal_employee(self, task_category, predicted_priority, urgency_score=0):
-        """Realistic employee selection with some uncertainty"""
+        """Employee selection with some uncertainty"""
         available_employees = [emp_id for emp_id, load in self.current_loads.items() if load < 10]
 
         if not available_employees:
@@ -70,7 +70,7 @@ class RealisticWorkloadBalancer:
         return score
 
     def update_workload(self, emp_id, task_complexity=1, predicted_priority='Medium'):
-        """Update workload with realistic complexity"""
+        """Update workload with complexity"""
         if emp_id not in self.current_loads:
             return
 
@@ -92,16 +92,16 @@ class RealisticWorkloadBalancer:
         }
 
 
-class RealisticTaskPriorityPredictor:
+class TaskPriorityPredictor:
     def __init__(self, model_path='models/task_priority_model.pkl'):
         self.model_path = model_path
         self.model_data = None
         self.load_model()
 
     def load_model(self):
-        """Load the realistic model"""
+        """Load the model"""
         try:
-            print("Loading realistic model (expected accuracy: 0.75-0.90)...")
+            print("Loading model (expected accuracy: 0.75-0.90)...")
             with open(self.model_path, 'rb') as f:
                 self.model_data = pickle.load(f)
 
@@ -118,24 +118,24 @@ class RealisticTaskPriorityPredictor:
             self.priority_keywords = self.model_data.get('priority_keywords', {})
             self.regularization_strength = self.model_data.get('regularization_strength', 'medium')
             self.quick_mode = self.model_data.get('quick_mode', True)
-            self.version = self.model_data.get('version', 'realistic_v1.0')
+            self.version = self.model_data.get('version', 'v1.0')
 
-            model_type = "Logistic Regression" if self.quick_mode else "Regularized XGBoost"
+            model_type = "Random Forest" if self.quick_mode else "Regularized XGBoost"
             print(f"Loaded {model_type} model (version: {self.version})")
             print(f"Regularization: {self.regularization_strength}")
             print(f"Available categories: {', '.join(self.actual_categories)}")
-            print(f"Expected performance: Realistic (0.75-0.90 accuracy)")
+            print(f"Expected performance: 0.75-0.90 accuracy")
 
             if self.priority_keywords:
                 print("Keyword detection: Enabled with controlled weights")
 
         except FileNotFoundError:
             print(f"Error: Model file '{self.model_path}' not found.")
-            print("Please run 'python realistic_trainer.py' first.")
+            print("Please run 'python train_task_priority.py' first.")
             raise
         except Exception as e:
             print(f"Error loading model: {e}")
-            print("Please retrain with the realistic trainer.")
+            print("Please retrain with the trainer.")
             raise
 
     def validate_category(self, category):
@@ -156,8 +156,8 @@ class RealisticTaskPriorityPredictor:
         print(f"Using: '{fallback}'")
         return fallback, False
 
-    def analyze_keywords_realistic(self, description):
-        """Realistic keyword analysis (not perfect)"""
+    def analyze_keywords(self, description):
+        """Keyword analysis (not perfect)"""
         desc_lower = description.lower()
         analysis = {}
 
@@ -179,8 +179,8 @@ class RealisticTaskPriorityPredictor:
 
         return analysis
 
-    def calculate_realistic_urgency(self, description):
-        """Calculate urgency with realistic limits"""
+    def calculate_urgency(self, description):
+        """Calculate urgency with limits"""
         desc_lower = description.lower()
         urgency_score = 0
 
@@ -197,22 +197,21 @@ class RealisticTaskPriorityPredictor:
 
         return min(3, urgency_score)  # Cap at 3
 
-    def extract_realistic_features(self, description, category, employee_id=None):
-        """Extract features matching the realistic training process"""
+    def extract_features(self, description, category, employee_id=None):
+        """Extract features matching the training process"""
         # Validate category
         validated_category, category_valid = self.validate_category(category)
 
         # Basic features
         words = description.split()
-        token_count = len(words)
         word_count = len(words)
 
         # Keyword analysis (with controlled weights)
-        keyword_analysis = self.analyze_keywords_realistic(description)
+        keyword_analysis = self.analyze_keywords(description)
         high_kw = keyword_analysis['high']['score']
         med_kw = keyword_analysis['medium']['score']
         low_kw = keyword_analysis['low']['score']
-        urgency = self.calculate_realistic_urgency(description)
+        urgency = self.calculate_urgency(description)
 
         # Text features
         caps_ratio = sum(1 for word in words if word.isupper()) / max(1, len(words))
@@ -242,7 +241,7 @@ class RealisticTaskPriorityPredictor:
 
         # Combine features in training order
         features = [
-            token_count, word_count,
+            word_count,
             high_kw, med_kw, low_kw, urgency,
             caps_ratio, punct_score, complexity,
             emp_load, category_match
@@ -253,12 +252,12 @@ class RealisticTaskPriorityPredictor:
         return (np.array(features).reshape(1, -1), validated_category, category_valid,
                 keyword_analysis, urgency)
 
-    def predict_priority_realistic(self, description, category, employee_id=None):
-        """Make realistic priority prediction"""
+    def predict_priority(self, description, category, employee_id=None):
+        """Make priority prediction"""
         try:
             # Extract features
             X, validated_category, category_valid, keyword_analysis, urgency_score = \
-                self.extract_realistic_features(description, category, employee_id)
+                self.extract_features(description, category, employee_id)
 
             # Scale features
             if self.scaler is not None:
@@ -293,10 +292,10 @@ class RealisticTaskPriorityPredictor:
             print(f"Error during prediction: {e}")
             return None
 
-    def explain_realistic_prediction(self, result):
-        """Explain prediction with realistic expectations"""
+    def explain_prediction(self, result):
+        """Explain prediction with expectations"""
         print(f"\nPREDICTION EXPLANATION:")
-        print(f"Note: This is a realistic model (not perfect) - expect some uncertainty")
+        print(f"Note: This is a model (not perfect) - expect some uncertainty")
 
         # Keyword analysis
         keyword_analysis = result['keyword_analysis']
@@ -328,14 +327,14 @@ class RealisticTaskPriorityPredictor:
 
         print(f"Model confidence: {confidence_level} ({confidence:.0%})")
 
-        # Realistic expectations
+        # Expectations
         if confidence < 0.6:
-            print("⚠ Low confidence - consider manual review")
+            print("WARNING: Low confidence - consider manual review")
         elif result['urgency_score'] > 2 and result['predicted_priority'] != 'High':
-            print("⚠ High urgency but not High priority - worth double-checking")
+            print("WARNING: High urgency but not High priority - worth double-checking")
 
-    def recommend_employee_realistic(self, category, priority_probabilities, urgency_score):
-        """Realistic employee recommendation"""
+    def recommend_employee(self, category, priority_probabilities, urgency_score):
+        """Employee recommendation"""
         try:
             predicted_priority = max(priority_probabilities, key=priority_probabilities.get)
 
@@ -347,7 +346,7 @@ class RealisticTaskPriorityPredictor:
                 emp_details = self.workload_balancer.get_employee_details(optimal_emp)
 
                 if emp_details:
-                    # Generate realistic reasoning
+                    # Generate reasoning
                     reasons = []
 
                     if emp_details['preferred_category'] == category:
@@ -370,20 +369,20 @@ class RealisticTaskPriorityPredictor:
                         'category_match': emp_details['preferred_category'] == category,
                         'recent_assignments': emp_details['recent_assignments'],
                         'selection_reasons': reasons,
-                        'confidence_note': "Selection includes some randomness for realistic distribution"
+                        'confidence_note': "Selection includes some randomness for distribution"
                     }
             return None
         except Exception as e:
             print(f"Error in employee recommendation: {e}")
             return None
 
-    def make_realistic_prediction(self, description, category, employee_id=None, show_explanation=True):
-        """Make complete realistic prediction"""
+    def make_prediction(self, description, category, employee_id=None, show_explanation=True):
+        """Make complete prediction"""
         print(f"\nTask: {description[:70]}{'...' if len(description) > 70 else ''}")
         print(f"Category: {category}")
 
         # Make prediction
-        result = self.predict_priority_realistic(description, category, employee_id)
+        result = self.predict_priority(description, category, employee_id)
 
         if not result:
             print("Prediction failed.")
@@ -406,11 +405,11 @@ class RealisticTaskPriorityPredictor:
 
         # Show explanation
         if show_explanation:
-            self.explain_realistic_prediction(result)
+            self.explain_prediction(result)
 
         # Employee recommendation
         if not employee_id:
-            emp_rec = self.recommend_employee_realistic(
+            emp_rec = self.recommend_employee(
                 result['validated_category'],
                 result['all_probabilities'],
                 result['urgency_score']
@@ -436,11 +435,11 @@ class RealisticTaskPriorityPredictor:
 
         return result
 
-    def interactive_mode_realistic(self):
-        """Interactive mode with realistic expectations"""
+    def interactive_mode(self):
+        """Interactive mode with expectations"""
         print("\n" + "=" * 70)
-        print("REALISTIC TASK PRIORITY PREDICTOR")
-        print("Expected Performance: 0.75-0.90 accuracy (realistic, not perfect)")
+        print("TASK PRIORITY PREDICTOR")
+        print("Expected Performance: 0.75-0.90 accuracy (not perfect)")
         print("=" * 70)
         print("Commands: 'quit' | 'help' | 'categories' | 'test'")
 
@@ -455,7 +454,7 @@ class RealisticTaskPriorityPredictor:
                     break
 
                 if user_input.lower() == 'help':
-                    print("This is a realistic model designed to avoid overfitting.")
+                    print("This is a model designed to avoid overfitting.")
                     print("It achieves 0.75-0.90 accuracy with proper generalization.")
                     print("Some predictions may be uncertain - this is normal and healthy!")
                     continue
@@ -475,7 +474,7 @@ class RealisticTaskPriorityPredictor:
 
                     for i, (desc, cat) in enumerate(test_cases, 1):
                         print(f"\n--- Test {i} ---")
-                        self.make_realistic_prediction(desc, cat, show_explanation=False)
+                        self.make_prediction(desc, cat, show_explanation=False)
                     continue
 
                 if not user_input:
@@ -488,7 +487,7 @@ class RealisticTaskPriorityPredictor:
                     print(f"Using default: {category}")
 
                 # Make prediction
-                self.make_realistic_prediction(user_input, category)
+                self.make_prediction(user_input, category)
 
             except KeyboardInterrupt:
                 print("\nSession ended.")
@@ -500,7 +499,7 @@ class RealisticTaskPriorityPredictor:
 def main():
     """Main function"""
     try:
-        predictor = RealisticTaskPriorityPredictor()
+        predictor = TaskPriorityPredictor()
 
         print("\nSelect mode:")
         print("1. Interactive mode")
@@ -510,7 +509,7 @@ def main():
         choice = input("\nEnter choice (1-3): ").strip()
 
         if choice == '1':
-            predictor.interactive_mode_realistic()
+            predictor.interactive_mode()
 
         elif choice == '2':
             desc = input("Enter task description: ")
@@ -519,10 +518,10 @@ def main():
             if not cat:
                 cat = predictor.actual_categories[0]
 
-            predictor.make_realistic_prediction(desc, cat)
+            predictor.make_prediction(desc, cat)
 
         elif choice == '3':
-            print("\nTest Mode - Realistic Performance Demo")
+            print("\nTest Mode - Performance Demo")
             print("-" * 40)
 
             test_cases = [
@@ -537,7 +536,7 @@ def main():
 
             for i, (description, category) in enumerate(test_cases, 1):
                 print(f"\n{'=' * 15} Test {i}/{len(test_cases)} {'=' * 15}")
-                result = predictor.make_realistic_prediction(description, category, show_explanation=False)
+                result = predictor.make_prediction(description, category, show_explanation=False)
 
                 # Rough validation (you'd need actual labels for real evaluation)
                 expected_priority = "High" if "urgent" in description.lower() or "critical" in description.lower() else \
@@ -545,28 +544,28 @@ def main():
 
                 if result and result['predicted_priority'] == expected_priority:
                     correct_predictions += 1
-                    print(f"✓ Prediction matches expected priority")
+                    print(f"Prediction matches expected priority")
                 else:
-                    print(f"? Prediction differs from expected - this is normal for realistic models")
+                    print(f"Prediction differs from expected - this is normal for models")
 
             accuracy = correct_predictions / len(test_cases)
             print(f"\n{'=' * 50}")
             print(f"Test Results: {correct_predictions}/{len(test_cases)} ({accuracy:.0%})")
 
             if 0.6 <= accuracy <= 0.9:
-                print("✓ Performance in healthy realistic range")
+                print("Performance in healthy range")
             elif accuracy > 0.9:
-                print("! Suspiciously high - may indicate overfitting")
+                print("Suspiciously high - may indicate overfitting")
             else:
-                print("! Lower than expected - model may need retraining")
+                print("Lower than expected - model may need retraining")
 
         else:
             print("Starting interactive mode...")
-            predictor.interactive_mode_realistic()
+            predictor.interactive_mode()
 
     except FileNotFoundError:
         print("Model not found. Please train first:")
-        print("python realistic_trainer.py")
+        print("python train_task_priority.py")
     except Exception as e:
         print(f"Error: {e}")
 

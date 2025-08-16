@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Realistic Task Priority Trainer with Anti-Overfitting Measures
-Designed to achieve realistic 0.7-0.95 performance ranges, not perfect scores
+Task Priority Trainer with Anti-Overfitting Measures
 """
 
 import pandas as pd
@@ -13,7 +12,6 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.utils.class_weight import compute_class_weight
 import xgboost as xgb
 from collections import defaultdict, Counter
@@ -24,8 +22,8 @@ import re
 warnings.filterwarnings('ignore')
 
 
-class RealisticWorkloadBalancer:
-    """Realistic workload balancer without perfect optimization"""
+class WorkloadBalancer:
+    """Workload balancer without perfect optimization"""
 
     def __init__(self, employees_data, tasks_df):
         self.employees_data = employees_data
@@ -34,30 +32,26 @@ class RealisticWorkloadBalancer:
         self.category_preferences = {emp_id: info['emp_preferred_category']
                                      for emp_id, info in employees_data.items()}
         self.assignment_history = {}
-        self.randomness_factor = 0.15  # Add some randomness to prevent perfect assignments
+        self.randomness_factor = 0.15
 
     def get_optimal_employee(self, task_category, predicted_priority, urgency_score=0):
-        """Realistic employee selection with some uncertainty"""
+        """Employee selection with some uncertainty"""
         available_employees = [emp_id for emp_id, load in self.current_loads.items() if load < 10]
 
         if not available_employees:
             return min(self.current_loads, key=self.current_loads.get)
 
-        # Calculate scores with added randomness
         candidates = []
         for emp_id in available_employees:
             base_score = self._calculate_base_score(emp_id, task_category, predicted_priority)
 
-            # Add controlled randomness to prevent perfect assignments
             random_factor = np.random.normal(0, self.randomness_factor)
             final_score = base_score + random_factor
 
             candidates.append((emp_id, final_score))
 
-        # Don't always pick the absolute best - add some realistic decision variance
         candidates.sort(key=lambda x: x[1], reverse=True)
 
-        # Pick from top 3 candidates with weighted probability
         top_candidates = candidates[:min(3, len(candidates))]
         weights = [0.6, 0.3, 0.1][:len(top_candidates)]
         selected_idx = np.random.choice(len(top_candidates), p=weights)
@@ -73,28 +67,24 @@ class RealisticWorkloadBalancer:
         current_load = self.current_loads[emp_id]
         is_expert = self.category_preferences[emp_id] == task_category
 
-        # Expertise bonus (but not too dominant)
         if is_expert:
-            score += 3  # Reduced from 50
+            score += 3
 
-        # Workload factor
-        score += (10 - current_load) * 0.5  # Reduced impact
+        score += (10 - current_load) * 0.5
 
-        # Priority considerations
         if predicted_priority == 'High' and current_load <= 5:
             score += 1
 
         return score
 
     def update_workload(self, emp_id, task_complexity=1, predicted_priority='Medium'):
-        """Update workload with realistic complexity"""
+        """Update workload with complexity"""
         if emp_id not in self.current_loads:
             return
 
         complexity_map = {'High': 1.5, 'Medium': 1.0, 'Low': 0.8}
         final_complexity = task_complexity * complexity_map.get(predicted_priority, 1.0)
 
-        # Add small random variation to workload updates
         noise = np.random.normal(0, 0.1)
         self.current_loads[emp_id] = min(10, max(0, self.current_loads[emp_id] + final_complexity + noise))
 
@@ -110,10 +100,10 @@ class RealisticWorkloadBalancer:
         }
 
 
-class RealisticTaskPriorityPredictor:
+class TaskPriorityPredictor:
     def __init__(self, quick_mode=True, regularization_strength='medium'):
         self.quick_mode = quick_mode
-        self.regularization_strength = regularization_strength  # 'light', 'medium', 'heavy'
+        self.regularization_strength = regularization_strength
         self.model = None
         self.label_encoder = LabelEncoder()
         self.scaler = StandardScaler()
@@ -125,21 +115,20 @@ class RealisticTaskPriorityPredictor:
         self.actual_priorities = []
         self.priority_keywords = None
 
-    def extract_realistic_keyword_patterns(self, tasks_df):
+    def extract_keyword_patterns(self, tasks_df):
         """Extract keyword patterns but add noise to prevent perfect classification"""
-        print("Extracting keyword patterns with realistic noise...")
+        print("Extracting keyword patterns with noise...")
 
-        # Base keyword patterns (but intentionally imperfect)
         keyword_patterns = {
             'high': {
-                'strong': ['urgent', 'immediately', 'critical', 'emergency'],  # Reduced set
+                'strong': ['urgent', 'immediately', 'critical', 'emergency'],
                 'moderate': ['asap', 'now', 'today'],
-                'weak': ['important', 'priority']  # Some overlap with medium
+                'weak': ['important', 'priority']
             },
             'medium': {
                 'strong': ['important', 'needed', 'priority'],
                 'moderate': ['soon', 'required', 'due'],
-                'weak': ['update', 'review']  # Some overlap with low
+                'weak': ['update', 'review']
             },
             'low': {
                 'strong': ['plan', 'organize', 'future'],
@@ -148,7 +137,6 @@ class RealisticTaskPriorityPredictor:
             }
         }
 
-        # Validate against data but expect imperfect matches
         print("Keyword pattern validation (expecting imperfect matches):")
         for priority in ['High', 'Medium', 'Low']:
             priority_tasks = tasks_df[tasks_df['priority'] == priority]['task_description']
@@ -172,7 +160,6 @@ class RealisticTaskPriorityPredictor:
             match_rate = total_matches / total_tasks if total_tasks > 0 else 0
             print(f"  {priority}: {total_matches}/{total_tasks} tasks ({match_rate:.1%}) - Good!")
 
-            # If match rate is too high (>90%), add more noise
             if match_rate > 0.9:
                 print(f"    Adding noise to prevent overfitting...")
 
@@ -180,7 +167,7 @@ class RealisticTaskPriorityPredictor:
         return keyword_patterns
 
     def load_data(self):
-        """Load data with realistic evaluation setup"""
+        """Load data with evaluation setup"""
         print("Loading data with anti-overfitting measures...")
 
         self.tasks_df = pd.read_csv('datasets/tasks_dataset.csv')
@@ -191,7 +178,6 @@ class RealisticTaskPriorityPredictor:
         else:
             self.preprocessed_df = pd.DataFrame({
                 'taskid': self.tasks_df['taskid'],
-                'token_count': self.tasks_df['task_description'].str.split().str.len(),
                 'original_word_count': self.tasks_df['task_description'].str.split().str.len()
             })
 
@@ -200,84 +186,68 @@ class RealisticTaskPriorityPredictor:
         self.actual_categories = sorted(self.tasks_df['category'].unique())
         self.actual_priorities = sorted(self.tasks_df['priority'].unique())
 
-        # Check for data balance
         priority_dist = self.tasks_df['priority'].value_counts()
         print("Priority distribution:")
         for priority, count in priority_dist.items():
             percentage = count / len(self.tasks_df) * 100
             print(f"  {priority}: {count} ({percentage:.1f}%)")
 
-            # Warn about extreme imbalances
             if percentage < 10:
                 print(f"    WARNING: {priority} is underrepresented (<10%)")
             elif percentage > 60:
                 print(f"    WARNING: {priority} is overrepresented (>60%)")
 
-        self.extract_realistic_keyword_patterns(self.tasks_df)
+        self.extract_keyword_patterns(self.tasks_df)
         self.employees_data = self.employees_df.set_index('emp_id').to_dict('index')
 
         return self.tasks_df, self.employees_df, self.preprocessed_df
 
-    def create_regularized_features(self, tasks_df, preprocessed_df):
+    def create_features(self, tasks_df, preprocessed_df):
         """Create features with built-in regularization to prevent overfitting"""
-        print(f"Creating regularized features (strength: {self.regularization_strength})...")
+        print(f"Creating features (strength: {self.regularization_strength})...")
 
-        df = tasks_df.merge(preprocessed_df[['taskid', 'token_count', 'original_word_count']],
+        df = tasks_df.merge(preprocessed_df[['taskid', 'original_word_count']],
                             on='taskid', how='left')
         df = df.fillna(method='ffill').fillna(0)
 
-        # 1. Controlled keyword features (not too perfect)
-        keyword_features = self._extract_noisy_keyword_features(df['task_description'])
+        keyword_features = self._extract_keyword_features(df['task_description'])
+        text_features = self._extract_text_features(df['task_description'])
 
-        # 2. Diversified text features
-        text_features = self._extract_diversified_text_features(df['task_description'])
-
-        # 3. Reduced TF-IDF features
-        max_features = 8 if self.quick_mode else 12  # Significantly reduced
+        max_features = 8 if self.quick_mode else 12
         self.tfidf_vectorizer = TfidfVectorizer(
             max_features=max_features,
             stop_words='english',
-            ngram_range=(1, 1),  # Only unigrams to reduce complexity
-            min_df=3,  # Higher min_df to ignore rare terms
-            max_df=0.7  # Lower max_df to ignore very common terms
+            ngram_range=(1, 1),
+            min_df=3,
+            max_df=0.7
         )
         tfidf_features = self.tfidf_vectorizer.fit_transform(df['task_description']).toarray()
 
-        # 4. Basic category features (reduced complexity)
         category_encoded = pd.get_dummies(df['category'], prefix='cat').values
+        employee_features = self._extract_employee_features(df)
 
-        # 5. Simple employee features
-        employee_features = self._extract_simple_employee_features(df)
-
-        # Combine features with regularization
         features = [
-            df['token_count'].values,
             df['original_word_count'].values,
         ]
 
-        # Add keyword features (but limit their dominance)
         for i in range(keyword_features.shape[1]):
             features.append(keyword_features[:, i])
 
-        # Add other features
         for i in range(text_features.shape[1]):
             features.append(text_features[:, i])
 
         for i in range(employee_features.shape[1]):
             features.append(employee_features[:, i])
 
-        # Only use subset of category features to reduce overfitting
-        n_cat_features = min(5, category_encoded.shape[1])  # Limit category features
+        n_cat_features = min(5, category_encoded.shape[1])
         for i in range(n_cat_features):
             features.append(category_encoded[:, i])
 
-        # Reduced TF-IDF features
         for i in range(tfidf_features.shape[1]):
             features.append(tfidf_features[:, i])
 
         X = np.column_stack(features)
 
-        # Add controlled noise to prevent perfect memorization
         if self.regularization_strength == 'heavy':
             noise_level = 0.05
         elif self.regularization_strength == 'medium':
@@ -288,8 +258,7 @@ class RealisticTaskPriorityPredictor:
         noise = np.random.normal(0, noise_level, X.shape)
         X = X + noise
 
-        # Feature names
-        self.feature_names = ['token_count', 'word_count']
+        self.feature_names = ['word_count']
         self.feature_names.extend(['high_kw', 'med_kw', 'low_kw', 'urgency'])
         self.feature_names.extend(['caps_ratio', 'punct_score', 'complexity'])
         self.feature_names.extend(['emp_load', 'cat_match'])
@@ -298,33 +267,29 @@ class RealisticTaskPriorityPredictor:
 
         y = self.label_encoder.fit_transform(df['priority'])
 
-        print(f"Created {X.shape[1]} regularized features")
-        print(
-            f"Feature distribution: Keywords(4) + Text(3) + Employee(2) + Category({n_cat_features}) + TF-IDF({tfidf_features.shape[1]})")
+        print(f"Created {X.shape[1]} features")
+        print(f"Feature distribution: Keywords(4) + Text(3) + Employee(2) + Category({n_cat_features}) + TF-IDF({tfidf_features.shape[1]})")
 
         return X, y, df
 
-    def _extract_noisy_keyword_features(self, descriptions):
+    def _extract_keyword_features(self, descriptions):
         """Extract keyword features with controlled noise"""
         features = []
 
         for desc in descriptions:
             desc_lower = desc.lower()
 
-            # Count keywords but with reduced weights to prevent perfect classification
             high_score = 0
             medium_score = 0
             low_score = 0
 
-            # High priority keywords (weighted)
             for kw in self.priority_keywords['high']['strong']:
                 if kw in desc_lower:
-                    high_score += 0.8  # Reduced from 1.0
+                    high_score += 0.8
             for kw in self.priority_keywords['high']['moderate']:
                 if kw in desc_lower:
                     high_score += 0.5
 
-            # Medium priority keywords
             for kw in self.priority_keywords['medium']['strong']:
                 if kw in desc_lower:
                     medium_score += 0.8
@@ -332,15 +297,12 @@ class RealisticTaskPriorityPredictor:
                 if kw in desc_lower:
                     medium_score += 0.5
 
-            # Low priority keywords
             for kw in self.priority_keywords['low']['strong']:
                 if kw in desc_lower:
                     low_score += 0.6
 
-            # Overall urgency (but capped to prevent dominance)
-            urgency_score = min(3, high_score + medium_score * 0.5)  # Capped at 3
+            urgency_score = min(3, high_score + medium_score * 0.5)
 
-            # Add small random noise
             noise = np.random.normal(0, 0.1)
             features.append([
                 high_score + noise,
@@ -351,28 +313,23 @@ class RealisticTaskPriorityPredictor:
 
         return np.array(features)
 
-    def _extract_diversified_text_features(self, descriptions):
+    def _extract_text_features(self, descriptions):
         """Extract diverse text features to prevent over-reliance on keywords"""
         features = []
 
         for desc in descriptions:
             words = desc.split()
 
-            # Capitalization ratio
             caps_ratio = sum(1 for word in words if word.isupper()) / max(1, len(words))
-
-            # Punctuation score
-            punct_score = min(3, desc.count('!') + desc.count('?') * 0.5)  # Capped
-
-            # Text complexity
+            punct_score = min(3, desc.count('!') + desc.count('?') * 0.5)
             avg_word_len = np.mean([len(word) for word in words]) if words else 0
-            complexity = min(1, avg_word_len / 10)  # Normalized and capped
+            complexity = min(1, avg_word_len / 10)
 
             features.append([caps_ratio, punct_score, complexity])
 
         return np.array(features)
 
-    def _extract_simple_employee_features(self, df):
+    def _extract_employee_features(self, df):
         """Extract simple employee features"""
         features = []
 
@@ -381,7 +338,7 @@ class RealisticTaskPriorityPredictor:
 
             if emp_id in self.employees_data:
                 emp_info = self.employees_data[emp_id]
-                emp_load = emp_info['emp_load'] / 10  # Normalize
+                emp_load = emp_info['emp_load'] / 10
                 category_match = 1 if emp_info['emp_preferred_category'] == row['category'] else 0
             else:
                 emp_load = 0.5
@@ -391,41 +348,38 @@ class RealisticTaskPriorityPredictor:
 
         return np.array(features)
 
-    def train_regularized_model(self, X, y):
-        """Train model with strong regularization to achieve realistic performance"""
-        print(f"Training regularized model (target: 0.75-0.90 accuracy)...")
+    def train_model(self, X, y):
+        """Train model with strong regularization to achieve performance"""
+        print(f"Training model (target: 0.75-0.90 accuracy)...")
 
         start_time = time.time()
 
-        # Use larger test set for more realistic evaluation
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.3, random_state=42, stratify=y  # Larger test set
+            X, y, test_size=0.3, random_state=42, stratify=y
         )
 
         print(f"Training set: {len(X_train)} samples")
         print(f"Test set: {len(X_test)} samples")
 
-        # Feature scaling
         X_train_scaled = self.scaler.fit_transform(X_train)
         X_test_scaled = self.scaler.transform(X_test)
 
-        # Class weights (but not too aggressive)
         class_weights = compute_class_weight('balanced', classes=np.unique(y_train), y=y_train)
         class_weight_dict = dict(zip(np.unique(y_train), class_weights))
 
-        # Regularized model selection
         if self.quick_mode:
-            print("Using Logistic Regression with strong regularization...")
+            print("Using Random Forest with regularization...")
 
-            # Logistic Regression is naturally regularized
             param_grid = {
-                'C': [0.01, 0.1, 1.0],  # Strong regularization
-                'penalty': ['l1', 'l2', 'elasticnet'],
-                'solver': ['saga'],
-                'max_iter': [1000]
+                'n_estimators': [50, 100, 150],
+                'max_depth': [3, 5, 7],
+                'min_samples_split': [5, 10, 15],
+                'min_samples_leaf': [2, 4, 6],
+                'max_features': ['sqrt', 'log2'],
+                'bootstrap': [True]
             }
 
-            model = LogisticRegression(
+            model = RandomForestClassifier(
                 random_state=42,
                 class_weight=class_weight_dict
             )
@@ -433,14 +387,14 @@ class RealisticTaskPriorityPredictor:
             print("Using XGBoost with regularization...")
 
             param_grid = {
-                'n_estimators': [50, 100],  # Fewer trees
-                'max_depth': [3, 4],  # Shallower trees
-                'learning_rate': [0.05, 0.1],  # Lower learning rate
-                'subsample': [0.6, 0.8],  # More subsampling
-                'colsample_bytree': [0.6, 0.8],  # Feature subsampling
-                'reg_alpha': [0.1, 0.5],  # L1 regularization
-                'reg_lambda': [1.0, 2.0],  # L2 regularization
-                'min_child_weight': [3, 5]  # Higher minimum child weight
+                'n_estimators': [50, 100],
+                'max_depth': [3, 4],
+                'learning_rate': [0.05, 0.1],
+                'subsample': [0.6, 0.8],
+                'colsample_bytree': [0.6, 0.8],
+                'reg_alpha': [0.1, 0.5],
+                'reg_lambda': [1.0, 2.0],
+                'min_child_weight': [3, 5]
             }
 
             model = xgb.XGBClassifier(
@@ -449,10 +403,9 @@ class RealisticTaskPriorityPredictor:
                 use_label_encoder=False
             )
 
-        # Cross-validation first to check for overfitting
         print("Performing cross-validation check...")
         cv_scores = cross_val_score(model, X_train_scaled, y_train, cv=5, scoring='accuracy')
-        print(f"CV Accuracy: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
+        print(f"CV Accuracy: {cv_scores.mean():.3f} +/- {cv_scores.std():.3f}")
 
         if cv_scores.mean() > 0.95:
             print("WARNING: CV accuracy too high, likely overfitting!")
@@ -461,7 +414,6 @@ class RealisticTaskPriorityPredictor:
         else:
             print("CV accuracy in healthy range (0.65-0.95)")
 
-        # Grid search with reduced CV folds
         cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
         grid_search = GridSearchCV(
@@ -476,7 +428,6 @@ class RealisticTaskPriorityPredictor:
         grid_search.fit(X_train_scaled, y_train)
         self.model = grid_search.best_estimator_
 
-        # Comprehensive evaluation
         y_pred = self.model.predict(X_test_scaled)
         y_pred_proba = self.model.predict_proba(X_test_scaled)
 
@@ -488,7 +439,6 @@ class RealisticTaskPriorityPredictor:
         print(f"Cross-validation score: {grid_search.best_score_:.3f}")
         print(f"Test accuracy: {test_accuracy:.3f}")
 
-        # Check for overfitting
         train_accuracy = accuracy_score(y_train, self.model.predict(X_train_scaled))
         accuracy_gap = train_accuracy - test_accuracy
 
@@ -500,7 +450,6 @@ class RealisticTaskPriorityPredictor:
         elif accuracy_gap < 0.02:
             print("Good: Small train-test gap indicates proper generalization")
 
-        # Detailed evaluation
         print("\nClassification Report:")
         print(classification_report(y_test, y_pred, target_names=self.label_encoder.classes_))
 
@@ -510,24 +459,23 @@ class RealisticTaskPriorityPredictor:
         for i, row in enumerate(cm):
             print(f"{self.label_encoder.classes_[i]:>8}", "  ".join(f"{val:>8}" for val in row))
 
-        # Performance assessment
         if test_accuracy >= 0.75 and test_accuracy <= 0.90 and accuracy_gap <= 0.1:
-            print(f"\n✓ HEALTHY MODEL: Accuracy {test_accuracy:.3f} in target range (0.75-0.90)")
+            print(f"\nHEALTHY MODEL: Accuracy {test_accuracy:.3f} in target range (0.75-0.90)")
         elif test_accuracy > 0.90:
-            print(f"\n⚠ POSSIBLE OVERFITTING: Accuracy {test_accuracy:.3f} too high (>0.90)")
+            print(f"\nPOSSIBLE OVERFITTING: Accuracy {test_accuracy:.3f} too high (>0.90)")
         else:
-            print(f"\n⚠ UNDERPERFORMING: Accuracy {test_accuracy:.3f} below target (<0.75)")
+            print(f"\nUNDERPERFORMING: Accuracy {test_accuracy:.3f} below target (<0.75)")
 
         return self.model
 
     def create_workload_balancer(self, df):
-        """Create realistic workload balancer"""
-        print("Creating realistic workload balancer...")
-        self.workload_balancer = RealisticWorkloadBalancer(self.employees_data, df)
+        """Create workload balancer"""
+        print("Creating workload balancer...")
+        self.workload_balancer = WorkloadBalancer(self.employees_data, df)
         return self.workload_balancer
 
     def save_model(self, filename='models/task_priority_model.pkl'):
-        """Save the realistic model"""
+        """Save the model"""
         model_data = {
             'model': self.model,
             'label_encoder': self.label_encoder,
@@ -541,51 +489,42 @@ class RealisticTaskPriorityPredictor:
             'priority_keywords': self.priority_keywords,
             'regularization_strength': self.regularization_strength,
             'quick_mode': self.quick_mode,
-            'version': 'realistic_v1.0'
+            'version': 'v1.0'
         }
 
         with open(filename, 'wb') as f:
             pickle.dump(model_data, f)
 
         file_size = os.path.getsize(filename) / 1024 / 1024
-        print(f"Realistic model saved as {filename} ({file_size:.1f} MB)")
+        print(f"Model saved as {filename} ({file_size:.1f} MB)")
 
     def train_complete_pipeline(self):
-        """Train realistic model with proper evaluation"""
+        """Train complete model with proper evaluation"""
         print("=" * 70)
-        print("REALISTIC TASK PRIORITY TRAINER")
+        print("TASK PRIORITY TRAINER")
         print("Target: 0.75-0.90 accuracy with proper generalization")
         print("=" * 70)
 
         total_start = time.time()
 
         try:
-            # Load data
             tasks_df, employees_df, preprocessed_df = self.load_data()
-
-            # Create regularized features
-            X, y, df = self.create_regularized_features(tasks_df, preprocessed_df)
-
-            # Train regularized model
-            model = self.train_regularized_model(X, y)
-
-            # Create workload balancer
+            X, y, df = self.create_features(tasks_df, preprocessed_df)
+            model = self.train_model(X, y)
             workload_balancer = self.create_workload_balancer(df)
-
-            # Save model
             self.save_model()
 
             total_time = time.time() - total_start
 
             print(f"\n{'=' * 70}")
-            print(f"REALISTIC TRAINING COMPLETED IN {total_time:.1f} SECONDS!")
+            print(f"TRAINING COMPLETED IN {total_time:.1f} SECONDS!")
             print("Anti-overfitting measures applied:")
-            print("✓ Strong regularization (L1/L2)")
-            print("✓ Controlled keyword features")
-            print("✓ Added feature noise")
-            print("✓ Larger test set (30%)")
-            print("✓ Reduced model complexity")
-            print("✓ Cross-validation monitoring")
+            print("- Strong regularization (L1/L2)")
+            print("- Controlled keyword features")
+            print("- Added feature noise")
+            print("- Larger test set (30%)")
+            print("- Reduced model complexity")
+            print("- Cross-validation monitoring")
             print("=" * 70)
 
         except Exception as e:
@@ -596,7 +535,7 @@ class RealisticTaskPriorityPredictor:
 
 def main():
     """Main training function"""
-    print("Realistic Task Priority Model Trainer")
+    print("Task Priority Model Trainer")
     print("Designed to achieve healthy 0.75-0.90 performance")
 
     print("\nChoose regularization strength:")
@@ -609,7 +548,7 @@ def main():
     regularization = reg_map.get(reg_choice, 'medium')
 
     print("\nChoose model complexity:")
-    print("1. Quick mode (Logistic Regression, ~30 seconds)")
+    print("1. Quick mode (Random Forest, ~30 seconds)")
     print("2. Thorough mode (Regularized XGBoost, ~2-3 minutes)")
 
     mode_choice = input("Enter choice (1 or 2): ").strip()
@@ -618,14 +557,14 @@ def main():
     print(f"Training with {regularization} regularization...")
 
     try:
-        predictor = RealisticTaskPriorityPredictor(
+        predictor = TaskPriorityPredictor(
             quick_mode=quick_mode,
             regularization_strength=regularization
         )
         predictor.train_complete_pipeline()
 
         print(f"\nTraining complete! Run:")
-        print(f"python task_priority_predictor.py")
+        print(f"python predict_task_priority.py")
 
     except Exception as e:
         print(f"Error: {e}")
