@@ -1,451 +1,451 @@
-taskid,task_description,task_description_processed,task_description_tokens,priority,category,assigned_to_employeeid,processed_token_count,original_word_count
-TASK0001,Send project status update to stakeholders,send project statu updat stakehold,send|project|statu|updat|stakehold,Low,Email,EMP041,5,6
-TASK0002,Add multi-language support for current sprint,add multilanguag support current sprint,add|multilanguag|support|current|sprint,Low,Feature Update,EMP055,5,6
-TASK0003,Update system architecture documentation (priority),updat system architectur document prioriti,updat|system|architectur|document|prioriti,Medium,Documentation,EMP035,5,5
-TASK0004,Implement data export feature (due near),implement data export featur due near,implement|data|export|featur|due|near,Medium,Feature Update,EMP003,6,6
-TASK0005,Needed: Deploy application to production environment,need deploy applic product environ,need|deploy|applic|product|environ,Medium,Deployment,EMP071,5,6
-TASK0006,Conduct team retrospective meeting - expected for next phase,conduct team retrospect meet expect next phase,conduct|team|retrospect|meet|expect|next|phase,Medium,Meeting,EMP033,7,9
-TASK0007,Scale infrastructure for increased load - due near,scale infrastructur increas load due near,scale|infrastructur|increas|load|due|near,Medium,Deployment,EMP053,6,8
-TASK0008,Create project progress summary report - immediately action required,creat project progress summari report immedi action,creat|project|progress|summari|report|immedi|action,High,Report,EMP046,7,9
-TASK0009,Update system architecture documentation - priority,updat system architectur document prioriti,updat|system|architectur|document|prioriti,Medium,Documentation,EMP096,5,6
-TASK0010,Urgent - Conduct usability testing session,urgent conduct usabl test session,urgent|conduct|usabl|test|session,High,UI/UX,EMP088,5,6
-TASK0011,Need to compose client communication regarding updates urgent,compos client commun regard updat urgent,compos|client|commun|regard|updat|urgent,High,Email,EMP068,6,8
-TASK0012,Coordinate incident response meeting (needed),coordin incid respons meet need,coordin|incid|respons|meet|need,Medium,Meeting,EMP095,5,5
-TASK0013,Generate system health monitoring report - for next quarter,gener system health monitor report next quarter,gener|system|health|monitor|report|next|quarter,Low,Report,EMP051,7,9
-TASK0014,Important: Compile user feedback analysis report,import compil user feedback analysi report,import|compil|user|feedback|analysi|report,Medium,Report,EMP087,6,6
-TASK0015,Scale infrastructure for increased load - for future release - phase 2,scale infrastructur increas load futur releas phase,scale|infrastructur|increas|load|futur|releas|phase,Low,Deployment,EMP054,7,12
-TASK0016,Debug memory leak in application - soon,debug memori leak applic soon,debug|memori|leak|applic|soon,Medium,Bug Fix,EMP032,5,7
-TASK0017,Design icons and visual elements - expected for next phase,design icon visual element expect next phase,design|icon|visual|element|expect|next|phase,Medium,UI/UX,EMP088,7,10
-TASK0018,Asap: Migrate database to new version,asap migrat databas new version,asap|migrat|databas|new|version,High,Deployment,EMP053,5,6
-TASK0019,Urgent: Generate system health monitoring report,urgent gener system health monitor report,urgent|gener|system|health|monitor|report,High,Report,EMP087,6,6
-TASK0020,Migrate database to new version - in spare time - milestone deliverable,migrat databas new version spare time mileston deliver,migrat|databas|new|version|spare|time|mileston|deliver,Low,Deployment,EMP013,8,12
-TASK0021,Create project progress summary report (immediate),creat project progress summari report immedi,creat|project|progress|summari|report|immedi,High,Report,EMP011,6,6
-TASK0022,Add multi-language support - for future release,add multilanguag support futur releas,add|multilanguag|support|futur|releas,Low,Feature Update,EMP075,5,7
-TASK0023,Soon to deploy application to production environment,soon deploy applic product environ,soon|deploy|applic|product|environ,Medium,Deployment,EMP053,5,7
-TASK0024,Priority to review pull request for authentication module,prioriti review pull request authent modul,prioriti|review|pull|request|authent|modul,Medium,Code Review,EMP058,6,8
-TASK0025,Schedule sprint planning meeting - for next quarter,schedul sprint plan meet next quarter,schedul|sprint|plan|meet|next|quarter,Low,Meeting,EMP044,6,8
-TASK0026,Conduct code review for API endpoints (needed),conduct code review api endpoint need,conduct|code|review|api|endpoint|need,Medium,Code Review,EMP018,6,7
-TASK0027,Need to add notification system to application urgent,add notif system applic urgent,add|notif|system|applic|urgent,High,Feature Update,EMP075,5,8
-TASK0028,Develop user profile management feature (updated scope),develop user profil manag featur updat scope,develop|user|profil|manag|featur|updat|scope,Low,Feature Update,EMP055,7,7
-TASK0029,Coordinate incident response meeting - as time permits,coordin incid respons meet time permit,coordin|incid|respons|meet|time|permit,Low,Meeting,EMP080,6,8
-TASK0030,Organize team building session - emergency action required,organ team build session emerg action,organ|team|build|session|emerg|action,High,Meeting,EMP004,6,8
-TASK0031,Due near to fix performance bottleneck,due near fix perform bottleneck,due|near|fix|perform|bottleneck,Medium,Bug Fix,EMP022,5,6
-TASK0032,Arrange contract renewal discussion - soon,arrang contract renew discuss soon,arrang|contract|renew|discuss|soon,Medium,Call,EMP081,5,6
-TASK0033,Important: Validate new feature implementation,import valid new featur implement,import|valid|new|featur|implement,Medium,Code Review,EMP078,5,5
-TASK0034,Needed: Plan emergency escalation call,need plan emerg escal call,need|plan|emerg|escal|call,Medium,Call,EMP020,5,5
-TASK0035,Update system architecture documentation - for next quarter,updat system architectur document next quarter,updat|system|architectur|document|next|quarter,Low,Documentation,EMP014,6,8
-TASK0036,Emergency: Update production servers with latest patches,emerg updat product server latest patch,emerg|updat|product|server|latest|patch,High,Deployment,EMP100,6,7
-TASK0037,Needed: Create responsive design for mobile,need creat respons design mobil,need|creat|respons|design|mobil,Medium,UI/UX,EMP005,5,6
-TASK0038,Build real-time chat functionality - emergency action required,build realtim chat function emerg action,build|realtim|chat|function|emerg|action,High,Feature Update,EMP084,6,8
-TASK0039,Priority to scale infrastructure for increased load,prioriti scale infrastructur increas load,prioriti|scale|infrastructur|increas|load,Medium,Deployment,EMP100,5,7
-TASK0040,Organize team building session - expected for next phase,organ team build session expect next phase,organ|team|build|session|expect|next|phase,Medium,Meeting,EMP065,7,9
-TASK0041,Critical - Draft announcement for new feature release,critic draft announc new featur releas,critic|draft|announc|new|featur|releas,High,Email,EMP049,6,8
-TASK0042,Review database optimization queries - for future release - phase 3,review databas optim queri futur releas phase,review|databas|optim|queri|futur|releas|phase,Low,Code Review,EMP091,7,11
-TASK0043,Need to document incident resolution procedures urgent,document incid resolut procedur urgent,document|incid|resolut|procedur|urgent,High,Documentation,EMP083,5,7
-TASK0044,Fix responsive design issues - soon,fix respons design issu soon,fix|respons|design|issu|soon,Medium,Bug Fix,EMP032,5,6
-TASK0045,Resolve system crash issues - expected for next phase,resolv system crash issu expect next phase,resolv|system|crash|issu|expect|next|phase,Medium,Bug Fix,EMP022,7,9
-TASK0046,Need to fix performance bottleneck asap,fix perform bottleneck asap,fix|perform|bottleneck|asap,High,Bug Fix,EMP042,4,6
-TASK0047,Schedule client consultation call - for next quarter,schedul client consult call next quarter,schedul|client|consult|call|next|quarter,Low,Call,EMP045,6,8
-TASK0048,Create incident post-mortem report - for future release - phase 1,creat incid postmortem report futur releas phase,creat|incid|postmortem|report|futur|releas|phase,Low,Report,EMP087,7,11
-TASK0049,Prepare quarterly business review (emergency),prepar quarterli busi review emerg,prepar|quarterli|busi|review|emerg,High,Report,EMP077,5,5
-TASK0050,Conduct usability testing session - phase 3,conduct usabl test session phase,conduct|usabl|test|session|phase,Low,UI/UX,EMP088,5,7
-TASK0051,Prepare quarterly business review - when convenient for current sprint,prepar quarterli busi review conveni current sprint,prepar|quarterli|busi|review|conveni|current|sprint,Low,Report,EMP051,7,10
-TASK0052,Organize incident response call - due near for next phase,organ incid respons call due near next phase,organ|incid|respons|call|due|near|next|phase,Medium,Call,EMP064,8,10
-TASK0053,Immediately: Configure load balancers for high availability,immedi configur load balanc high avail,immedi|configur|load|balanc|high|avail,High,Deployment,EMP053,6,7
-TASK0054,Create user manual for new features - in spare time,creat user manual new featur spare time,creat|user|manual|new|featur|spare|time,Low,Documentation,EMP072,7,10
-TASK0055,Urgent: Update production servers with latest patches,urgent updat product server latest patch,urgent|updat|product|server|latest|patch,High,Deployment,EMP100,6,7
-TASK0056,Expected to send meeting invitation for planning session,expect send meet invit plan session,expect|send|meet|invit|plan|session,Medium,Email,EMP041,6,8
-TASK0057,Send meeting invitation for planning session - as time permits (updated scope),send meet invit plan session time permit updat scope,send|meet|invit|plan|session|time|permit|updat|scope,Low,Email,EMP063,9,12
-TASK0058,Prepare quarterly business review - soon for next phase,prepar quarterli busi review soon next phase,prepar|quarterli|busi|review|soon|next|phase,Medium,Report,EMP048,7,9
-TASK0059,Immediately: Deploy application to production environment,immedi deploy applic product environ,immedi|deploy|applic|product|environ,High,Deployment,EMP100,5,6
-TASK0060,Fix accessibility issues in interface - expected for next phase,fix access issu interfac expect next phase,fix|access|issu|interfac|expect|next|phase,Medium,UI/UX,EMP030,7,10
-TASK0061,Compose client communication regarding updates,compos client commun regard updat,compos|client|commun|regard|updat,Low,Email,EMP041,5,5
-TASK0062,Redesign problematic user interface (important),redesign problemat user interfac import,redesign|problemat|user|interfac|import,Medium,UI/UX,EMP099,5,5
-TASK0063,Priority: Address security vulnerability,prioriti address secur vulner,prioriti|address|secur|vulner,Medium,Bug Fix,EMP022,4,4
-TASK0064,Update system architecture documentation - due near for next phase,updat system architectur document due near next phase,updat|system|architectur|document|due|near|next|phase,Medium,Documentation,EMP096,8,10
-TASK0065,Important: Add multi-language support,import add multilanguag support,import|add|multilanguag|support,Medium,Feature Update,EMP055,4,4
-TASK0066,Critical: Send meeting invitation for planning session,critic send meet invit plan session,critic|send|meet|invit|plan|session,High,Email,EMP068,6,7
-TASK0067,Critical: Update system architecture documentation,critic updat system architectur document,critic|updat|system|architectur|document,High,Documentation,EMP014,5,5
-TASK0068,Update production servers with latest patches (urgent),updat product server latest patch urgent,updat|product|server|latest|patch|urgent,High,Deployment,EMP100,6,7
-TASK0069,Urgent: Create incident post-mortem report,urgent creat incid postmortem report,urgent|creat|incid|postmortem|report,High,Report,EMP051,5,5
-TASK0070,Send progress report to management - for next quarter,send progress report manag next quarter,send|progress|report|manag|next|quarter,Low,Email,EMP063,6,9
-TASK0071,Soon: Send meeting invitation for planning session,soon send meet invit plan session,soon|send|meet|invit|plan|session,Medium,Email,EMP063,6,7
-TASK0072,Configure load balancers for high availability - needed,configur load balanc high avail need,configur|load|balanc|high|avail|need,Medium,Deployment,EMP053,6,8
-TASK0073,Need to coordinate incident response meeting immediate,coordin incid respons meet immedi,coordin|incid|respons|meet|immedi,High,Meeting,EMP012,5,7
-TASK0074,Create user manual for new features (needed),creat user manual new featur need,creat|user|manual|new|featur|need,Medium,Documentation,EMP038,6,7
-TASK0075,Update production servers with latest patches (immediately),updat product server latest patch immedi,updat|product|server|latest|patch|immedi,High,Deployment,EMP071,6,7
-TASK0076,Needed to arrange contract renewal discussion,need arrang contract renew discuss,need|arrang|contract|renew|discuss,Medium,Call,EMP021,5,6
-TASK0077,Implement data export feature - for next quarter,implement data export featur next quarter,implement|data|export|featur|next|quarter,Low,Feature Update,EMP017,6,8
-TASK0078,Send progress report to management - important,send progress report manag import,send|progress|report|manag|import,Medium,Email,EMP041,5,7
-TASK0079,Asap: Conduct technical support call,asap conduct technic support call,asap|conduct|technic|support|call,High,Call,EMP081,5,5
-TASK0080,Update API documentation for new endpoints - in spare time,updat api document new endpoint spare time,updat|api|document|new|endpoint|spare|time,Low,Documentation,EMP072,7,10
-TASK0081,Send progress report to management - for future release,send progress report manag futur releas,send|progress|report|manag|futur|releas,Low,Email,EMP031,6,9
-TASK0082,Organize team building session (expected),organ team build session expect,organ|team|build|session|expect,Medium,Meeting,EMP095,5,5
-TASK0083,Write technical specification document - in spare time - phase 2,write technic specif document spare time phase,write|technic|specif|document|spare|time|phase,Low,Documentation,EMP014,7,11
-TASK0084,Priority to implement new search functionality,prioriti implement new search function,prioriti|implement|new|search|function,Medium,Feature Update,EMP017,5,6
-TASK0085,Prepare troubleshooting documentation - due near,prepar troubleshoot document due near,prepar|troubleshoot|document|due|near,Medium,Documentation,EMP082,5,6
-TASK0086,Address security vulnerability - in spare time,address secur vulner spare time,address|secur|vulner|spare|time,Low,Bug Fix,EMP002,5,7
-TASK0087,Send meeting invitation for planning session - immediately action required,send meet invit plan session immedi action,send|meet|invit|plan|session|immedi|action,High,Email,EMP041,7,10
-TASK0088,Review database optimization queries - for future release,review databas optim queri futur releas,review|databas|optim|queri|futur|releas,Low,Code Review,EMP098,6,8
-TASK0089,Conduct code review for API endpoints - expected,conduct code review api endpoint expect,conduct|code|review|api|endpoint|expect,Medium,Code Review,EMP027,6,8
-TASK0090,Needed to create onboarding documentation,need creat onboard document,need|creat|onboard|document,Medium,Documentation,EMP014,4,5
-TASK0091,Priority to configure load balancers for high availability,prioriti configur load balanc high avail,prioriti|configur|load|balanc|high|avail,Medium,Deployment,EMP071,6,8
-TASK0092,Needed to review performance optimization changes,need review perform optim chang,need|review|perform|optim|chang,Medium,Code Review,EMP086,5,6
-TASK0093,Migrate database to new version,migrat databas new version,migrat|databas|new|version,Low,Deployment,EMP071,4,5
-TASK0094,Soon: Review security implementation in payment gateway,soon review secur implement payment gateway,soon|review|secur|implement|payment|gateway,Medium,Code Review,EMP018,6,7
-TASK0095,Build real-time chat functionality - as time permits,build realtim chat function time permit,build|realtim|chat|function|time|permit,Low,Feature Update,EMP003,6,8
-TASK0096,Priority to send progress report to management,prioriti send progress report manag,prioriti|send|progress|report|manag,Medium,Email,EMP068,5,7
-TASK0097,Update payment processing system - for next quarter,updat payment process system next quarter,updat|payment|process|system|next|quarter,Low,Feature Update,EMP055,6,8
-TASK0098,Resolve payment processing bug - as time permits (updated scope),resolv payment process bug time permit updat scope,resolv|payment|process|bug|time|permit|updat|scope,Low,Bug Fix,EMP032,8,10
-TASK0099,Migrate database to new version,migrat databas new version,migrat|databas|new|version,Low,Deployment,EMP007,4,5
-TASK0100,Important to plan architecture discussion meeting,import plan architectur discuss meet,import|plan|architectur|discuss|meet,Medium,Meeting,EMP065,5,6
-TASK0101,Update installation and setup guide - when convenient,updat instal setup guid conveni,updat|instal|setup|guid|conveni,Low,Documentation,EMP094,5,8
-TASK0102,Address security vulnerability - needed,address secur vulner need,address|secur|vulner|need,Medium,Bug Fix,EMP059,4,5
-TASK0103,Critical - Audit code for security vulnerabilities,critic audit code secur vulner,critic|audit|code|secur|vulner,High,Code Review,EMP018,5,7
-TASK0104,Send project status update to stakeholders - needed for next phase,send project statu updat stakehold need next phase,send|project|statu|updat|stakehold|need|next|phase,Medium,Email,EMP031,8,11
-TASK0105,Generate system health monitoring report - for next quarter - phase 3,gener system health monitor report next quarter phase,gener|system|health|monitor|report|next|quarter|phase,Low,Report,EMP046,8,12
-TASK0106,Soon to document incident resolution procedures,soon document incid resolut procedur,soon|document|incid|resolut|procedur,Medium,Documentation,EMP083,5,6
-TASK0107,Expected: Fix performance bottleneck,expect fix perform bottleneck,expect|fix|perform|bottleneck,Medium,Bug Fix,EMP032,4,4
-TASK0108,Due near: Deploy application to production environment,due near deploy applic product environ,due|near|deploy|applic|product|environ,Medium,Deployment,EMP054,6,7
-TASK0109,Expected to update payment processing system,expect updat payment process system,expect|updat|payment|process|system,Medium,Feature Update,EMP075,5,6
-TASK0110,Migrate database to new version - expected for next phase,migrat databas new version expect next phase,migrat|databas|new|version|expect|next|phase,Medium,Deployment,EMP013,7,10
-TASK0111,Configure load balancers for high availability for current sprint,configur load balanc high avail current sprint,configur|load|balanc|high|avail|current|sprint,Low,Deployment,EMP100,7,9
-TASK0112,Update API documentation for new endpoints - in spare time,updat api document new endpoint spare time,updat|api|document|new|endpoint|spare|time,Low,Documentation,EMP076,7,10
-TASK0113,Soon: Organize team building session,soon organ team build session,soon|organ|team|build|session,Medium,Meeting,EMP065,5,5
-TASK0114,Review security implementation in payment gateway - expected for next phase,review secur implement payment gateway expect next phase,review|secur|implement|payment|gateway|expect|next|phase,Medium,Code Review,EMP018,8,11
-TASK0115,Design icons and visual elements - when convenient for current sprint,design icon visual element conveni current sprint,design|icon|visual|element|conveni|current|sprint,Low,UI/UX,EMP099,7,11
-TASK0116,Prepare troubleshooting documentation - when convenient (updated scope),prepar troubleshoot document conveni updat scope,prepar|troubleshoot|document|conveni|updat|scope,Low,Documentation,EMP076,6,8
-TASK0117,Soon to organize team building session,soon organ team build session,soon|organ|team|build|session,Medium,Meeting,EMP069,5,6
-TASK0118,Update API documentation for new endpoints - soon,updat api document new endpoint soon,updat|api|document|new|endpoint|soon,Medium,Documentation,EMP096,6,8
-TASK0119,Update production servers with latest patches - when convenient,updat product server latest patch conveni,updat|product|server|latest|patch|conveni,Low,Deployment,EMP053,6,9
-TASK0120,Add multi-language support - in spare time,add multilanguag support spare time,add|multilanguag|support|spare|time,Low,Feature Update,EMP009,5,7
-TASK0121,Generate system health monitoring report - expected for next phase,gener system health monitor report expect next phase,gener|system|health|monitor|report|expect|next|phase,Medium,Report,EMP087,8,10
-TASK0122,Expected to add notification system to application,expect add notif system applic,expect|add|notif|system|applic,Medium,Feature Update,EMP029,5,7
-TASK0123,Notify team about system maintenance - as time permits,notifi team system mainten time permit,notifi|team|system|mainten|time|permit,Low,Email,EMP041,6,9
-TASK0124,Add notification system to application - in spare time (updated scope),add notif system applic spare time updat scope,add|notif|system|applic|spare|time|updat|scope,Low,Feature Update,EMP029,8,11
-TASK0125,Asap - Coordinate incident response meeting,asap coordin incid respons meet,asap|coordin|incid|respons|meet,High,Meeting,EMP069,5,6
-TASK0126,Arrange vendor negotiation call - for future release - phase 2,arrang vendor negoti call futur releas phase,arrang|vendor|negoti|call|futur|releas|phase,Low,Call,EMP057,7,11
-TASK0127,Debug memory leak in application - for next quarter,debug memori leak applic next quarter,debug|memori|leak|applic|next|quarter,Low,Bug Fix,EMP032,6,9
-TASK0128,Configure server infrastructure for new release - expected for next phase,configur server infrastructur new releas expect next phase,configur|server|infrastructur|new|releas|expect|next|phase,Medium,Deployment,EMP053,8,11
-TASK0129,Due near to arrange contract renewal discussion,due near arrang contract renew discuss,due|near|arrang|contract|renew|discuss,Medium,Call,EMP057,6,7
-TASK0130,Immediate: Rollback deployment due to issues,immedi rollback deploy due issu,immedi|rollback|deploy|due|issu,High,Deployment,EMP054,5,6
-TASK0131,Communicate deadline changes to team - in spare time,commun deadlin chang team spare time,commun|deadlin|chang|team|spare|time,Low,Email,EMP041,6,9
-TASK0132,Send project status update to stakeholders (due near),send project statu updat stakehold due near,send|project|statu|updat|stakehold|due|near,Medium,Email,EMP047,7,8
-TASK0133,Soon to arrange client demonstration session,soon arrang client demonstr session,soon|arrang|client|demonstr|session,Medium,Meeting,EMP080,5,6
-TASK0134,Rollback deployment due to issues (asap),rollback deploy due issu asap,rollback|deploy|due|issu|asap,High,Deployment,EMP053,5,6
-TASK0135,Review pull request for authentication module (emergency),review pull request authent modul emerg,review|pull|request|authent|modul|emerg,High,Code Review,EMP091,6,7
-TASK0136,Send progress report to management - as time permits,send progress report manag time permit,send|progress|report|manag|time|permit,Low,Email,EMP063,6,9
-TASK0137,Need to create project progress summary report critical,creat project progress summari report critic,creat|project|progress|summari|report|critic,High,Report,EMP087,6,8
-TASK0138,Critical - Fix login authentication error,critic fix login authent error,critic|fix|login|authent|error,High,Bug Fix,EMP001,5,6
-TASK0139,Document compliance audit results - important,document complianc audit result import,document|complianc|audit|result|import,Medium,Report,EMP077,5,6
-TASK0140,Soon to organize stakeholder review session,soon organ stakehold review session,soon|organ|stakehold|review|session,Medium,Meeting,EMP089,5,6
-TASK0141,Add notification system to application - due near for next phase,add notif system applic due near next phase,add|notif|system|applic|due|near|next|phase,Medium,Feature Update,EMP009,8,11
-TASK0142,Configure load balancers for high availability - due near for next phase,configur load balanc high avail due near next phase,configur|load|balanc|high|avail|due|near|next|phase,Medium,Deployment,EMP013,9,12
-TASK0143,Build real-time chat functionality - for next quarter,build realtim chat function next quarter,build|realtim|chat|function|next|quarter,Low,Feature Update,EMP055,6,8
-TASK0144,Generate system health monitoring report - in spare time,gener system health monitor report spare time,gener|system|health|monitor|report|spare|time,Low,Report,EMP048,7,9
-TASK0145,Document incident resolution procedures - as time permits,document incid resolut procedur time permit,document|incid|resolut|procedur|time|permit,Low,Documentation,EMP014,6,8
-TASK0146,Conduct team retrospective meeting - in spare time (updated scope),conduct team retrospect meet spare time updat scope,conduct|team|retrospect|meet|spare|time|updat|scope,Low,Meeting,EMP090,8,10
-TASK0147,Due near: Plan emergency escalation call,due near plan emerg escal call,due|near|plan|emerg|escal|call,Medium,Call,EMP037,6,6
-TASK0148,Conduct team retrospective meeting - expected,conduct team retrospect meet expect,conduct|team|retrospect|meet|expect,Medium,Meeting,EMP095,5,6
-TASK0149,Review pull request for authentication module - soon,review pull request authent modul soon,review|pull|request|authent|modul|soon,Medium,Code Review,EMP026,6,8
-TASK0150,Deploy application to production environment - due near,deploy applic product environ due near,deploy|applic|product|environ|due|near,Medium,Deployment,EMP007,6,8
-TASK0151,Review database optimization queries - for future release (updated scope),review databas optim queri futur releas updat scope,review|databas|optim|queri|futur|releas|updat|scope,Low,Code Review,EMP026,8,10
-TASK0152,Configure load balancers for high availability - important,configur load balanc high avail import,configur|load|balanc|high|avail|import,Medium,Deployment,EMP007,6,8
-TASK0153,Debug memory leak in application - soon,debug memori leak applic soon,debug|memori|leak|applic|soon,Medium,Bug Fix,EMP056,5,7
-TASK0154,Implement data export feature,implement data export featur,implement|data|export|featur,Low,Feature Update,EMP003,4,4
-TASK0155,Create onboarding documentation,creat onboard document,creat|onboard|document,Low,Documentation,EMP076,3,3
-TASK0156,Schedule customer feedback call,schedul custom feedback call,schedul|custom|feedback|call,Low,Call,EMP081,4,4
-TASK0157,Organize incident response call - needed for next phase,organ incid respons call need next phase,organ|incid|respons|call|need|next|phase,Medium,Call,EMP045,7,9
-TASK0158,Create onboarding documentation - for future release - phase 1,creat onboard document futur releas phase,creat|onboard|document|futur|releas|phase,Low,Documentation,EMP076,6,10
-TASK0159,Create onboarding documentation - important for next phase,creat onboard document import next phase,creat|onboard|document|import|next|phase,Medium,Documentation,EMP082,6,8
-TASK0160,Need to review pull request for authentication module immediate,review pull request authent modul immedi,review|pull|request|authent|modul|immedi,High,Code Review,EMP027,6,9
-TASK0161,Critical: Prepare weekly newsletter for team,critic prepar weekli newslett team,critic|prepar|weekli|newslett|team,High,Email,EMP041,5,6
-TASK0162,Emergency: Draft announcement for new feature release,emerg draft announc new featur releas,emerg|draft|announc|new|featur|releas,High,Email,EMP031,6,7
-TASK0163,Design icons and visual elements - priority,design icon visual element prioriti,design|icon|visual|element|prioriti,Medium,UI/UX,EMP006,5,7
-TASK0164,Plan team sync call for project updates - needed,plan team sync call project updat need,plan|team|sync|call|project|updat|need,Medium,Call,EMP045,7,9
-TASK0165,Immediate: Address security vulnerability,immedi address secur vulner,immedi|address|secur|vulner,High,Bug Fix,EMP022,4,4
-TASK0166,Redesign problematic user interface,redesign problemat user interfac,redesign|problemat|user|interfac,Low,UI/UX,EMP030,4,4
-TASK0167,Prepare troubleshooting documentation - expected for next phase,prepar troubleshoot document expect next phase,prepar|troubleshoot|document|expect|next|phase,Medium,Documentation,EMP096,6,8
-TASK0168,Immediate - Debug memory leak in application,immedi debug memori leak applic,immedi|debug|memori|leak|applic,High,Bug Fix,EMP085,5,7
-TASK0169,Immediately: Fix responsive design issues,immedi fix respons design issu,immedi|fix|respons|design|issu,High,Bug Fix,EMP032,5,5
-TASK0170,Write technical specification document - when convenient - milestone deliverable,write technic specif document conveni mileston deliver,write|technic|specif|document|conveni|mileston|deliver,Low,Documentation,EMP096,7,10
-TASK0171,Conduct usability testing session - important,conduct usabl test session import,conduct|usabl|test|session|import,Medium,UI/UX,EMP060,5,6
-TASK0172,Configure load balancers for high availability - for future release,configur load balanc high avail futur releas,configur|load|balanc|high|avail|futur|releas,Low,Deployment,EMP100,7,10
-TASK0173,Soon: Communicate deadline changes to team,soon commun deadlin chang team,soon|commun|deadlin|chang|team,Medium,Email,EMP025,5,6
-TASK0174,Critical - Coordinate incident response meeting,critic coordin incid respons meet,critic|coordin|incid|respons|meet,High,Meeting,EMP039,5,6
-TASK0175,Prepare security audit documentation - emergency action required,prepar secur audit document emerg action,prepar|secur|audit|document|emerg|action,High,Report,EMP046,6,8
-TASK0176,Generate system health monitoring report - due near for next phase,gener system health monitor report due near next phase,gener|system|health|monitor|report|due|near|next|phase,Medium,Report,EMP008,9,11
-TASK0177,Needed: Fix accessibility issues in interface,need fix access issu interfac,need|fix|access|issu|interfac,Medium,UI/UX,EMP092,5,6
-TASK0178,Needed: Configure server infrastructure for new release,need configur server infrastructur new releas,need|configur|server|infrastructur|new|releas,Medium,Deployment,EMP100,6,7
-TASK0179,Expected: Resolve system crash issues,expect resolv system crash issu,expect|resolv|system|crash|issu,Medium,Bug Fix,EMP056,5,5
-TASK0180,Emergency - Debug memory leak in application,emerg debug memori leak applic,emerg|debug|memori|leak|applic,High,Bug Fix,EMP067,5,7
-TASK0181,Urgent: Generate system health monitoring report,urgent gener system health monitor report,urgent|gener|system|health|monitor|report,High,Report,EMP011,6,6
-TASK0182,Create advanced reporting dashboard - for future release,creat advanc report dashboard futur releas,creat|advanc|report|dashboard|futur|releas,Low,Feature Update,EMP003,6,8
-TASK0183,Conduct technical support call - for future release,conduct technic support call futur releas,conduct|technic|support|call|futur|releas,Low,Call,EMP021,6,8
-TASK0184,Need to organize stakeholder review session asap,organ stakehold review session asap,organ|stakehold|review|session|asap,High,Meeting,EMP033,5,7
-TASK0185,Deploy application to production environment - due near for next phase,deploy applic product environ due near next phase,deploy|applic|product|environ|due|near|next|phase,Medium,Deployment,EMP100,8,11
-TASK0186,Develop user profile management feature - due near,develop user profil manag featur due near,develop|user|profil|manag|featur|due|near,Medium,Feature Update,EMP017,7,8
-TASK0187,Conduct usability testing session - priority for next phase,conduct usabl test session prioriti next phase,conduct|usabl|test|session|prioriti|next|phase,Medium,UI/UX,EMP099,7,9
-TASK0188,Migrate database to new version - when convenient,migrat databas new version conveni,migrat|databas|new|version|conveni,Low,Deployment,EMP071,5,8
-TASK0189,Need to conduct code review for api endpoints asap,conduct code review api endpoint asap,conduct|code|review|api|endpoint|asap,High,Code Review,EMP018,6,9
-TASK0190,Organize incident response call - for next quarter,organ incid respons call next quarter,organ|incid|respons|call|next|quarter,Low,Call,EMP066,6,8
-TASK0191,Needed to create onboarding documentation,need creat onboard document,need|creat|onboard|document,Medium,Documentation,EMP096,4,5
-TASK0192,Asap: Send meeting invitation for planning session,asap send meet invit plan session,asap|send|meet|invit|plan|session,High,Email,EMP031,6,7
-TASK0193,Review performance optimization changes (needed),review perform optim chang need,review|perform|optim|chang|need,Medium,Code Review,EMP097,5,5
-TASK0194,Fix responsive design issues (soon),fix respons design issu soon,fix|respons|design|issu|soon,Medium,Bug Fix,EMP056,5,5
-TASK0195,Develop user experience flow for checkout - due near for next phase,develop user experi flow checkout due near next phase,develop|user|experi|flow|checkout|due|near|next|phase,Medium,UI/UX,EMP030,9,12
-TASK0196,Communicate deadline changes to team - emergency action required,commun deadlin chang team emerg action,commun|deadlin|chang|team|emerg|action,High,Email,EMP041,6,9
-TASK0197,Fix responsive design issues,fix respons design issu,fix|respons|design|issu,Low,Bug Fix,EMP056,4,4
-TASK0198,Validate coding standards in user interface - in spare time,valid code standard user interfac spare time,valid|code|standard|user|interfac|spare|time,Low,Code Review,EMP098,7,10
-TASK0199,Coordinate incident response meeting - needed,coordin incid respons meet need,coordin|incid|respons|meet|need,Medium,Meeting,EMP089,5,6
-TASK0200,Schedule sprint planning meeting,schedul sprint plan meet,schedul|sprint|plan|meet,Low,Meeting,EMP044,4,4
-TASK0201,Validate new feature implementation - soon,valid new featur implement soon,valid|new|featur|implement|soon,Medium,Code Review,EMP018,5,6
-TASK0202,Audit code for security vulnerabilities (immediately),audit code secur vulner immedi,audit|code|secur|vulner|immedi,High,Code Review,EMP086,5,6
-TASK0203,Implement new search functionality - for next quarter,implement new search function next quarter,implement|new|search|function|next|quarter,Low,Feature Update,EMP003,6,8
-TASK0204,Update payment processing system,updat payment process system,updat|payment|process|system,Low,Feature Update,EMP084,4,4
-TASK0205,Important: Configure server infrastructure for new release,import configur server infrastructur new releas,import|configur|server|infrastructur|new|releas,Medium,Deployment,EMP007,6,7
-TASK0206,Due near to organize stakeholder review session,due near organ stakehold review session,due|near|organ|stakehold|review|session,Medium,Meeting,EMP089,6,7
-TASK0207,Conduct code review for API endpoints - milestone deliverable,conduct code review api endpoint mileston deliver,conduct|code|review|api|endpoint|mileston|deliver,Low,Code Review,EMP018,7,9
-TASK0208,Implement new search functionality,implement new search function,implement|new|search|function,Low,Feature Update,EMP084,4,4
-TASK0209,Coordinate incident response meeting - expected for next phase,coordin incid respons meet expect next phase,coordin|incid|respons|meet|expect|next|phase,Medium,Meeting,EMP095,7,9
-TASK0210,Create onboarding documentation - important for next phase,creat onboard document import next phase,creat|onboard|document|import|next|phase,Medium,Documentation,EMP076,6,8
-TASK0211,Priority: Audit code for security vulnerabilities,prioriti audit code secur vulner,prioriti|audit|code|secur|vulner,Medium,Code Review,EMP097,5,6
-TASK0212,Emergency: Write technical specification document,emerg write technic specif document,emerg|write|technic|specif|document,High,Documentation,EMP094,5,5
-TASK0213,Due near to plan emergency escalation call,due near plan emerg escal call,due|near|plan|emerg|escal|call,Medium,Call,EMP021,6,7
-TASK0214,Priority to fix login authentication error,prioriti fix login authent error,prioriti|fix|login|authent|error,Medium,Bug Fix,EMP042,5,6
-TASK0215,Add multi-language support - as time permits,add multilanguag support time permit,add|multilanguag|support|time|permit,Low,Feature Update,EMP075,5,7
-TASK0216,Fix responsive design issues - priority for next phase,fix respons design issu prioriti next phase,fix|respons|design|issu|prioriti|next|phase,Medium,Bug Fix,EMP085,7,9
-TASK0217,Need to resolve payment processing bug urgent,resolv payment process bug urgent,resolv|payment|process|bug|urgent,High,Bug Fix,EMP056,5,7
-TASK0218,Priority to organize stakeholder review session,prioriti organ stakehold review session,prioriti|organ|stakehold|review|session,Medium,Meeting,EMP069,5,6
-TASK0219,Build real-time chat functionality - in spare time,build realtim chat function spare time,build|realtim|chat|function|spare|time,Low,Feature Update,EMP075,6,8
-TASK0220,Needed to prepare weekly newsletter for team,need prepar weekli newslett team,need|prepar|weekli|newslett|team,Medium,Email,EMP073,5,7
-TASK0221,Asap - Organize incident response call,asap organ incid respons call,asap|organ|incid|respons|call,High,Call,EMP020,5,6
-TASK0222,Fix performance bottleneck - due near,fix perform bottleneck due near,fix|perform|bottleneck|due|near,Medium,Bug Fix,EMP022,5,6
-TASK0223,Review security implementation in payment gateway - important for next phase,review secur implement payment gateway import next phase,review|secur|implement|payment|gateway|import|next|phase,Medium,Code Review,EMP018,8,11
-TASK0224,Due near: Write technical specification document,due near write technic specif document,due|near|write|technic|specif|document,Medium,Documentation,EMP082,6,6
-TASK0225,Generate monthly performance analytics - expected for next phase,gener monthli perform analyt expect next phase,gener|monthli|perform|analyt|expect|next|phase,Medium,Report,EMP046,7,9
-TASK0226,Expected: Create advanced reporting dashboard,expect creat advanc report dashboard,expect|creat|advanc|report|dashboard,Medium,Feature Update,EMP055,5,5
-TASK0227,Need to design user interface for mobile application emergency,design user interfac mobil applic emerg,design|user|interfac|mobil|applic|emerg,High,UI/UX,EMP092,6,9
-TASK0228,Urgent: Organize stakeholder review session,urgent organ stakehold review session,urgent|organ|stakehold|review|session,High,Meeting,EMP004,5,5
-TASK0229,Arrange vendor negotiation call (soon),arrang vendor negoti call soon,arrang|vendor|negoti|call|soon,Medium,Call,EMP020,5,5
-TASK0230,Priority: Notify team about system maintenance,prioriti notifi team system mainten,prioriti|notifi|team|system|mainten,Medium,Email,EMP073,5,6
-TASK0231,Review pull request for authentication module (important),review pull request authent modul import,review|pull|request|authent|modul|import,Medium,Code Review,EMP026,6,7
-TASK0232,Create advanced reporting dashboard - for next quarter for current sprint,creat advanc report dashboard next quarter current sprint,creat|advanc|report|dashboard|next|quarter|current|sprint,Low,Feature Update,EMP009,8,11
-TASK0233,Urgent: Plan emergency escalation call,urgent plan emerg escal call,urgent|plan|emerg|escal|call,High,Call,EMP070,5,5
-TASK0234,Add multi-language support (due near),add multilanguag support due near,add|multilanguag|support|due|near,Medium,Feature Update,EMP003,5,5
-TASK0235,Need to review pull request for authentication module urgent,review pull request authent modul urgent,review|pull|request|authent|modul|urgent,High,Code Review,EMP098,6,9
-TASK0236,Needed: Schedule sprint planning meeting,need schedul sprint plan meet,need|schedul|sprint|plan|meet,Medium,Meeting,EMP069,5,5
-TASK0237,Conduct code review for API endpoints - important,conduct code review api endpoint import,conduct|code|review|api|endpoint|import,Medium,Code Review,EMP098,6,8
-TASK0238,Generate system health monitoring report (important),gener system health monitor report import,gener|system|health|monitor|report|import,Medium,Report,EMP048,6,6
-TASK0239,Due near to coordinate incident response meeting,due near coordin incid respons meet,due|near|coordin|incid|respons|meet,Medium,Meeting,EMP095,6,7
-TASK0240,Immediately - Send meeting invitation for planning session,immedi send meet invit plan session,immedi|send|meet|invit|plan|session,High,Email,EMP041,6,8
-TASK0241,Create onboarding documentation - expected for next phase,creat onboard document expect next phase,creat|onboard|document|expect|next|phase,Medium,Documentation,EMP076,6,8
-TASK0242,Priority to scale infrastructure for increased load,prioriti scale infrastructur increas load,prioriti|scale|infrastructur|increas|load,Medium,Deployment,EMP071,5,7
-TASK0243,Expected: Create user manual for new features,expect creat user manual new featur,expect|creat|user|manual|new|featur,Medium,Documentation,EMP096,6,7
-TASK0244,Audit code for security vulnerabilities - asap action required,audit code secur vulner asap action,audit|code|secur|vulner|asap|action,High,Code Review,EMP027,6,9
-TASK0245,Validate new feature implementation - priority for next phase,valid new featur implement prioriti next phase,valid|new|featur|implement|prioriti|next|phase,Medium,Code Review,EMP027,7,9
-TASK0246,Schedule customer feedback call (priority),schedul custom feedback call prioriti,schedul|custom|feedback|call|prioriti,Medium,Call,EMP010,5,5
-TASK0247,Arrange vendor negotiation call - in spare time - milestone deliverable,arrang vendor negoti call spare time mileston deliver,arrang|vendor|negoti|call|spare|time|mileston|deliver,Low,Call,EMP045,8,11
-TASK0248,Expected to plan architecture discussion meeting,expect plan architectur discuss meet,expect|plan|architectur|discuss|meet,Medium,Meeting,EMP065,5,6
-TASK0249,Design icons and visual elements - soon for next phase,design icon visual element soon next phase,design|icon|visual|element|soon|next|phase,Medium,UI/UX,EMP060,7,10
-TASK0250,Update installation and setup guide - due near,updat instal setup guid due near,updat|instal|setup|guid|due|near,Medium,Documentation,EMP074,6,8
-TASK0251,Create incident post-mortem report - as time permits,creat incid postmortem report time permit,creat|incid|postmortem|report|time|permit,Low,Report,EMP028,6,8
-TASK0252,Fix login authentication error - due near for next phase,fix login authent error due near next phase,fix|login|authent|error|due|near|next|phase,Medium,Bug Fix,EMP059,8,10
-TASK0253,Migrate database to new version - when convenient,migrat databas new version conveni,migrat|databas|new|version|conveni,Low,Deployment,EMP071,5,8
-TASK0254,Build real-time chat functionality - urgent action required,build realtim chat function urgent action,build|realtim|chat|function|urgent|action,High,Feature Update,EMP055,6,8
-TASK0255,Resolve payment processing bug - due near,resolv payment process bug due near,resolv|payment|process|bug|due|near,Medium,Bug Fix,EMP022,6,7
-TASK0256,Organize stakeholder review session - priority for next phase,organ stakehold review session prioriti next phase,organ|stakehold|review|session|prioriti|next|phase,Medium,Meeting,EMP080,7,9
-TASK0257,Important to review security implementation in payment gateway,import review secur implement payment gateway,import|review|secur|implement|payment|gateway,Medium,Code Review,EMP018,6,8
-TASK0258,Asap - Compose client communication regarding updates,asap compos client commun regard updat,asap|compos|client|commun|regard|updat,High,Email,EMP025,6,7
-TASK0259,Compose client communication regarding updates - for future release - phase 2,compos client commun regard updat futur releas phase,compos|client|commun|regard|updat|futur|releas|phase,Low,Email,EMP041,8,12
-TASK0260,Create project progress summary report - in spare time,creat project progress summari report spare time,creat|project|progress|summari|report|spare|time,Low,Report,EMP051,7,9
-TASK0261,Schedule client consultation call (priority),schedul client consult call prioriti,schedul|client|consult|call|prioriti,Medium,Call,EMP037,5,5
-TASK0262,Organize incident response call - in spare time,organ incid respons call spare time,organ|incid|respons|call|spare|time,Low,Call,EMP045,6,8
-TASK0263,Priority: Setup continuous integration pipeline,prioriti setup continu integr pipelin,prioriti|setup|continu|integr|pipelin,Medium,Deployment,EMP100,5,5
-TASK0264,Design icons and visual elements - in spare time,design icon visual element spare time,design|icon|visual|element|spare|time,Low,UI/UX,EMP088,6,9
-TASK0265,Write technical specification document - when convenient,write technic specif document conveni,write|technic|specif|document|conveni,Low,Documentation,EMP072,5,7
-TASK0266,Prepare weekly newsletter for team - priority for next phase,prepar weekli newslett team prioriti next phase,prepar|weekli|newslett|team|prioriti|next|phase,Medium,Email,EMP073,7,10
-TASK0267,Prepare quarterly business review - needed,prepar quarterli busi review need,prepar|quarterli|busi|review|need,Medium,Report,EMP087,5,6
-TASK0268,Scale infrastructure for increased load (priority),scale infrastructur increas load prioriti,scale|infrastructur|increas|load|prioriti,Medium,Deployment,EMP053,5,6
-TASK0269,Communicate deadline changes to team - as time permits,commun deadlin chang team time permit,commun|deadlin|chang|team|time|permit,Low,Email,EMP041,6,9
-TASK0270,Update payment processing system,updat payment process system,updat|payment|process|system,Low,Feature Update,EMP075,4,4
-TASK0271,Review database optimization queries for current sprint,review databas optim queri current sprint,review|databas|optim|queri|current|sprint,Low,Code Review,EMP027,6,7
-TASK0272,Review security implementation in payment gateway,review secur implement payment gateway,review|secur|implement|payment|gateway,Low,Code Review,EMP019,5,6
-TASK0273,Update installation and setup guide (immediately),updat instal setup guid immedi,updat|instal|setup|guid|immedi,High,Documentation,EMP076,5,6
-TASK0274,Need to create advanced reporting dashboard immediate,creat advanc report dashboard immedi,creat|advanc|report|dashboard|immedi,High,Feature Update,EMP017,5,7
-TASK0275,Needed to add notification system to application,need add notif system applic,need|add|notif|system|applic,Medium,Feature Update,EMP055,5,7
-TASK0276,Communicate deadline changes to team - for next quarter,commun deadlin chang team next quarter,commun|deadlin|chang|team|next|quarter,Low,Email,EMP025,6,9
-TASK0277,Priority to review security implementation in payment gateway,prioriti review secur implement payment gateway,prioriti|review|secur|implement|payment|gateway,Medium,Code Review,EMP091,6,8
-TASK0278,Emergency - Generate system health monitoring report,emerg gener system health monitor report,emerg|gener|system|health|monitor|report,High,Report,EMP087,6,7
-TASK0279,Immediately - Conduct team retrospective meeting,immedi conduct team retrospect meet,immedi|conduct|team|retrospect|meet,High,Meeting,EMP044,5,6
-TASK0280,Resolve data synchronization problem,resolv data synchron problem,resolv|data|synchron|problem,Low,Bug Fix,EMP032,4,4
-TASK0281,Organize stakeholder review session - for next quarter for current sprint,organ stakehold review session next quarter current sprint,organ|stakehold|review|session|next|quarter|current|sprint,Low,Meeting,EMP080,8,11
-TASK0282,Send progress report to management - for future release,send progress report manag futur releas,send|progress|report|manag|futur|releas,Low,Email,EMP025,6,9
-TASK0283,Review database optimization queries (important),review databas optim queri import,review|databas|optim|queri|import,Medium,Code Review,EMP018,5,5
-TASK0284,Compile user feedback analysis report - expected for next phase,compil user feedback analysi report expect next phase,compil|user|feedback|analysi|report|expect|next|phase,Medium,Report,EMP061,8,10
-TASK0285,Need to plan emergency escalation call emergency,plan emerg escal call emerg,plan|emerg|escal|call|emerg,High,Call,EMP057,5,7
-TASK0286,Add multi-language support - soon for next phase,add multilanguag support soon next phase,add|multilanguag|support|soon|next|phase,Medium,Feature Update,EMP029,6,8
-TASK0287,Needed: Send progress report to management,need send progress report manag,need|send|progress|report|manag,Medium,Email,EMP063,5,6
-TASK0288,Conduct technical support call - in spare time,conduct technic support call spare time,conduct|technic|support|call|spare|time,Low,Call,EMP050,6,8
-TASK0289,Conduct technical support call - in spare time,conduct technic support call spare time,conduct|technic|support|call|spare|time,Low,Call,EMP070,6,8
-TASK0290,Need to conduct usability testing session asap,conduct usabl test session asap,conduct|usabl|test|session|asap,High,UI/UX,EMP006,5,7
-TASK0291,Design icons and visual elements - in spare time for current sprint,design icon visual element spare time current sprint,design|icon|visual|element|spare|time|current|sprint,Low,UI/UX,EMP040,8,12
-TASK0292,Need to validate new feature implementation asap,valid new featur implement asap,valid|new|featur|implement|asap,High,Code Review,EMP052,5,7
-TASK0293,Urgent - Create wireframes for dashboard layout,urgent creat wirefram dashboard layout,urgent|creat|wirefram|dashboard|layout,High,UI/UX,EMP099,5,7
-TASK0294,Validate coding standards in user interface,valid code standard user interfac,valid|code|standard|user|interfac,Low,Code Review,EMP018,5,6
-TASK0295,Resolve data synchronization problem (immediate),resolv data synchron problem immedi,resolv|data|synchron|problem|immedi,High,Bug Fix,EMP042,5,5
-TASK0296,Migrate database to new version (soon),migrat databas new version soon,migrat|databas|new|version|soon,Medium,Deployment,EMP100,5,6
-TASK0297,Rollback deployment due to issues - soon,rollback deploy due issu soon,rollback|deploy|due|issu|soon,Medium,Deployment,EMP100,5,7
-TASK0298,Communicate deadline changes to team,commun deadlin chang team,commun|deadlin|chang|team,Low,Email,EMP041,4,5
-TASK0299,Conduct team retrospective meeting (critical),conduct team retrospect meet critic,conduct|team|retrospect|meet|critic,High,Meeting,EMP033,5,5
-TASK0300,Conduct usability testing session - due near for next phase,conduct usabl test session due near next phase,conduct|usabl|test|session|due|near|next|phase,Medium,UI/UX,EMP040,8,10
-TASK0301,Fix login authentication error (immediate),fix login authent error immedi,fix|login|authent|error|immedi,High,Bug Fix,EMP022,5,5
-TASK0302,Coordinate incident response meeting,coordin incid respons meet,coordin|incid|respons|meet,Low,Meeting,EMP095,4,4
-TASK0303,Prepare troubleshooting documentation - for future release,prepar troubleshoot document futur releas,prepar|troubleshoot|document|futur|releas,Low,Documentation,EMP076,5,7
-TASK0304,Review security implementation in payment gateway,review secur implement payment gateway,review|secur|implement|payment|gateway,Low,Code Review,EMP027,5,6
-TASK0305,Update API documentation for new endpoints - as time permits,updat api document new endpoint time permit,updat|api|document|new|endpoint|time|permit,Low,Documentation,EMP083,7,10
-TASK0306,Notify team about system maintenance - in spare time,notifi team system mainten spare time,notifi|team|system|mainten|spare|time,Low,Email,EMP034,6,9
-TASK0307,Schedule client consultation call - when convenient,schedul client consult call conveni,schedul|client|consult|call|conveni,Low,Call,EMP045,5,7
-TASK0308,Address security vulnerability (priority),address secur vulner prioriti,address|secur|vulner|prioriti,Medium,Bug Fix,EMP056,4,4
-TASK0309,Soon to create incident post-mortem report,soon creat incid postmortem report,soon|creat|incid|postmortem|report,Medium,Report,EMP011,5,6
-TASK0310,Need to conduct team retrospective meeting critical,conduct team retrospect meet critic,conduct|team|retrospect|meet|critic,High,Meeting,EMP065,5,7
-TASK0311,Conduct usability testing session (expected),conduct usabl test session expect,conduct|usabl|test|session|expect,Medium,UI/UX,EMP088,5,5
-TASK0312,Soon to plan team sync call for project updates,soon plan team sync call project updat,soon|plan|team|sync|call|project|updat,Medium,Call,EMP010,7,9
-TASK0313,Migrate database to new version - important for next phase,migrat databas new version import next phase,migrat|databas|new|version|import|next|phase,Medium,Deployment,EMP053,7,10
-TASK0314,Create user manual for new features - when convenient,creat user manual new featur conveni,creat|user|manual|new|featur|conveni,Low,Documentation,EMP076,6,9
-TASK0315,Review pull request for authentication module - important for next phase,review pull request authent modul import next phase,review|pull|request|authent|modul|import|next|phase,Medium,Code Review,EMP097,8,11
-TASK0316,Immediately - Document incident resolution procedures,immedi document incid resolut procedur,immedi|document|incid|resolut|procedur,High,Documentation,EMP094,5,6
-TASK0317,Conduct team retrospective meeting (needed),conduct team retrospect meet need,conduct|team|retrospect|meet|need,Medium,Meeting,EMP024,5,5
-TASK0318,Arrange client demonstration session (needed),arrang client demonstr session need,arrang|client|demonstr|session|need,Medium,Meeting,EMP044,5,5
-TASK0319,Soon to redesign problematic user interface,soon redesign problemat user interfac,soon|redesign|problemat|user|interfac,Medium,UI/UX,EMP016,5,6
-TASK0320,Generate system health monitoring report - as time permits,gener system health monitor report time permit,gener|system|health|monitor|report|time|permit,Low,Report,EMP008,7,9
-TASK0321,Needed to create onboarding documentation,need creat onboard document,need|creat|onboard|document,Medium,Documentation,EMP096,4,5
-TASK0322,Expected: Send project status update to stakeholders,expect send project statu updat stakehold,expect|send|project|statu|updat|stakehold,Medium,Email,EMP073,6,7
-TASK0323,Critical: Create responsive design for mobile,critic creat respons design mobil,critic|creat|respons|design|mobil,High,UI/UX,EMP040,5,6
-TASK0324,Schedule client consultation call - as time permits,schedul client consult call time permit,schedul|client|consult|call|time|permit,Low,Call,EMP064,6,8
-TASK0325,Compile user feedback analysis report,compil user feedback analysi report,compil|user|feedback|analysi|report,Low,Report,EMP061,5,5
-TASK0326,Critical - Add multi-language support,critic add multilanguag support,critic|add|multilanguag|support,High,Feature Update,EMP055,4,5
-TASK0327,Compile user feedback analysis report (due near),compil user feedback analysi report due near,compil|user|feedback|analysi|report|due|near,Medium,Report,EMP087,7,7
-TASK0328,Expected: Build real-time chat functionality,expect build realtim chat function,expect|build|realtim|chat|function,Medium,Feature Update,EMP084,5,5
-TASK0329,Expected: Write technical specification document,expect write technic specif document,expect|write|technic|specif|document,Medium,Documentation,EMP076,5,5
-TASK0330,Schedule sprint planning meeting - soon for next phase,schedul sprint plan meet soon next phase,schedul|sprint|plan|meet|soon|next|phase,Medium,Meeting,EMP080,7,9
-TASK0331,Arrange contract renewal discussion - important,arrang contract renew discuss import,arrang|contract|renew|discuss|import,Medium,Call,EMP020,5,6
-TASK0332,Need to prepare quarterly business review urgent,prepar quarterli busi review urgent,prepar|quarterli|busi|review|urgent,High,Report,EMP011,5,7
-TASK0333,Document incident resolution procedures - for future release,document incid resolut procedur futur releas,document|incid|resolut|procedur|futur|releas,Low,Documentation,EMP035,6,8
-TASK0334,Add multi-language support - soon for next phase,add multilanguag support soon next phase,add|multilanguag|support|soon|next|phase,Medium,Feature Update,EMP036,6,8
-TASK0335,Debug memory leak in application - when convenient (updated scope),debug memori leak applic conveni updat scope,debug|memori|leak|applic|conveni|updat|scope,Low,Bug Fix,EMP022,7,10
-TASK0336,Schedule customer feedback call (immediate),schedul custom feedback call immedi,schedul|custom|feedback|call|immedi,High,Call,EMP070,5,5
-TASK0337,Immediately - Create wireframes for dashboard layout,immedi creat wirefram dashboard layout,immedi|creat|wirefram|dashboard|layout,High,UI/UX,EMP099,5,7
-TASK0338,Due near: Review database optimization queries,due near review databas optim queri,due|near|review|databas|optim|queri,Medium,Code Review,EMP052,6,6
-TASK0339,Important: Generate system health monitoring report,import gener system health monitor report,import|gener|system|health|monitor|report,Medium,Report,EMP008,6,6
-TASK0340,Design icons and visual elements - important,design icon visual element import,design|icon|visual|element|import,Medium,UI/UX,EMP099,5,7
-TASK0341,Validate coding standards in user interface - important,valid code standard user interfac import,valid|code|standard|user|interfac|import,Medium,Code Review,EMP062,6,8
-TASK0342,Soon: Add notification system to application,soon add notif system applic,soon|add|notif|system|applic,Medium,Feature Update,EMP055,5,6
-TASK0343,Create project progress summary report - for future release,creat project progress summari report futur releas,creat|project|progress|summari|report|futur|releas,Low,Report,EMP046,7,9
-TASK0344,Address security vulnerability (immediate),address secur vulner immedi,address|secur|vulner|immedi,High,Bug Fix,EMP059,4,4
-TASK0345,Organize incident response call - as time permits,organ incid respons call time permit,organ|incid|respons|call|time|permit,Low,Call,EMP010,6,8
-TASK0346,Resolve data synchronization problem - priority for next phase,resolv data synchron problem prioriti next phase,resolv|data|synchron|problem|prioriti|next|phase,Medium,Bug Fix,EMP022,7,9
-TASK0347,Immediate - Document compliance audit results,immedi document complianc audit result,immedi|document|complianc|audit|result,High,Report,EMP061,5,6
-TASK0348,Address security vulnerability - priority,address secur vulner prioriti,address|secur|vulner|prioriti,Medium,Bug Fix,EMP032,4,5
-TASK0349,Add multi-language support (important),add multilanguag support import,add|multilanguag|support|import,Medium,Feature Update,EMP003,4,4
-TASK0350,Develop user experience flow for checkout - as time permits (updated scope),develop user experi flow checkout time permit updat scope,develop|user|experi|flow|checkout|time|permit|updat|scope,Low,UI/UX,EMP088,9,12
-TASK0351,Important to plan architecture discussion meeting,import plan architectur discuss meet,import|plan|architectur|discuss|meet,Medium,Meeting,EMP065,5,6
-TASK0352,Create advanced reporting dashboard - for future release,creat advanc report dashboard futur releas,creat|advanc|report|dashboard|futur|releas,Low,Feature Update,EMP009,6,8
-TASK0353,Address security vulnerability - phase 3,address secur vulner phase,address|secur|vulner|phase,Low,Bug Fix,EMP056,4,6
-TASK0354,Design icons and visual elements (needed),design icon visual element need,design|icon|visual|element|need,Medium,UI/UX,EMP088,5,6
-TASK0355,Asap: Plan emergency escalation call,asap plan emerg escal call,asap|plan|emerg|escal|call,High,Call,EMP064,5,5
-TASK0356,Validate coding standards in user interface (immediate),valid code standard user interfac immedi,valid|code|standard|user|interfac|immedi,High,Code Review,EMP018,6,7
-TASK0357,Design user interface for mobile application - as time permits,design user interfac mobil applic time permit,design|user|interfac|mobil|applic|time|permit,Low,UI/UX,EMP016,7,10
-TASK0358,Develop user experience flow for checkout - in spare time,develop user experi flow checkout spare time,develop|user|experi|flow|checkout|spare|time,Low,UI/UX,EMP043,7,10
-TASK0359,Expected to compose client communication regarding updates,expect compos client commun regard updat,expect|compos|client|commun|regard|updat,Medium,Email,EMP049,6,7
-TASK0360,Generate system health monitoring report - for next quarter,gener system health monitor report next quarter,gener|system|health|monitor|report|next|quarter,Low,Report,EMP061,7,9
-TASK0361,Immediately - Design icons and visual elements,immedi design icon visual element,immedi|design|icon|visual|element,High,UI/UX,EMP040,5,7
-TASK0362,Due near to review pull request for authentication module,due near review pull request authent modul,due|near|review|pull|request|authent|modul,Medium,Code Review,EMP078,7,9
-TASK0363,Implement new search functionality (critical),implement new search function critic,implement|new|search|function|critic,High,Feature Update,EMP003,5,5
-TASK0364,Conduct code review for API endpoints - priority,conduct code review api endpoint prioriti,conduct|code|review|api|endpoint|prioriti,Medium,Code Review,EMP091,6,8
-TASK0365,Priority to plan emergency escalation call,prioriti plan emerg escal call,prioriti|plan|emerg|escal|call,Medium,Call,EMP021,5,6
-TASK0366,Develop user experience flow for checkout - soon for next phase,develop user experi flow checkout soon next phase,develop|user|experi|flow|checkout|soon|next|phase,Medium,UI/UX,EMP092,8,11
-TASK0367,Emergency: Rollback deployment due to issues,emerg rollback deploy due issu,emerg|rollback|deploy|due|issu,High,Deployment,EMP053,5,6
-TASK0368,Update production servers with latest patches (expected),updat product server latest patch expect,updat|product|server|latest|patch|expect,Medium,Deployment,EMP053,6,7
-TASK0369,Update payment processing system (immediately),updat payment process system immedi,updat|payment|process|system|immedi,High,Feature Update,EMP093,5,5
-TASK0370,Schedule sprint planning meeting - for next quarter,schedul sprint plan meet next quarter,schedul|sprint|plan|meet|next|quarter,Low,Meeting,EMP024,6,8
-TASK0371,Prepare security audit documentation - critical action required,prepar secur audit document critic action,prepar|secur|audit|document|critic|action,High,Report,EMP087,6,8
-TASK0372,Plan architecture discussion meeting (urgent),plan architectur discuss meet urgent,plan|architectur|discuss|meet|urgent,High,Meeting,EMP065,5,5
-TASK0373,Needed: Send progress report to management,need send progress report manag,need|send|progress|report|manag,Medium,Email,EMP025,5,6
-TASK0374,Update production servers with latest patches,updat product server latest patch,updat|product|server|latest|patch,Low,Deployment,EMP007,5,6
-TASK0375,Prepare security audit documentation - important for next phase,prepar secur audit document import next phase,prepar|secur|audit|document|import|next|phase,Medium,Report,EMP087,7,9
-TASK0376,Resolve payment processing bug - needed,resolv payment process bug need,resolv|payment|process|bug|need,Medium,Bug Fix,EMP042,5,6
-TASK0377,Scale infrastructure for increased load - for future release,scale infrastructur increas load futur releas,scale|infrastructur|increas|load|futur|releas,Low,Deployment,EMP100,6,9
-TASK0378,Conduct usability testing session - in spare time,conduct usabl test session spare time,conduct|usabl|test|session|spare|time,Low,UI/UX,EMP088,6,8
-TASK0379,Generate system health monitoring report - for future release,gener system health monitor report futur releas,gener|system|health|monitor|report|futur|releas,Low,Report,EMP008,7,9
-TASK0380,Arrange contract renewal discussion - for next quarter,arrang contract renew discuss next quarter,arrang|contract|renew|discuss|next|quarter,Low,Call,EMP050,6,8
-TASK0381,Update installation and setup guide (soon),updat instal setup guid soon,updat|instal|setup|guid|soon,Medium,Documentation,EMP076,5,6
-TASK0382,Compose client communication regarding updates - priority for next phase,compos client commun regard updat prioriti next phase,compos|client|commun|regard|updat|prioriti|next|phase,Medium,Email,EMP063,8,10
-TASK0383,Notify team about system maintenance - when convenient,notifi team system mainten conveni,notifi|team|system|mainten|conveni,Low,Email,EMP041,5,8
-TASK0384,Schedule customer feedback call,schedul custom feedback call,schedul|custom|feedback|call,Low,Call,EMP045,4,4
-TASK0385,Write technical specification document - as time permits,write technic specif document time permit,write|technic|specif|document|time|permit,Low,Documentation,EMP072,6,8
-TASK0386,Setup continuous integration pipeline - for future release,setup continu integr pipelin futur releas,setup|continu|integr|pipelin|futur|releas,Low,Deployment,EMP071,6,8
-TASK0387,Implement new search functionality - for next quarter,implement new search function next quarter,implement|new|search|function|next|quarter,Low,Feature Update,EMP009,6,8
-TASK0388,Needed to organize incident response call,need organ incid respons call,need|organ|incid|respons|call,Medium,Call,EMP020,5,6
-TASK0389,Urgent - Generate monthly performance analytics,urgent gener monthli perform analyt,urgent|gener|monthli|perform|analyt,High,Report,EMP011,5,6
-TASK0390,Important: Draft announcement for new feature release,import draft announc new featur releas,import|draft|announc|new|featur|releas,Medium,Email,EMP025,6,7
-TASK0391,Priority: Scale infrastructure for increased load,prioriti scale infrastructur increas load,prioriti|scale|infrastructur|increas|load,Medium,Deployment,EMP053,5,6
-TASK0392,Priority to configure load balancers for high availability,prioriti configur load balanc high avail,prioriti|configur|load|balanc|high|avail,Medium,Deployment,EMP007,6,8
-TASK0393,Schedule customer feedback call,schedul custom feedback call,schedul|custom|feedback|call,Low,Call,EMP021,4,4
-TASK0394,Coordinate incident response meeting - emergency action required,coordin incid respons meet emerg action,coordin|incid|respons|meet|emerg|action,High,Meeting,EMP012,6,8
-TASK0395,Fix responsive design issues - emergency action required,fix respons design issu emerg action,fix|respons|design|issu|emerg|action,High,Bug Fix,EMP023,6,8
-TASK0396,Important to conduct technical support call,import conduct technic support call,import|conduct|technic|support|call,Medium,Call,EMP070,5,6
-TASK0397,Document incident resolution procedures - needed,document incid resolut procedur need,document|incid|resolut|procedur|need,Medium,Documentation,EMP014,5,6
-TASK0398,Soon to compose client communication regarding updates,soon compos client commun regard updat,soon|compos|client|commun|regard|updat,Medium,Email,EMP025,6,7
-TASK0399,Resolve payment processing bug - for next quarter,resolv payment process bug next quarter,resolv|payment|process|bug|next|quarter,Low,Bug Fix,EMP002,6,8
-TASK0400,Prepare troubleshooting documentation,prepar troubleshoot document,prepar|troubleshoot|document,Low,Documentation,EMP094,3,3
-TASK0401,Create incident post-mortem report (immediately),creat incid postmortem report immedi,creat|incid|postmortem|report|immedi,High,Report,EMP048,5,5
-TASK0402,Schedule client consultation call - due near for next phase,schedul client consult call due near next phase,schedul|client|consult|call|due|near|next|phase,Medium,Call,EMP045,8,10
-TASK0403,Compose client communication regarding updates (important),compos client commun regard updat import,compos|client|commun|regard|updat|import,Medium,Email,EMP041,6,6
-TASK0404,Create advanced reporting dashboard - due near for next phase,creat advanc report dashboard due near next phase,creat|advanc|report|dashboard|due|near|next|phase,Medium,Feature Update,EMP055,8,10
-TASK0405,Fix accessibility issues in interface (priority),fix access issu interfac prioriti,fix|access|issu|interfac|prioriti,Medium,UI/UX,EMP043,5,6
-TASK0406,Validate coding standards in user interface - for future release,valid code standard user interfac futur releas,valid|code|standard|user|interfac|futur|releas,Low,Code Review,EMP018,7,10
-TASK0407,Fix accessibility issues in interface - priority for next phase,fix access issu interfac prioriti next phase,fix|access|issu|interfac|prioriti|next|phase,Medium,UI/UX,EMP040,7,10
-TASK0408,Schedule sprint planning meeting - in spare time - milestone deliverable,schedul sprint plan meet spare time mileston deliver,schedul|sprint|plan|meet|spare|time|mileston|deliver,Low,Meeting,EMP065,8,11
-TASK0409,Organize stakeholder review session - for next quarter,organ stakehold review session next quarter,organ|stakehold|review|session|next|quarter,Low,Meeting,EMP024,6,8
-TASK0410,Soon to audit code for security vulnerabilities,soon audit code secur vulner,soon|audit|code|secur|vulner,Medium,Code Review,EMP091,5,7
-TASK0411,Create wireframes for dashboard layout - expected for next phase,creat wirefram dashboard layout expect next phase,creat|wirefram|dashboard|layout|expect|next|phase,Medium,UI/UX,EMP088,7,10
-TASK0412,Configure load balancers for high availability - for next quarter,configur load balanc high avail next quarter,configur|load|balanc|high|avail|next|quarter,Low,Deployment,EMP053,7,10
-TASK0413,Plan architecture discussion meeting,plan architectur discuss meet,plan|architectur|discuss|meet,Low,Meeting,EMP090,4,4
-TASK0414,Due near: Arrange vendor negotiation call,due near arrang vendor negoti call,due|near|arrang|vendor|negoti|call,Medium,Call,EMP021,6,6
-TASK0415,Redesign problematic user interface - soon for next phase,redesign problemat user interfac soon next phase,redesign|problemat|user|interfac|soon|next|phase,Medium,UI/UX,EMP043,7,9
-TASK0416,Send project status update to stakeholders (soon),send project statu updat stakehold soon,send|project|statu|updat|stakehold|soon,Medium,Email,EMP047,6,7
-TASK0417,Conduct team retrospective meeting - expected for next phase,conduct team retrospect meet expect next phase,conduct|team|retrospect|meet|expect|next|phase,Medium,Meeting,EMP069,7,9
-TASK0418,Soon: Document compliance audit results,soon document complianc audit result,soon|document|complianc|audit|result,Medium,Report,EMP051,5,5
-TASK0419,Coordinate incident response meeting - for future release,coordin incid respons meet futur releas,coordin|incid|respons|meet|futur|releas,Low,Meeting,EMP044,6,8
-TASK0420,Priority: Build real-time chat functionality,prioriti build realtim chat function,prioriti|build|realtim|chat|function,Medium,Feature Update,EMP055,5,5
-TASK0421,Create incident post-mortem report - for next quarter,creat incid postmortem report next quarter,creat|incid|postmortem|report|next|quarter,Low,Report,EMP061,6,8
-TASK0422,Organize team building session - due near for next phase,organ team build session due near next phase,organ|team|build|session|due|near|next|phase,Medium,Meeting,EMP065,8,10
-TASK0423,Fix performance bottleneck - expected,fix perform bottleneck expect,fix|perform|bottleneck|expect,Medium,Bug Fix,EMP032,4,5
-TASK0424,Need to send meeting invitation for planning session immediate,send meet invit plan session immedi,send|meet|invit|plan|session|immedi,High,Email,EMP047,6,9
-TASK0425,Need to schedule performance review session urgent,schedul perform review session urgent,schedul|perform|review|session|urgent,High,Meeting,EMP065,5,7
-TASK0426,Deploy application to production environment (critical),deploy applic product environ critic,deploy|applic|product|environ|critic,High,Deployment,EMP007,5,6
-TASK0427,Needed: Plan emergency escalation call,need plan emerg escal call,need|plan|emerg|escal|call,Medium,Call,EMP064,5,5
-TASK0428,Add notification system to application - for next quarter,add notif system applic next quarter,add|notif|system|applic|next|quarter,Low,Feature Update,EMP075,6,9
-TASK0429,Debug memory leak in application - milestone deliverable,debug memori leak applic mileston deliver,debug|memori|leak|applic|mileston|deliver,Low,Bug Fix,EMP022,6,8
-TASK0430,Update API documentation for new endpoints - for next quarter (updated scope),updat api document new endpoint next quarter updat scope,updat|api|document|new|endpoint|next|quarter|updat|scope,Low,Documentation,EMP096,9,12
-TASK0431,Rollback deployment due to issues - in spare time,rollback deploy due issu spare time,rollback|deploy|due|issu|spare|time,Low,Deployment,EMP100,6,9
-TASK0432,Review performance optimization changes (updated scope),review perform optim chang updat scope,review|perform|optim|chang|updat|scope,Low,Code Review,EMP027,6,6
-TASK0433,Develop user profile management feature - expected for next phase,develop user profil manag featur expect next phase,develop|user|profil|manag|featur|expect|next|phase,Medium,Feature Update,EMP084,8,10
-TASK0434,Review database optimization queries - critical action required,review databas optim queri critic action,review|databas|optim|queri|critic|action,High,Code Review,EMP058,6,8
-TASK0435,Priority to update installation and setup guide,prioriti updat instal setup guid,prioriti|updat|instal|setup|guid,Medium,Documentation,EMP083,5,7
-TASK0436,Fix performance bottleneck - when convenient,fix perform bottleneck conveni,fix|perform|bottleneck|conveni,Low,Bug Fix,EMP022,4,6
-TASK0437,Address security vulnerability - for next quarter,address secur vulner next quarter,address|secur|vulner|next|quarter,Low,Bug Fix,EMP067,5,7
-TASK0438,Deploy application to production environment - in spare time - milestone deliverable,deploy applic product environ spare time mileston deliver,deploy|applic|product|environ|spare|time|mileston|deliver,Low,Deployment,EMP071,8,12
-TASK0439,Add multi-language support - immediately action required,add multilanguag support immedi action,add|multilanguag|support|immedi|action,High,Feature Update,EMP075,5,7
-TASK0440,Due near to create advanced reporting dashboard,due near creat advanc report dashboard,due|near|creat|advanc|report|dashboard,Medium,Feature Update,EMP075,6,7
-TASK0441,Priority: Fix performance bottleneck,prioriti fix perform bottleneck,prioriti|fix|perform|bottleneck,Medium,Bug Fix,EMP056,4,4
-TASK0442,Needed to validate coding standards in user interface,need valid code standard user interfac,need|valid|code|standard|user|interfac,Medium,Code Review,EMP091,6,8
-TASK0443,Compile user feedback analysis report - important,compil user feedback analysi report import,compil|user|feedback|analysi|report|import,Medium,Report,EMP087,6,7
-TASK0444,Important to validate new feature implementation,import valid new featur implement,import|valid|new|featur|implement,Medium,Code Review,EMP026,5,6
-TASK0445,Document compliance audit results - expected,document complianc audit result expect,document|complianc|audit|result|expect,Medium,Report,EMP011,5,6
-TASK0446,Need to prepare security audit documentation emergency,prepar secur audit document emerg,prepar|secur|audit|document|emerg,High,Report,EMP087,5,7
-TASK0447,Send project status update to stakeholders (priority),send project statu updat stakehold prioriti,send|project|statu|updat|stakehold|prioriti,Medium,Email,EMP031,6,7
-TASK0448,Conduct technical support call (priority),conduct technic support call prioriti,conduct|technic|support|call|prioriti,Medium,Call,EMP057,5,5
-TASK0449,Create onboarding documentation - in spare time,creat onboard document spare time,creat|onboard|document|spare|time,Low,Documentation,EMP096,5,7
-TASK0450,Migrate database to new version - needed,migrat databas new version need,migrat|databas|new|version|need,Medium,Deployment,EMP054,5,7
+taskid,token_count,original_word_count
+TASK0001,6,6
+TASK0002,6,6
+TASK0003,5,5
+TASK0004,6,6
+TASK0005,6,6
+TASK0006,9,9
+TASK0007,8,8
+TASK0008,9,9
+TASK0009,6,6
+TASK0010,6,6
+TASK0011,8,8
+TASK0012,5,5
+TASK0013,9,9
+TASK0014,6,6
+TASK0015,12,12
+TASK0016,7,7
+TASK0017,10,10
+TASK0018,6,6
+TASK0019,6,6
+TASK0020,12,12
+TASK0021,6,6
+TASK0022,7,7
+TASK0023,7,7
+TASK0024,8,8
+TASK0025,8,8
+TASK0026,7,7
+TASK0027,8,8
+TASK0028,7,7
+TASK0029,8,8
+TASK0030,8,8
+TASK0031,6,6
+TASK0032,6,6
+TASK0033,5,5
+TASK0034,5,5
+TASK0035,8,8
+TASK0036,7,7
+TASK0037,6,6
+TASK0038,8,8
+TASK0039,7,7
+TASK0040,9,9
+TASK0041,8,8
+TASK0042,11,11
+TASK0043,7,7
+TASK0044,6,6
+TASK0045,9,9
+TASK0046,6,6
+TASK0047,8,8
+TASK0048,11,11
+TASK0049,5,5
+TASK0050,7,7
+TASK0051,10,10
+TASK0052,10,10
+TASK0053,7,7
+TASK0054,10,10
+TASK0055,7,7
+TASK0056,8,8
+TASK0057,12,12
+TASK0058,9,9
+TASK0059,6,6
+TASK0060,10,10
+TASK0061,5,5
+TASK0062,5,5
+TASK0063,4,4
+TASK0064,10,10
+TASK0065,4,4
+TASK0066,7,7
+TASK0067,5,5
+TASK0068,7,7
+TASK0069,5,5
+TASK0070,9,9
+TASK0071,7,7
+TASK0072,8,8
+TASK0073,7,7
+TASK0074,7,7
+TASK0075,7,7
+TASK0076,6,6
+TASK0077,8,8
+TASK0078,7,7
+TASK0079,5,5
+TASK0080,10,10
+TASK0081,9,9
+TASK0082,5,5
+TASK0083,11,11
+TASK0084,6,6
+TASK0085,6,6
+TASK0086,7,7
+TASK0087,10,10
+TASK0088,8,8
+TASK0089,8,8
+TASK0090,5,5
+TASK0091,8,8
+TASK0092,6,6
+TASK0093,5,5
+TASK0094,7,7
+TASK0095,8,8
+TASK0096,7,7
+TASK0097,8,8
+TASK0098,10,10
+TASK0099,5,5
+TASK0100,6,6
+TASK0101,8,8
+TASK0102,5,5
+TASK0103,7,7
+TASK0104,11,11
+TASK0105,12,12
+TASK0106,6,6
+TASK0107,4,4
+TASK0108,7,7
+TASK0109,6,6
+TASK0110,10,10
+TASK0111,9,9
+TASK0112,10,10
+TASK0113,5,5
+TASK0114,11,11
+TASK0115,11,11
+TASK0116,8,8
+TASK0117,6,6
+TASK0118,8,8
+TASK0119,9,9
+TASK0120,7,7
+TASK0121,10,10
+TASK0122,7,7
+TASK0123,9,9
+TASK0124,11,11
+TASK0125,6,6
+TASK0126,11,11
+TASK0127,9,9
+TASK0128,11,11
+TASK0129,7,7
+TASK0130,6,6
+TASK0131,9,9
+TASK0132,8,8
+TASK0133,6,6
+TASK0134,6,6
+TASK0135,7,7
+TASK0136,9,9
+TASK0137,8,8
+TASK0138,6,6
+TASK0139,6,6
+TASK0140,6,6
+TASK0141,11,11
+TASK0142,12,12
+TASK0143,8,8
+TASK0144,9,9
+TASK0145,8,8
+TASK0146,10,10
+TASK0147,6,6
+TASK0148,6,6
+TASK0149,8,8
+TASK0150,8,8
+TASK0151,10,10
+TASK0152,8,8
+TASK0153,7,7
+TASK0154,4,4
+TASK0155,3,3
+TASK0156,4,4
+TASK0157,9,9
+TASK0158,10,10
+TASK0159,8,8
+TASK0160,9,9
+TASK0161,6,6
+TASK0162,7,7
+TASK0163,7,7
+TASK0164,9,9
+TASK0165,4,4
+TASK0166,4,4
+TASK0167,8,8
+TASK0168,7,7
+TASK0169,5,5
+TASK0170,10,10
+TASK0171,6,6
+TASK0172,10,10
+TASK0173,6,6
+TASK0174,6,6
+TASK0175,8,8
+TASK0176,11,11
+TASK0177,6,6
+TASK0178,7,7
+TASK0179,5,5
+TASK0180,7,7
+TASK0181,6,6
+TASK0182,8,8
+TASK0183,8,8
+TASK0184,7,7
+TASK0185,11,11
+TASK0186,8,8
+TASK0187,9,9
+TASK0188,8,8
+TASK0189,9,9
+TASK0190,8,8
+TASK0191,5,5
+TASK0192,7,7
+TASK0193,5,5
+TASK0194,5,5
+TASK0195,12,12
+TASK0196,9,9
+TASK0197,4,4
+TASK0198,10,10
+TASK0199,6,6
+TASK0200,4,4
+TASK0201,6,6
+TASK0202,6,6
+TASK0203,8,8
+TASK0204,4,4
+TASK0205,7,7
+TASK0206,7,7
+TASK0207,9,9
+TASK0208,4,4
+TASK0209,9,9
+TASK0210,8,8
+TASK0211,6,6
+TASK0212,5,5
+TASK0213,7,7
+TASK0214,6,6
+TASK0215,7,7
+TASK0216,9,9
+TASK0217,7,7
+TASK0218,6,6
+TASK0219,8,8
+TASK0220,7,7
+TASK0221,6,6
+TASK0222,6,6
+TASK0223,11,11
+TASK0224,6,6
+TASK0225,9,9
+TASK0226,5,5
+TASK0227,9,9
+TASK0228,5,5
+TASK0229,5,5
+TASK0230,6,6
+TASK0231,7,7
+TASK0232,11,11
+TASK0233,5,5
+TASK0234,5,5
+TASK0235,9,9
+TASK0236,5,5
+TASK0237,8,8
+TASK0238,6,6
+TASK0239,7,7
+TASK0240,8,8
+TASK0241,8,8
+TASK0242,7,7
+TASK0243,7,7
+TASK0244,9,9
+TASK0245,9,9
+TASK0246,5,5
+TASK0247,11,11
+TASK0248,6,6
+TASK0249,10,10
+TASK0250,8,8
+TASK0251,8,8
+TASK0252,10,10
+TASK0253,8,8
+TASK0254,8,8
+TASK0255,7,7
+TASK0256,9,9
+TASK0257,8,8
+TASK0258,7,7
+TASK0259,12,12
+TASK0260,9,9
+TASK0261,5,5
+TASK0262,8,8
+TASK0263,5,5
+TASK0264,9,9
+TASK0265,7,7
+TASK0266,10,10
+TASK0267,6,6
+TASK0268,6,6
+TASK0269,9,9
+TASK0270,4,4
+TASK0271,7,7
+TASK0272,6,6
+TASK0273,6,6
+TASK0274,7,7
+TASK0275,7,7
+TASK0276,9,9
+TASK0277,8,8
+TASK0278,7,7
+TASK0279,6,6
+TASK0280,4,4
+TASK0281,11,11
+TASK0282,9,9
+TASK0283,5,5
+TASK0284,10,10
+TASK0285,7,7
+TASK0286,8,8
+TASK0287,6,6
+TASK0288,8,8
+TASK0289,8,8
+TASK0290,7,7
+TASK0291,12,12
+TASK0292,7,7
+TASK0293,7,7
+TASK0294,6,6
+TASK0295,5,5
+TASK0296,6,6
+TASK0297,7,7
+TASK0298,5,5
+TASK0299,5,5
+TASK0300,10,10
+TASK0301,5,5
+TASK0302,4,4
+TASK0303,7,7
+TASK0304,6,6
+TASK0305,10,10
+TASK0306,9,9
+TASK0307,7,7
+TASK0308,4,4
+TASK0309,6,6
+TASK0310,7,7
+TASK0311,5,5
+TASK0312,9,9
+TASK0313,10,10
+TASK0314,9,9
+TASK0315,11,11
+TASK0316,6,6
+TASK0317,5,5
+TASK0318,5,5
+TASK0319,6,6
+TASK0320,9,9
+TASK0321,5,5
+TASK0322,7,7
+TASK0323,6,6
+TASK0324,8,8
+TASK0325,5,5
+TASK0326,5,5
+TASK0327,7,7
+TASK0328,5,5
+TASK0329,5,5
+TASK0330,9,9
+TASK0331,6,6
+TASK0332,7,7
+TASK0333,8,8
+TASK0334,8,8
+TASK0335,10,10
+TASK0336,5,5
+TASK0337,7,7
+TASK0338,6,6
+TASK0339,6,6
+TASK0340,7,7
+TASK0341,8,8
+TASK0342,6,6
+TASK0343,9,9
+TASK0344,4,4
+TASK0345,8,8
+TASK0346,9,9
+TASK0347,6,6
+TASK0348,5,5
+TASK0349,4,4
+TASK0350,12,12
+TASK0351,6,6
+TASK0352,8,8
+TASK0353,6,6
+TASK0354,6,6
+TASK0355,5,5
+TASK0356,7,7
+TASK0357,10,10
+TASK0358,10,10
+TASK0359,7,7
+TASK0360,9,9
+TASK0361,7,7
+TASK0362,9,9
+TASK0363,5,5
+TASK0364,8,8
+TASK0365,6,6
+TASK0366,11,11
+TASK0367,6,6
+TASK0368,7,7
+TASK0369,5,5
+TASK0370,8,8
+TASK0371,8,8
+TASK0372,5,5
+TASK0373,6,6
+TASK0374,6,6
+TASK0375,9,9
+TASK0376,6,6
+TASK0377,9,9
+TASK0378,8,8
+TASK0379,9,9
+TASK0380,8,8
+TASK0381,6,6
+TASK0382,10,10
+TASK0383,8,8
+TASK0384,4,4
+TASK0385,8,8
+TASK0386,8,8
+TASK0387,8,8
+TASK0388,6,6
+TASK0389,6,6
+TASK0390,7,7
+TASK0391,6,6
+TASK0392,8,8
+TASK0393,4,4
+TASK0394,8,8
+TASK0395,8,8
+TASK0396,6,6
+TASK0397,6,6
+TASK0398,7,7
+TASK0399,8,8
+TASK0400,3,3
+TASK0401,5,5
+TASK0402,10,10
+TASK0403,6,6
+TASK0404,10,10
+TASK0405,6,6
+TASK0406,10,10
+TASK0407,10,10
+TASK0408,11,11
+TASK0409,8,8
+TASK0410,7,7
+TASK0411,10,10
+TASK0412,10,10
+TASK0413,4,4
+TASK0414,6,6
+TASK0415,9,9
+TASK0416,7,7
+TASK0417,9,9
+TASK0418,5,5
+TASK0419,8,8
+TASK0420,5,5
+TASK0421,8,8
+TASK0422,10,10
+TASK0423,5,5
+TASK0424,9,9
+TASK0425,7,7
+TASK0426,6,6
+TASK0427,5,5
+TASK0428,9,9
+TASK0429,8,8
+TASK0430,12,12
+TASK0431,9,9
+TASK0432,6,6
+TASK0433,10,10
+TASK0434,8,8
+TASK0435,7,7
+TASK0436,6,6
+TASK0437,7,7
+TASK0438,12,12
+TASK0439,7,7
+TASK0440,7,7
+TASK0441,4,4
+TASK0442,8,8
+TASK0443,7,7
+TASK0444,6,6
+TASK0445,6,6
+TASK0446,7,7
+TASK0447,7,7
+TASK0448,5,5
+TASK0449,7,7
+TASK0450,7,7
